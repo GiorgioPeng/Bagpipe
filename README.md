@@ -1,3 +1,4 @@
+English | [简体中文](./README.zh-CN.md)
 # SOMBRA
 A data analysis platform, just dependency on front-end technologies.  
 Protect data security and privacy.  
@@ -5,5 +6,5 @@ Protect data security and privacy.
 [ ] Interface  
 [ ] Mutiple type of data import(include Excel, txt, tsv...)  
 [ ] Data visualization  
-[ ] Machine learning and predict  
+[ ] Machine learning train and predict  
 [ ] Other functionalities  

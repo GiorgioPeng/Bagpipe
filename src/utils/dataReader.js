@@ -15,6 +15,9 @@ const dataReader = (csvFile,updateState)=>{
             const data = d3.csvParseRows(fileReader.result, function (d) {
                 return d;
             });
+            const data4Analyse = (d3.csvParse(fileReader.result, function (d) {
+                return d;
+            }))
             console.log(data)
             // const dataCopy = Object.create(data)
             // let dataFrame = new DataFrame(dataCopy.splice(1),dataCopy[0])
@@ -22,6 +25,7 @@ const dataReader = (csvFile,updateState)=>{
             // console.log(dataFrame)
             // updateState('data',dataFrame)
             updateState('data',data)
+            updateState('data4Analyse',data4Analyse)
         });
     }
     catch(e){

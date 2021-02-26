@@ -144,7 +144,7 @@ const VirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
 
 export default function ReactVirtualizedTable() {
-    const [state,] = useGlobalState()
+    const [state,updateState] = useGlobalState()
     const [formatData, setFormatData] = React.useState() // 用来存储处理完后的数据
 
     /**
@@ -158,7 +158,10 @@ export default function ReactVirtualizedTable() {
     React.useEffect(() => {
         if (state.data) {
             let row = Array.from(state.data) // 深拷贝数据
+            
             const header = row.shift() // 获取列名,同时在拷贝的数据中删除列名
+            
+            updateState('column',header)
             // 生成对象,如上面的注释所示
             row = row.map((el,index1) => {
                 const tempDict = {}
@@ -173,9 +176,9 @@ export default function ReactVirtualizedTable() {
     }, [state.data])
 
     return (
-        <div>
+        <div style={{margin:'20px auto'}}>
             {state.data ?
-                <Paper style={{ height: 400, width: '100%' }}>
+                <Paper style={{ height: 400,overflowX:'scroll',maxWidth:'90%',position:'relative',left:'50%',transform:'translateX(-50%)' }}>
                     <VirtualizedTable
                         
                         // 这里是数据行数
@@ -189,7 +192,7 @@ export default function ReactVirtualizedTable() {
                         // 这里是列名
                         columns={state.data[0].map((element) => {
                             return {
-                                width: 200,
+                                width: 150,
                                 label: element,
                                 dataKey: element
                             }

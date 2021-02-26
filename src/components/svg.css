@@ -1,0 +1,10 @@
+#lineChart svg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#lineChart svg path {
+    fill: transparent;
+    stroke: green
+}

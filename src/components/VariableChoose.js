@@ -1,8 +1,11 @@
 import React from 'react'
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Switch from '@material-ui/core/Switch';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
         color: 'red',
         fontWeight: 'bold'
     },
-    inputColumn:{
-        position:'relative',
+    inputColumn: {
+        position: 'relative',
         '&:hover': {
             '&:after': {
                 content: "'自变量个数增多会导致训练时长激增'",
@@ -33,6 +36,59 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const IOSSwitch = withStyles((theme) => ({
+    root: {
+        width: 42,
+        height: 26,
+        padding: 0,
+        margin: theme.spacing(1),
+    },
+    switchBase: {
+        padding: 1,
+        '&$checked': {
+            transform: 'translateX(16px)',
+            color: theme.palette.common.white,
+            '& + $track': {
+                backgroundColor: '#52d869',
+                opacity: 1,
+                border: 'none',
+            },
+        },
+        '&$focusVisible $thumb': {
+            color: '#52d869',
+            border: '6px solid #fff',
+        },
+    },
+    thumb: {
+        width: 24,
+        height: 24,
+    },
+    track: {
+        borderRadius: 26 / 2,
+        border: `1px solid ${theme.palette.grey[400]}`,
+        backgroundColor: theme.palette.grey[50],
+        opacity: 1,
+        transition: theme.transitions.create(['background-color', 'border']),
+    },
+    checked: {},
+    focusVisible: {},
+}))(({ classes, ...props }) => {
+    return (
+        <Switch
+            focusVisibleClassName={classes.focusVisible}
+            disableRipple
+            classes={{
+                root: classes.root,
+                switchBase: classes.switchBase,
+                thumb: classes.thumb,
+                track: classes.track,
+                checked: classes.checked,
+            }}
+            {...props}
+        />
+    );
+});
+
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
@@ -43,18 +99,12 @@ function VariableChoose() {
             <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
                 {state.column.length !== 0 ?
                     state.column.map((value, index) =>
-                        <Button onClick={() => updateState('timeColumn', value)} key={index}>{value}</Button>
-                    )
-                    :
-                    ''
-                }
-            </ButtonGroup>
-            {state.column.length !== 0 ? <div>请选择因变量字段:</div> : ''}
-            <div className={classes.choose}>{state.labelColumn}</div>
-            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                {state.column.length !== 0 ?
-                    state.column.map((value, index) =>
-                        <Button onClick={() => updateState('labelColumn', value)} key={index}>{value}</Button>
+                        <Button onClick={() => {
+                            if (state.finishChoose) {
+                                return
+                            } updateState('timeColumn', value)
+                        }
+                        } key={index}>{value}</Button>
                     )
                     :
                     ''
@@ -66,6 +116,9 @@ function VariableChoose() {
                 {state.column.length !== 0 ?
                     state.column.map((value, index) =>
                         <Button onClick={() => {
+                            if (state.finishChoose) {
+                                return
+                            }
                             let position = state.inputColumn.indexOf(value)
                             let [...tempInputColumn] = state.inputColumn
                             position === -1 ?
@@ -73,27 +126,6 @@ function VariableChoose() {
                                 :
                                 tempInputColumn.splice(position, 1)
                             updateState('inputColumn', tempInputColumn)
-
-                        }
-                    } key={index}>{value}</Button>
-                    )
-                    :
-                    ''
-                }
-            </ButtonGroup>
-            { state.column.length !== 0 ? <div>请选择常量字段:</div> : ''}
-            <div className={classes.choose}>{state.constantColumn.join('|')}</div>
-            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                {state.column.length !== 0 ?
-                    state.column.map((value, index) =>
-                        <Button onClick={() => {
-                            let position = state.constantColumn.indexOf(value)
-                            let [...tempConstantColumn] = state.constantColumn
-                            position === -1 ?
-                                tempConstantColumn.push(value)
-                                :
-                                tempConstantColumn.splice(position, 1)
-                            updateState('constantColumn', tempConstantColumn)
                         }
                         } key={index}>{value}</Button>
                     )
@@ -101,6 +133,34 @@ function VariableChoose() {
                     ''
                 }
             </ButtonGroup>
+            {state.column.length !== 0 ? <div>请选择因变量字段:</div> : ''}
+            <div className={classes.choose}>{state.labelColumn.join('|')}</div>
+            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                {state.column.length !== 0 ?
+                    state.column.map((value, index) =>
+                        <Button onClick={() => {
+                            if (state.finishChoose) {
+                                return
+                            }
+                            let position = state.labelColumn.indexOf(value)
+                            let [...tempLabelColumn] = state.labelColumn
+                            position === -1 ?
+                                tempLabelColumn.push(value)
+                                :
+                                tempLabelColumn.splice(position, 1)
+                            updateState('labelColumn', tempLabelColumn)
+                        }
+                        } key={index}>{value}</Button>
+                    )
+                    :
+                    ''
+                }
+            </ButtonGroup>
+            {state.column.length !== 0 ?
+                <FormControlLabel
+                    control={<IOSSwitch checked={state.finishChoose} onChange={() => updateState('finishChoose', !state.finishChoose)} name="isFinishChoose" />}
+                    label="完成设置"
+                /> : ''}
         </div >
     )
 }

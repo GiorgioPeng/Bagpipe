@@ -55,19 +55,35 @@ function LinePictureDraw() {
 
         // 添加坐标轴
         svg.append('g')
-            .attr('class', 'axis')
+            .attr('class', 'axis') // 后期添加 class为 axis对坐标轴进行美化
             .attr('transform', 'translate(' + padding.left + ',' + (500 - padding.bottom + yBias * 500) + ')')
             .call(xAxis)
             .selectAll("text")
             .style("text-anchor", "end")
             .attr("dx", "-.8em")
             .attr("dy", ".15em")
-            .attr("transform", "rotate(-65)");
+            .attr("transform", "rotate(-65)")
+
+        svg.append("text")
+            .text(x)
+            .attr("fill", "black")
+            .attr("text-anchor", "end")//字体尾部对齐
+            .attr("dx", "1em")//沿y轴平移一个字体的大小;
+            .attr('transform', 'translate(' + (width - padding.right) + ',' + (500 - padding.bottom + yBias * 500) + ')')
+            .attr("font-weight", "bold")
+            .attr("font-size", "12px")
 
         svg.append('g')
             .attr('class', 'axis')
             .attr('transform', 'translate(' + padding.left + ',' + (padding.top + yBias * 500) + ')')
-            .call(yAxis);
+            .call(yAxis)
+            .append("text")
+            .text(y)
+            .attr("transform", "rotate(-90)")//text旋转-90°
+            .attr("fill", "black")
+            .attr("text-anchor", "end")//字体尾部对齐
+            .attr("dy", "1em")//沿y轴平移一个字体的大小;
+            .attr("font-weight", "bold")
 
 
         // 添加经过比例尺调整的折线
@@ -76,6 +92,7 @@ function LinePictureDraw() {
             .y((d) => yScale(d[y]))
             .curve(d3.curveBasis);
 
+
         svg.append("path")
             .attr('transform', 'translate(' + padding.left + ',' + (padding.top + yBias * 500) + ')')
             .attr('stroke-width', 1)
@@ -83,20 +100,18 @@ function LinePictureDraw() {
     }
 
     React.useEffect(() => {
-        if (state.finishChoose && linePictureRef.current) {
+        if (linePictureRef.current) {
 
-            if (state.labelColumn.length !== 0) {// 以时间为x轴的图形个数
-                height = height * state.labelColumn.length
-                if (state.inputColumn.length !== 0) {// 加上其他自变量为x轴的图形总的个数
-                    height = height + 500 * state.labelColumn.length * state.inputColumn.length
-                }
+            height = height * state.labelColumn.length
+            if (state.inputColumn.length !== 0) {// 加上其他自变量为x轴的图形总的个数
+                height = height + 500 * state.labelColumn.length * state.inputColumn.length
             }
 
 
             const svg = d3.select(linePictureRef.current)
                 .append('svg')
                 .attr('width', width + 'px')
-                .attr('height', height + 'px');
+                .attr('height', height + 50 + 'px');
 
             let bias = 0;
 

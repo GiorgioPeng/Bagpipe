@@ -94,73 +94,69 @@ function VariableChoose() {
     const [state, updateState] = useGlobalState()
     return (
         <div className={classes.root} >
-            {state.column.length !== 0 ? <div>请选择时序字段:</div> : ''}
-            <div className={classes.choose}>{state.timeColumn}</div>
-            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                {state.column.length !== 0 ?
-                    state.column.map((value, index) =>
-                        <Button onClick={() => {
-                            if (state.finishChoose) {
-                                return
-                            } updateState('timeColumn', value)
-                        }
-                        } key={index}>{value}</Button>
-                    )
-                    :
-                    ''
-                }
-            </ButtonGroup>
-            {state.column.length !== 0 ? <div className={classes.inputColumn}>请选择除时序外其余自变量字段:</div> : ''}
-            <div className={classes.choose}>{state.inputColumn.join('|')}</div>
-            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                {state.column.length !== 0 ?
-                    state.column.map((value, index) =>
-                        <Button onClick={() => {
-                            if (state.finishChoose) {
-                                return
-                            }
-                            let position = state.inputColumn.indexOf(value)
-                            let [...tempInputColumn] = state.inputColumn
-                            position === -1 ?
-                                tempInputColumn.push(value)
-                                :
-                                tempInputColumn.splice(position, 1)
-                            updateState('inputColumn', tempInputColumn)
-                        }
-                        } key={index}>{value}</Button>
-                    )
-                    :
-                    ''
-                }
-            </ButtonGroup>
-            {state.column.length !== 0 ? <div>请选择因变量字段:</div> : ''}
-            <div className={classes.choose}>{state.labelColumn.join('|')}</div>
-            <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                {state.column.length !== 0 ?
-                    state.column.map((value, index) =>
-                        <Button onClick={() => {
-                            if (state.finishChoose) {
-                                return
-                            }
-                            let position = state.labelColumn.indexOf(value)
-                            let [...tempLabelColumn] = state.labelColumn
-                            position === -1 ?
-                                tempLabelColumn.push(value)
-                                :
-                                tempLabelColumn.splice(position, 1)
-                            updateState('labelColumn', tempLabelColumn)
-                        }
-                        } key={index}>{value}</Button>
-                    )
-                    :
-                    ''
-                }
-            </ButtonGroup>
             {state.column.length !== 0 ?
-                <FormControlLabel
-                    control={<IOSSwitch checked={state.finishChoose} onChange={() => updateState('finishChoose', !state.finishChoose)} name="isFinishChoose" />}
-                    label="完成设置"
-                /> : ''}
+                <>
+                    <div>请选择时序字段:</div>
+                    <div className={classes.choose}>{state.timeColumn}</div>
+                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                        {state.column.length !== 0 ?
+                            state.column.map((value, index) =>
+                                <Button onClick={() => {
+                                    if (state.finishChoose) {
+                                        return
+                                    } updateState('timeColumn', value)
+                                }
+                                } key={index}>{value}</Button>
+                            )
+                            :
+                            ''
+                        }
+                    </ButtonGroup>
+                    <div className={classes.inputColumn}>请选择除时序外其余自变量字段:</div>
+                    <div className={classes.choose}>{state.inputColumn.join('|')}</div>
+                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                        {state.column.map((value, index) =>
+                            <Button onClick={() => {
+                                if (state.finishChoose) {
+                                    return
+                                }
+                                let position = state.inputColumn.indexOf(value)
+                                let [...tempInputColumn] = state.inputColumn
+                                position === -1 ?
+                                    tempInputColumn.push(value)
+                                    :
+                                    tempInputColumn.splice(position, 1)
+                                updateState('inputColumn', tempInputColumn)
+                            }
+                            } key={index}>{value}</Button>
+                        )}
+                    </ButtonGroup>
+                    <div>请选择因变量字段:</div>
+                    <div className={classes.choose}>{state.labelColumn.join('|')}</div>
+                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
+                        {state.column.map((value, index) =>
+                            <Button onClick={() => {
+                                if (state.finishChoose) {
+                                    return
+                                }
+                                let position = state.labelColumn.indexOf(value)
+                                let [...tempLabelColumn] = state.labelColumn
+                                position === -1 ?
+                                    tempLabelColumn.push(value)
+                                    :
+                                    tempLabelColumn.splice(position, 1)
+                                updateState('labelColumn', tempLabelColumn)
+                            }
+                            } key={index}>{value}</Button>
+                        )}
+                    </ButtonGroup>
+
+                    <FormControlLabel
+                        control={<IOSSwitch checked={state.finishChoose} onChange={() => updateState('finishChoose', !state.finishChoose)} name="isFinishChoose" />}
+                        label="完成设置"
+                    />
+                </>
+                : ''}
         </div >
     )
 }

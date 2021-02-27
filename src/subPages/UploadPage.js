@@ -2,8 +2,6 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PublishIcon from '@material-ui/icons/Publish';
-import DataTable from '../components/DataTable'
-import VariableChoose from '../components/VariableChoose'
 import dataReader from '../utils/dataReader'
 import { useGlobalState } from '../globalState'
 
@@ -43,17 +41,15 @@ const useStyles = makeStyles((theme) => ({
             }
         }
     },
-    tableContainer: {
-        margin: '5px'
-    }
 }));
 
 function UploadPage() {
     const classes = useStyles();
-    const [, updateState] = useGlobalState()
+    const [, updateState,resetState] = useGlobalState()
     const fileRef = React.createRef()
 
     const readCSV = () => {
+        resetState()
         const file = fileRef.current.files[0]
         dataReader(file, updateState)
     }
@@ -67,10 +63,6 @@ function UploadPage() {
                     <PublishIcon />
                 </IconButton>
             </label>
-            <div className={classes.tableContainer}>
-                <DataTable />
-                <VariableChoose/>
-            </div>
         </div>
     );
 }

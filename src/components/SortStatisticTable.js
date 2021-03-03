@@ -194,6 +194,20 @@ export default function EnhancedTable() {
                 )
             );
         }
+        for (const label of state.inputColumn) {
+            tempRows.push(
+                createData(
+                    label,
+                    max(state.data4Analyse, (d) => parseFloat(d[label])),
+                    min(state.data4Analyse, (d) => parseFloat(d[label])),
+                    sum(state.data4Analyse, (d) => parseFloat(d[label])),
+                    mean(state.data4Analyse, (d) => parseFloat(d[label])),
+                    median(state.data4Analyse, (d) => parseFloat(d[label])),
+                    variance(state.data4Analyse, (d) => parseFloat(d[label])),
+                    deviation(state.data4Analyse, (d) => parseFloat(d[label])),
+                )
+            );
+        }
         setRows(tempRows)
     }, [])
     const handleRequestSort = (event, property) => {

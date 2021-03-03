@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
 import DataTable from '../components/DataTable'
 import VariableChoose from '../components/VariableChoose'
-import LinePictureDraw from '../components/LinePictureDraw'
+import LinePicture from '../components/LinePicture'
 import SortStatisticTable from '../components/SortStatisticTable'
 import Paper from '@material-ui/core/Paper'
 
@@ -26,7 +26,8 @@ function VisualizationPage() {
             </div>
             {state.finishChoose ?
                 <>
-                    <LinePictureDraw />
+                    {/* <LinePictureDraw /> */}
+                    <LinePicture />
                     <SortStatisticTable />
                 </>
                 :

@@ -11354,13 +11354,6 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha1-TxonOv38jzSIqMUWv9p4+HI1I2I=
 
-react-live2d@^1.0.31:
-  version "1.0.31"
-  resolved "https://registry.npm.taobao.org/react-live2d/download/react-live2d-1.0.31.tgz#b9412c5842503d8dd8e9b7913c6b64680c430cb1"
-  integrity sha1-uUEsWEJQPY3Y6beRPGtkaAxDDLE=
-  dependencies:
-    whatwg-fetch "^3.0.0"
-
 react-plotly.js@^2.5.1:
   version "2.5.1"
   resolved "https://registry.npm.taobao.org/react-plotly.js/download/react-plotly.js-2.5.1.tgz#11182bf599ef11a0dbfcd171c6f5645535a2b486"

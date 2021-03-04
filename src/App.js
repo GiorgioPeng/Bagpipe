@@ -4,6 +4,7 @@ import Paper from '@material-ui/core/Paper';
 // import logo from './logo.svg';
 import './App.css';
 import { GlobalStateProvider } from "./globalState";
+import { useKbn } from "use-kbn";
 import UploadPage from './subPages/UploadPage'
 import IntroductionPage from './subPages/IntroductionPage'
 import VisualizationPage from './subPages/VisualizationPage'
@@ -15,6 +16,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App() {
   const classes = useStyles();
+  const { element } = useKbn(
+    "/model/platelet/model.json",
+    'hello world',
+    400,
+    500
+  );
   return (
     <GlobalStateProvider>
       <Paper className={classes.root}>
@@ -22,6 +29,7 @@ function App() {
         <UploadPage />
         <VisualizationPage />
       </Paper>
+      {element}
     </GlobalStateProvider>
   );
 }

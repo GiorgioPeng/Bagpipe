@@ -13567,6 +13567,11 @@ url@^0.11.0:
     punycode "1.3.2"
     querystring "0.2.0"
 
+use-kbn@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/use-kbn/download/use-kbn-1.0.1.tgz#c7835aa16c8fd57f8b9f092824756a2558308014"
+  integrity sha1-x4NaoWyP1X+LnwkoJHVqJVgwgBQ=
+
 use@^3.1.0:
   version "3.1.1"
   resolved "https://registry.npm.taobao.org/use/download/use-3.1.1.tgz#d50c8cac79a19fbc20f2911f56eb973f4e10070f"

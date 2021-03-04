@@ -39,3 +39,12 @@ body {
     transform: rotate(360deg);
   }
 }
+#use-kbn-root{
+  right:-100px !important;
+  bottom:-50px !important;
+  /* width: 200px;
+  height:300px */
+}
+#use-kbn-message {
+  display: none;
+}

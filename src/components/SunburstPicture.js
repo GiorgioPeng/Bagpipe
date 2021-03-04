@@ -1,7 +1,7 @@
 import React from 'react'
+import Plot from 'react-plotly.js';
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
-import createGraph from '../utils/createGraph'
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
@@ -11,6 +11,25 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
 }));
+
+const createSunburst = (data, type, width, height, title, x, y) => {
+    console.log(data[0])
+    return (
+        <Plot
+            key={title}
+            data={data[0]}
+            path={x}
+            value={y}
+            color={y}
+            layout={{
+                width: width,
+                height: height,
+                title: title,
+            }}
+        />
+    )
+}
+
 function LinePicture() {
     const [state,] = useGlobalState()
     const classes = useStyles();
@@ -21,34 +40,18 @@ function LinePicture() {
     React.useEffect(() => {
         if (linePictureRef.current) {
             const graphArr = []
-            if (state.labelColumn.length !== 0) {// 以时间为x轴的数据拆分
+            if (state.labelColumn.length !== 0) {
                 let dataArr = [];
                 for (const label of state.labelColumn) {
                     let data = {}
                     data.x = state.data4Analyse.map((value) => value[state.timeColumn])
                     data.y = state.data4Analyse.map((value) => value[label])
-                    data.type = 'line'
+                    data.type = 'sunburst'
                     data.name = label
                     dataArr.push(data)
                 }
-                graphArr.push(createGraph(dataArr, 'line', width, height, `${state.timeColumn}(X)`))
+                graphArr.push(createSunburst(dataArr, 'sunburst', width, height, `${state.timeColumn}(X)`, 'x', 'y'))
 
-                if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
-                    let count = 0;
-                    for (const input of state.inputColumn) {
-                        let dataArr = [];
-                        for (const label of state.labelColumn) {
-                            let data = {}
-                            data.x = state.data4Analyse.map((value) => value[input])
-                            data.y = state.data4Analyse.map((value) => value[label])
-                            data.type = 'line'
-                            data.name = label
-                            dataArr.push(data)
-                        }
-                        graphArr.push(createGraph(dataArr, 'line', width, height, `${state.inputColumn[count]}(X)`))
-                        count++;
-                    }
-                }
                 setInnerGraph(graphArr)
             }
             return () => {

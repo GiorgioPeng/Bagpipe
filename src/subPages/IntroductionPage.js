@@ -20,11 +20,11 @@ function IntroductionPage() {
   
     return (
       <Card className={classes.root}>
-          <CardMedia
+          {/* <CardMedia
             className={classes.media}
             image={head}
             title="Contemplative Reptile"
-          />
+          /> */}
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
               项目的名称

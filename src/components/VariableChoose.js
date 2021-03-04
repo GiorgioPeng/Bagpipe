@@ -1,7 +1,9 @@
 import React from 'react'
-import Button from '@material-ui/core/Button';
-import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Switch from '@material-ui/core/Switch';
+import Select from '@material-ui/core/Select';
+import Chip from '@material-ui/core/Chip';
+import Input from '@material-ui/core/Input';
+import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
@@ -19,6 +21,13 @@ const useStyles = makeStyles((theme) => ({
         color: 'red',
         fontWeight: 'bold'
     },
+    chips: {
+        display: 'flex',
+        flexWrap: 'wrap',
+    },
+    chip: {
+        margin: 2,
+    },
     inputColumn: {
         position: 'relative',
         '&:hover': {
@@ -33,6 +42,9 @@ const useStyles = makeStyles((theme) => ({
                 whiteSpace: 'nowrap',
             }
         }
+    },
+    button: {
+        fontSize: '10px'
     }
 }));
 
@@ -89,67 +101,103 @@ const IOSSwitch = withStyles((theme) => ({
     );
 });
 
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+    PaperProps: {
+        style: {
+            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+            width: 250,
+        },
+    },
+};
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
+    const handleTimeColumnChange = (event) => {
+        if (state.finishChoose) {
+            return
+        }
+        updateState('timeColumn', event.target.value)
+    };
+    const handleInputColumnChange = (event) => {
+        if (state.finishChoose) {
+            return
+        }
+        updateState('inputColumn', event.target.value)
+    };
+    const handleLabelColumnChange = (event) => {
+        if (state.finishChoose) {
+            return
+        }
+        updateState('labelColumn', event.target.value)
+    };
     return (
         <div className={classes.root} >
             {state.column.length !== 0 ?
                 <>
                     <div>请选择时序字段:</div>
-                    <div className={classes.choose}>{state.timeColumn}</div>
-                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                        {state.column.length !== 0 ?
-                            state.column.map((value, index) =>
-                                <Button onClick={() => {
-                                    if (state.finishChoose) {
-                                        return
-                                    } updateState('timeColumn', value)
-                                }
-                                } key={index}>{value}</Button>
-                            )
-                            :
-                            ''
-                        }
-                    </ButtonGroup>
+                    <Select
+                        value={state.timeColumn}
+                        onChange={handleTimeColumnChange}
+                        input={<Input />}
+                        MenuProps={MenuProps}
+                        renderValue={(selected) => (
+                            <div className={classes.chips}>
+                                <Chip key={selected} label={selected} className={classes.chip} />
+                            </div>
+                        )}
+                    >
+                        {state.column.map((value, index) => (
+                            <MenuItem key={index} value={value} >
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
                     <div className={classes.inputColumn}>请选择除时序外其余自变量字段:</div>
-                    <div className={classes.choose}>{state.inputColumn.join('|')}</div>
-                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                        {state.column.map((value, index) =>
-                            <Button onClick={() => {
-                                if (state.finishChoose) {
-                                    return
-                                }
-                                let position = state.inputColumn.indexOf(value)
-                                let [...tempInputColumn] = state.inputColumn
-                                position === -1 ?
-                                    tempInputColumn.push(value)
-                                    :
-                                    tempInputColumn.splice(position, 1)
-                                updateState('inputColumn', tempInputColumn)
-                            }
-                            } key={index}>{value}</Button>
+                    <Select
+                        multiple
+                        value={state.inputColumn}
+                        onChange={handleInputColumnChange}
+                        input={<Input />}
+                        MenuProps={MenuProps}
+                        renderValue={(selected) => (
+                            <div className={classes.chips}>
+                                {selected.map((value) => (
+                                    <Chip key={value} label={value} className={classes.chip} />
+                                ))}
+                            </div>
                         )}
-                    </ButtonGroup>
+                    >
+                        {state.column.map((value, index) => (
+                            <MenuItem key={index} value={value} >
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </Select>
+
                     <div>请选择因变量字段:</div>
-                    <div className={classes.choose}>{state.labelColumn.join('|')}</div>
-                    <ButtonGroup variant="contained" color="primary" aria-label="contained primary button group">
-                        {state.column.map((value, index) =>
-                            <Button onClick={() => {
-                                if (state.finishChoose) {
-                                    return
-                                }
-                                let position = state.labelColumn.indexOf(value)
-                                let [...tempLabelColumn] = state.labelColumn
-                                position === -1 ?
-                                    tempLabelColumn.push(value)
-                                    :
-                                    tempLabelColumn.splice(position, 1)
-                                updateState('labelColumn', tempLabelColumn)
-                            }
-                            } key={index}>{value}</Button>
+                    <Select
+                        multiple
+                        value={state.labelColumn}
+                        onChange={handleLabelColumnChange}
+                        input={<Input />}
+                        MenuProps={MenuProps}
+                        renderValue={(selected) => (
+                            <div className={classes.chips}>
+                                {selected.map((value) => (
+                                    <Chip key={value} label={value} className={classes.chip} />
+                                ))}
+                            </div>
                         )}
-                    </ButtonGroup>
+                    >
+                        {state.column.map((value, index) => (
+                            <MenuItem key={index} value={value} >
+                                {value}
+                            </MenuItem>
+                        ))}
+                    </Select>
 
                     <FormControlLabel
                         control={<IOSSwitch checked={state.finishChoose} onChange={() => updateState('finishChoose', !state.finishChoose)} name="isFinishChoose" />}

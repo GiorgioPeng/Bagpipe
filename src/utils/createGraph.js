@@ -15,11 +15,7 @@ const createGraph = (data, type, width, height, title) => {
     return (
         <Plot
             key={title}
-            data={[{
-                x: data.x,
-                y: data.y,
-                type: type,
-            }]}
+            data={data}
             layout={{
                 width: width,
                 height: height,

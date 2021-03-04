@@ -21,18 +21,7 @@ function LinePicture() {
     React.useEffect(() => {
         if (linePictureRef.current) {
             const graphArr = []
-            if (state.labelColumn.length !== 0) {// 以时间为x轴的数据拆分
-                let dataArr = [];
-                for (const label of state.labelColumn) {
-                    let data = {}
-                    data.x = state.data4Analyse.map((value) => value[state.timeColumn])
-                    data.y = state.data4Analyse.map((value) => value[label])
-                    data.type = 'line'
-                    data.name = label
-                    dataArr.push(data)
-                }
-                graphArr.push(createGraph(dataArr, 'line', width, height, `${state.timeColumn}(X)`))
-
+            if (state.labelColumn.length !== 0) {
                 if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
                     let count = 0;
                     for (const input of state.inputColumn) {
@@ -41,11 +30,11 @@ function LinePicture() {
                             let data = {}
                             data.x = state.data4Analyse.map((value) => value[input])
                             data.y = state.data4Analyse.map((value) => value[label])
-                            data.type = 'line'
+                            data.type = 'histogram2d'
                             data.name = label
                             dataArr.push(data)
                         }
-                        graphArr.push(createGraph(dataArr, 'line', width, height, `${state.inputColumn[count]}(X)`))
+                        graphArr.push(createGraph(dataArr, 'histogram2d', width, height, `${state.inputColumn[count]}(X)`))
                         count++;
                     }
                 }

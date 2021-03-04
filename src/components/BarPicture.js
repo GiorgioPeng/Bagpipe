@@ -27,11 +27,11 @@ function LinePicture() {
                     let data = {}
                     data.x = state.data4Analyse.map((value) => value[state.timeColumn])
                     data.y = state.data4Analyse.map((value) => value[label])
-                    data.type = 'line'
+                    data.type = 'bar'
                     data.name = label
                     dataArr.push(data)
                 }
-                graphArr.push(createGraph(dataArr, 'line', width, height, `${state.timeColumn}(X)`))
+                graphArr.push(createGraph(dataArr, 'bar', width, height, `${state.timeColumn}(X)`))
 
                 if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
                     let count = 0;
@@ -41,11 +41,11 @@ function LinePicture() {
                             let data = {}
                             data.x = state.data4Analyse.map((value) => value[input])
                             data.y = state.data4Analyse.map((value) => value[label])
-                            data.type = 'line'
+                            data.type = 'bar'
                             data.name = label
                             dataArr.push(data)
                         }
-                        graphArr.push(createGraph(dataArr, 'line', width, height, `${state.inputColumn[count]}(X)`))
+                        graphArr.push(createGraph(dataArr, 'bar', width, height, `${state.inputColumn[count]}(X)`))
                         count++;
                     }
                 }

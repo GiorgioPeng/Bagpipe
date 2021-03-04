@@ -4,7 +4,10 @@ import { useGlobalState } from '../globalState'
 import DataTable from '../components/DataTable'
 import VariableChoose from '../components/VariableChoose'
 import LinePicture from '../components/LinePicture'
+import BarPicture from '../components/BarPicture'
+import HistogramsPicture from '../components/HistogramsPicture'
 import SortStatisticTable from '../components/SortStatisticTable'
+import SunburstPicture from '../components/SunburstPicture'
 import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles((theme) => ({
@@ -28,6 +31,9 @@ function VisualizationPage() {
                 <>
                     {/* <LinePictureDraw /> */}
                     <LinePicture />
+                    <BarPicture />
+                    <HistogramsPicture />
+                    {/* <SunburstPicture /> */}
                     <SortStatisticTable />
                 </>
                 :

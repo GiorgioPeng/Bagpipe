@@ -14,6 +14,7 @@
     "plotly.js": "^1.58.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-live2d": "^1.0.31",
     "react-plotly.js": "^2.5.1",
     "react-scripts": "3.4.1",
     "react-virtualized": "^9.22.2"

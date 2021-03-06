@@ -1,13 +1,11 @@
 import React from 'react'
 import Switch from '@material-ui/core/Switch';
-import Select from '@material-ui/core/Select';
-import Chip from '@material-ui/core/Chip';
-import Input from '@material-ui/core/Input';
-import MenuItem from '@material-ui/core/MenuItem';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import CreateChooseDialog from '../utils/createChooseDialog'
 import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -21,12 +19,9 @@ const useStyles = makeStyles((theme) => ({
         color: 'red',
         fontWeight: 'bold'
     },
-    chips: {
+    hint: {
         display: 'flex',
-        flexWrap: 'wrap',
-    },
-    chip: {
-        margin: 2,
+        alignItems: 'center'
     },
     inputColumn: {
         position: 'relative',
@@ -101,16 +96,6 @@ const IOSSwitch = withStyles((theme) => ({
     );
 });
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-            width: 250,
-        },
-    },
-};
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
@@ -132,75 +117,62 @@ function VariableChoose() {
         }
         updateState('labelColumn', event.target.value)
     };
+    const handleProprocessWayChange = (event) => {
+        if (state.finishChoose) {
+            return
+        }
+        updateState('proprocessWay', event.target.value)
+    };
     return (
         <div className={classes.root} >
             {state.column.length !== 0 ?
                 <>
-                    <div>请选择时序字段:</div>
-                    <Select
+                    <div>请选择数据清洗方式:</div>
+                    <CreateChooseDialog
+                        value={state.proprocessWay}
+                        f={handleProprocessWayChange}
+                        element={['删除空值', '线性插值', '随机值替换']}
+                        multiple={false}
+                    />
+                    {/* todo: 进行预处理 */}
+
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>请选择时序字段:</div>
+                    <CreateChooseDialog
                         value={state.timeColumn}
-                        onChange={handleTimeColumnChange}
-                        input={<Input />}
-                        MenuProps={MenuProps}
-                        renderValue={(selected) => (
-                            <div className={classes.chips}>
-                                <Chip key={selected} label={selected} className={classes.chip} />
-                            </div>
-                        )}
-                    >
-                        {state.column.map((value, index) => (
-                            <MenuItem key={index} value={value} >
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                        f={handleTimeColumnChange}
+                        element={state.column}
+                        multiple={false}
+                    />
 
                     <div className={classes.inputColumn}>请选择除时序外其余自变量字段:</div>
-                    <Select
-                        multiple
+                    <CreateChooseDialog
                         value={state.inputColumn}
-                        onChange={handleInputColumnChange}
-                        input={<Input />}
-                        MenuProps={MenuProps}
-                        renderValue={(selected) => (
-                            <div className={classes.chips}>
-                                {selected.map((value) => (
-                                    <Chip key={value} label={value} className={classes.chip} />
-                                ))}
-                            </div>
-                        )}
-                    >
-                        {state.column.map((value, index) => (
-                            <MenuItem key={index} value={value} >
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                        f={handleInputColumnChange}
+                        element={state.column}
+                        multiple={true}
+                    />
 
-                    <div>请选择因变量字段:</div>
-                    <Select
-                        multiple
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>请选择因变量字段:</div>
+                    <CreateChooseDialog
                         value={state.labelColumn}
-                        onChange={handleLabelColumnChange}
-                        input={<Input />}
-                        MenuProps={MenuProps}
-                        renderValue={(selected) => (
-                            <div className={classes.chips}>
-                                {selected.map((value) => (
-                                    <Chip key={value} label={value} className={classes.chip} />
-                                ))}
-                            </div>
-                        )}
-                    >
-                        {state.column.map((value, index) => (
-                            <MenuItem key={index} value={value} >
-                                {value}
-                            </MenuItem>
-                        ))}
-                    </Select>
+                        f={handleLabelColumnChange}
+                        element={state.column}
+                        multiple={true}
+                    />
 
                     <FormControlLabel
-                        control={<IOSSwitch checked={state.finishChoose} onChange={() => updateState('finishChoose', !state.finishChoose)} name="isFinishChoose" />}
+                        control={
+                            <IOSSwitch
+                                checked={state.finishChoose}
+                                onChange={() => {
+                                    if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0)
+                                        updateState('finishChoose', !state.finishChoose)
+                                    else
+                                        updateState('finishChoose', false)
+
+                                }
+                                }
+                                name="isFinishChoose" />}
                         label="完成设置"
                     />
                 </>

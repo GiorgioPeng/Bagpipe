@@ -5,7 +5,7 @@ const GloalStateContext = createContext(null)
 const initState = {
     data: undefined,// 这里保存的是当次需要分析的用于可视化表格的数据
     data4Analyse: '', // 这里保存的是用于分析的数据格式
-    proprocessWay: '删除空值', // 数据预处理方式
+    proprocessWay: 'Delelt Null', // 数据预处理方式
     column: [], // 这里保存的是当次需要分析的数据中所有的表头名称
     timeColumn: '', // 这里保存的是时序字段的字段名称
     labelColumn: [], // 这里保存的是因变量字段

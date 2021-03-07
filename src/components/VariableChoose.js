@@ -6,6 +6,8 @@ import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import linearInterpolation from '../algorithm/linearInterpolation'
+import inverseDistanceWeightingInterpolation from '../algorithm/inverseDistanceWeightingInterpolation'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -131,7 +133,7 @@ function VariableChoose() {
                     <CreateChooseDialog
                         value={state.proprocessWay}
                         f={handleProprocessWayChange}
-                        element={['删除空值', '线性插值', '随机值替换']}
+                        element={['Delelt Null', 'Linear Interpolation', 'Inverse Distance Weighting', '热卡填充法(Hotdecking)']}
                         multiple={false}
                     />
                     {/* todo: 进行预处理 */}
@@ -165,8 +167,10 @@ function VariableChoose() {
                             <IOSSwitch
                                 checked={state.finishChoose}
                                 onChange={() => {
-                                    if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0)
+                                    if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
                                         updateState('finishChoose', !state.finishChoose)
+                                        // updateState('data4Analyse',inverseDistanceWeightingInterpolation(state.data4Analyse,'value1'))
+                                    }
                                     else
                                         updateState('finishChoose', false)
 

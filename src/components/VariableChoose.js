@@ -8,6 +8,8 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import linearInterpolation from '../algorithm/linearInterpolation'
 import inverseDistanceWeightingInterpolation from '../algorithm/inverseDistanceWeightingInterpolation'
+import hotDecking from '../algorithm/hotDecking'
+import deleteNull from '../algorithm/deleteNull'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -101,45 +103,78 @@ const IOSSwitch = withStyles((theme) => ({
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
+    const [isClear, setIsClear] = React.useState(false) // 是否已经进行过数据清洗(只能清洗一次)
     const handleTimeColumnChange = (event) => {
-        if (state.finishChoose) {
-            return
-        }
         updateState('timeColumn', event.target.value)
     };
     const handleInputColumnChange = (event) => {
-        if (state.finishChoose) {
-            return
-        }
         updateState('inputColumn', event.target.value)
     };
     const handleLabelColumnChange = (event) => {
-        if (state.finishChoose) {
-            return
-        }
         updateState('labelColumn', event.target.value)
     };
     const handleProprocessWayChange = (event) => {
-        if (state.finishChoose) {
-            return
-        }
         updateState('proprocessWay', event.target.value)
     };
+    const finishAndDataClean = () => {
+        if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
+            updateState('finishChoose', !state.finishChoose)
+            if (!isClear) {
+                setIsClear(true)
+                const columns = JSON.parse(JSON.stringify(state.column))
+                columns.splice(state.column.indexOf(state.timeColumn), 1)
+                let tempDataObj;
+                switch (state.proprocessWay) {
+                    case 'Delelt Null':
+                        tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
+                        for (const column of columns) {
+                            tempDataObj = deleteNull(tempDataObj, column)
+                        }
+                        updateState('data4Analyse', tempDataObj)
+                        break;
+                    case 'Linear Interpolation':
+                        tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
+                        for (const column of columns) {
+                            tempDataObj = linearInterpolation(tempDataObj, column)
+                        }
+                        updateState('data4Analyse', tempDataObj)
+                        break;
+                    case 'Inverse Distance Weighting':
+                        tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
+                        for (const column of columns) {
+                            tempDataObj = inverseDistanceWeightingInterpolation(tempDataObj, column)
+                        }
+                        updateState('data4Analyse', tempDataObj)
+                        break;
+                    case 'Hot Decking':
+                        tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
+                        tempDataObj = hotDecking(tempDataObj, columns)
+                        updateState('data4Analyse', tempDataObj)
+                        break;
+                }
+            }
+        }
+        else
+            updateState('finishChoose', false)
+
+    }
+
     return (
         <div className={classes.root} >
             {state.column.length !== 0 ?
                 <>
                     <div>请选择数据清洗方式:</div>
                     <CreateChooseDialog
+                        disabled={state.finishChoose || isClear ? true : false}
                         value={state.proprocessWay}
                         f={handleProprocessWayChange}
-                        element={['Delelt Null', 'Linear Interpolation', 'Inverse Distance Weighting', '热卡填充法(Hotdecking)']}
+                        element={['Delelt Null', 'Linear Interpolation', 'Inverse Distance Weighting', 'Hot Decking']}
                         multiple={false}
                     />
-                    {/* todo: 进行预处理 */}
 
                     <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>请选择时序字段:</div>
                     <CreateChooseDialog
+                        disabled={state.finishChoose ? true : false}
                         value={state.timeColumn}
                         f={handleTimeColumnChange}
                         element={state.column}
@@ -148,6 +183,7 @@ function VariableChoose() {
 
                     <div className={classes.inputColumn}>请选择除时序外其余自变量字段:</div>
                     <CreateChooseDialog
+                        disabled={state.finishChoose ? true : false}
                         value={state.inputColumn}
                         f={handleInputColumnChange}
                         element={state.column}
@@ -156,6 +192,7 @@ function VariableChoose() {
 
                     <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>请选择因变量字段:</div>
                     <CreateChooseDialog
+                        disabled={state.finishChoose ? true : false}
                         value={state.labelColumn}
                         f={handleLabelColumnChange}
                         element={state.column}
@@ -166,16 +203,7 @@ function VariableChoose() {
                         control={
                             <IOSSwitch
                                 checked={state.finishChoose}
-                                onChange={() => {
-                                    if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
-                                        updateState('finishChoose', !state.finishChoose)
-                                        // updateState('data4Analyse',inverseDistanceWeightingInterpolation(state.data4Analyse,'value1'))
-                                    }
-                                    else
-                                        updateState('finishChoose', false)
-
-                                }
-                                }
+                                onChange={finishAndDataClean}
                                 name="isFinishChoose" />}
                         label="完成设置"
                     />

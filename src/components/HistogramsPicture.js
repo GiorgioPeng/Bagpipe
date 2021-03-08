@@ -26,6 +26,7 @@ function LinePicture() {
                     let count = 0;
                     for (const input of state.inputColumn) {
                         let dataArr = [];
+                        let yLabel = '';
                         for (const label of state.labelColumn) {
                             let data = {}
                             data.x = state.data4Analyse.map((value) => value[input])
@@ -33,8 +34,9 @@ function LinePicture() {
                             data.type = 'histogram2d'
                             data.name = label
                             dataArr.push(data)
+                            yLabel.length === 0 ? yLabel += label : yLabel += ', ' + label
                         }
-                        graphArr.push(createGraph(dataArr, 'histogram2d', width, height, `${state.inputColumn[count]}(X)`))
+                        graphArr.push(createGraph(dataArr, 'histogram2d', width, height, state.inputColumn[count], yLabel))
                         count++;
                     }
                 }

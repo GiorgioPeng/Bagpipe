@@ -9,17 +9,37 @@ import Plot from 'react-plotly.js';
  * @param {*} marker 标记的样式
  * @param {*} width 图像宽度
  * @param {*} height 图像高度
- * @param {*} title 图标题
+ * @param {*} xaxis x轴标签
+ * @param {*} yaxis y轴标签
  */
-const createGraph = (data, type, width, height, title) => {
+const createGraph = (data, type, width, height, xaxis, yaxis) => {
     return (
         <Plot
-            key={title}
+            key={xaxis}
             data={data}
             layout={{
                 width: width,
                 height: height,
-                title: title,
+                xaxis: {
+                    title: {
+                        text: xaxis,
+                        font: {
+                            family: 'Courier New, monospace',
+                            size: 18,
+                            color: '#7f7f7f'
+                        }
+                    },
+                },
+                yaxis: {
+                    title: {
+                        text: yaxis,
+                        font: {
+                            family: 'Courier New, monospace',
+                            size: 18,
+                            color: '#7f7f7f'
+                        }
+                    }
+                }
             }}
         />
     )

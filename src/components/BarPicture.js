@@ -23,6 +23,7 @@ function LinePicture() {
             const graphArr = []
             if (state.labelColumn.length !== 0) {// 以时间为x轴的数据拆分
                 let dataArr = [];
+                let yLabel = '';
                 for (const label of state.labelColumn) {
                     let data = {}
                     data.x = state.data4Analyse.map((value) => value[state.timeColumn])
@@ -30,22 +31,25 @@ function LinePicture() {
                     data.type = 'bar'
                     data.name = label
                     dataArr.push(data)
+                    yLabel.length === 0 ? yLabel += label : yLabel += ', ' + label
                 }
-                graphArr.push(createGraph(dataArr, 'bar', width, height, `${state.timeColumn}(X)`))
+                graphArr.push(createGraph(dataArr, 'bar', width, height, state.timeColumn, yLabel))
 
                 if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
                     let count = 0;
                     for (const input of state.inputColumn) {
                         let dataArr = [];
+                        let yLabel = ''
                         for (const label of state.labelColumn) {
                             let data = {}
                             data.x = state.data4Analyse.map((value) => value[input])
                             data.y = state.data4Analyse.map((value) => value[label])
                             data.type = 'bar'
                             data.name = label
+                            yLabel.length === 0 ? yLabel += label : yLabel += ', ' + label
                             dataArr.push(data)
                         }
-                        graphArr.push(createGraph(dataArr, 'bar', width, height, `${state.inputColumn[count]}(X)`))
+                        graphArr.push(createGraph(dataArr, 'bar', width, height, state.inputColumn[count], yLabel))
                         count++;
                     }
                 }

@@ -7,18 +7,18 @@ const linearInterpolation = (objectArr, column) => {
     const indexes = [] // 存储所有存在空值的索引
     const nearIndexes = [] // 存储缺失值前后的索引的对象数组
     objectArr.filter((value, index) => {
-        if (!parseInt(value[column]) || !parseFloat(value[column])) {
+        if (isNaN(value[column]) || !value[column]) {
             indexes.push(index)
             const tempIndex = {} // 临时存放前后两个变量索引的对象
             for (let i = index - 1; i >= 0; i--) {
-                if (!parseInt(objectArr[i][column]) || !parseFloat(objectArr[i][column])) {// 找到了前一个存在值的索引
+                if (isNaN(objectArr[i][column]) || !value[column]) {// 找到了前一个存在值的索引
                     tempIndex.last = i
                     break
                 }
             }
 
             for (let i = index + 1; i < objectArr.length; i++) {
-                if (!parseInt(objectArr[i][column]) || !parseFloat(objectArr[i][column])) {// 找到了后一个存在值的索引
+                if (isNaN(objectArr[i][column]) || !value[column]) {// 找到了后一个存在值的索引
                     tempIndex.next = i
                     break
                 }

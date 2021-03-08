@@ -8,12 +8,12 @@
 const deleteNull = (objectArr, column) => {
     const indexes = [] // 存储存在为空数值的索引
     objectArr.filter((value, index) => {
-        if (!parseInt(value[column])||!parseFloat(value[column])) {
+        if (isNaN(value[column]) || !value[column]) {
             indexes.push(index)
         }
     })
     indexes.forEach(value => {
-        object.splice(value, 1);
+        objectArr.splice(value, 1);
     })
     return objectArr
 };

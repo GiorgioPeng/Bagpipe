@@ -111,7 +111,7 @@ function VariableChoose() {
         updateState('inputColumn', event.target.value)
     };
     const handleLabelColumnChange = (event) => {
-        updateState('labelColumn', event.target.value)
+        updateState('labelColumn', [event.target.value])
     };
     const handleProprocessWayChange = (event) => {
         updateState('proprocessWay', event.target.value)
@@ -121,8 +121,9 @@ function VariableChoose() {
             updateState('finishChoose', !state.finishChoose)
             if (!isClear) {
                 setIsClear(true)
-                const columns = JSON.parse(JSON.stringify(state.column))
-                columns.splice(state.column.indexOf(state.timeColumn), 1)
+                // const columns = JSON.parse(JSON.stringify(state.column))
+                const columns = JSON.parse(JSON.stringify(state.inputColumn))
+                // columns.splice(state.column.indexOf(state.timeColumn), 1)
                 let tempDataObj;
                 switch (state.proprocessWay) {
                     case 'Delelt Null':
@@ -130,6 +131,7 @@ function VariableChoose() {
                         for (const column of columns) {
                             tempDataObj = deleteNull(tempDataObj, column)
                         }
+                        tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Linear Interpolation':
@@ -137,6 +139,7 @@ function VariableChoose() {
                         for (const column of columns) {
                             tempDataObj = linearInterpolation(tempDataObj, column)
                         }
+                        tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Inverse Distance Weighting':
@@ -144,11 +147,13 @@ function VariableChoose() {
                         for (const column of columns) {
                             tempDataObj = inverseDistanceWeightingInterpolation(tempDataObj, column)
                         }
+                        tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Hot Decking':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
                         tempDataObj = hotDecking(tempDataObj, columns)
+                        tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         updateState('data4Analyse', tempDataObj)
                         break;
                 }
@@ -163,7 +168,7 @@ function VariableChoose() {
         <div className={classes.root} >
             {state.column.length !== 0 ?
                 <>
-                    <div>请选择数据清洗方式:</div>
+                    <div>Please choose data filled way:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose || isClear ? true : false}
                         value={state.proprocessWay}
@@ -172,7 +177,7 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>请选择时序字段:</div>
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time variable:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.timeColumn}
@@ -181,7 +186,7 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.inputColumn}>请选择除时序外其余自变量字段:</div>
+                    <div className={classes.inputColumn}>Please choose other independent variables:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.inputColumn}
@@ -190,13 +195,14 @@ function VariableChoose() {
                         multiple={true}
                     />
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>请选择因变量字段:</div>
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose dependent variable:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.labelColumn}
                         f={handleLabelColumnChange}
                         element={state.column}
-                        multiple={true}
+                        // multiple={true}
+                        multiple={false}
                     />
 
                     <FormControlLabel
@@ -205,7 +211,7 @@ function VariableChoose() {
                                 checked={state.finishChoose}
                                 onChange={finishAndDataClean}
                                 name="isFinishChoose" />}
-                        label="完成设置"
+                        label="Finish"
                     />
                 </>
                 : ''}

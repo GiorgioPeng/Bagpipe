@@ -5812,6 +5812,11 @@ fast-isnumeric@^1.1.4:
   dependencies:
     is-string-blank "^1.0.1"
 
+fast-json-patch@^3.0.0-1:
+  version "3.0.0-1"
+  resolved "https://registry.npm.taobao.org/fast-json-patch/download/fast-json-patch-3.0.0-1.tgz#4c68f2e7acfbab6d29d1719c44be51899c93dabb"
+  integrity sha1-TGjy56z7q20p0XGcRL5RiZyT2rs=
+
 fast-json-stable-stringify@^2.0.0:
   version "2.1.0"
   resolved "https://registry.npm.taobao.org/fast-json-stable-stringify/download/fast-json-stable-stringify-2.1.0.tgz#874bf69c6f404c2b5d99c481341399fd55892633"
@@ -8435,6 +8440,11 @@ json-stable-stringify@^1.0.1:
   dependencies:
     jsonify "~0.0.0"
 
+json-stringify-pretty-compact@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npm.taobao.org/json-stringify-pretty-compact/download/json-stringify-pretty-compact-3.0.0.tgz#f71ef9d82ef16483a407869556588e91b681d9ab"
+  integrity sha1-9x752C7xZIOkB4aVVliOkbaB2as=
+
 json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.npm.taobao.org/json-stringify-safe/download/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
@@ -8804,6 +8814,13 @@ lru-cache@^5.1.1:
   integrity sha1-HaJ+ZxAnGUdpXa9oSOhH8B2EuSA=
   dependencies:
     yallist "^3.0.2"
+
+lru-cache@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.npm.taobao.org/lru-cache/download/lru-cache-6.0.0.tgz#6d6fe6570ebd96aaf90fcad1dafa3b2566db3a94"
+  integrity sha1-bW/mVw69lqr5D8rR2vo7JWbbOpQ=
+  dependencies:
+    yallist "^4.0.0"
 
 lz-string@^1.4.4:
   version "1.4.4"
@@ -12210,6 +12227,13 @@ semver@^7.3.2:
   resolved "https://registry.npm.taobao.org/semver/download/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
   integrity sha1-YElisFK4HtB4aq6EOJ/7pw/9OTg=
 
+semver@^7.3.4:
+  version "7.3.4"
+  resolved "https://registry.npm.taobao.org/semver/download/semver-7.3.4.tgz?cache=0&sync_timestamp=1606854311104&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsemver%2Fdownload%2Fsemver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
+  integrity sha1-J6qn0uTKdkUvmNOt0JOnLJQ+3Jc=
+  dependencies:
+    lru-cache "^6.0.0"
+
 send@0.17.1:
   version "0.17.1"
   resolved "https://registry.npm.taobao.org/send/download/send-0.17.1.tgz#c1d8b059f7900f7466dd4938bdc44e11ddb376c8"
@@ -13769,6 +13793,40 @@ vectorize-text@^3.2.1:
     simplify-planar-graph "^2.0.1"
     surface-nets "^1.0.0"
     triangulate-polyline "^1.0.0"
+
+vega-embed@^6.15.2:
+  version "6.15.2"
+  resolved "https://registry.npm.taobao.org/vega-embed/download/vega-embed-6.15.2.tgz#9fb8f7d77f202e68d6a10a3775f82b88c8db6aad"
+  integrity sha1-n7j3138gLmjWoQo3dfgriMjbaq0=
+  dependencies:
+    fast-json-patch "^3.0.0-1"
+    json-stringify-pretty-compact "^3.0.0"
+    semver "^7.3.4"
+    vega-schema-url-parser "^2.1.0"
+    vega-themes "^2.9.1"
+    vega-tooltip "^0.25.0"
+
+vega-schema-url-parser@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npm.taobao.org/vega-schema-url-parser/download/vega-schema-url-parser-2.1.0.tgz#847f9cf9f1624f36f8a51abc1adb41ebc6673cb4"
+  integrity sha1-hH+c+fFiTzb4pRq8GttB68ZnPLQ=
+
+vega-themes@^2.9.1:
+  version "2.10.0"
+  resolved "https://registry.npm.taobao.org/vega-themes/download/vega-themes-2.10.0.tgz#82768b14686e3fbfbdab0e77cb63e12c62b4911e"
+  integrity sha1-gnaLFGhuP7+9qw53y2PhLGK0kR4=
+
+vega-tooltip@^0.25.0:
+  version "0.25.1"
+  resolved "https://registry.npm.taobao.org/vega-tooltip/download/vega-tooltip-0.25.1.tgz#cb7e438438649eb46896e7bee6f54e25d25b3c09"
+  integrity sha1-y35DhDhknrRolue+5vVOJdJbPAk=
+  dependencies:
+    vega-util "^1.16.0"
+
+vega-util@^1.16.0:
+  version "1.16.0"
+  resolved "https://registry.npm.taobao.org/vega-util/download/vega-util-1.16.0.tgz#77405d8df0a94944d106bdc36015f0d43aa2caa3"
+  integrity sha1-d0BdjfCpSUTRBr3DYBXw1DqiyqM=
 
 vendors@^1.0.0:
   version "1.0.4"

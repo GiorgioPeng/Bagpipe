@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import HelpIcon from '@material-ui/icons/Help';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles({
     root: {
@@ -98,7 +99,14 @@ function MachineLearnPage() {
         <div className={classes.root}>
             {state.finishChoose ?
                 <Paper elevation={3} className={classes.paper}>
-                    <p>(如果不懂这些选项<HelpIcon fontSize='small' />,请使用默认值)模型训练设置:</p>
+                    <p>
+                    (If you do not know the means or these chooses<HelpIcon fontSize='small' />, 
+                    <br/>
+                    Please use the default values!!) 
+                    </p>
+                    <Typography color={'secondary'} variant={'h5'}>
+                    Model training setting:
+                    </Typography>
                     {
                         setting.map((value, index) =>
                             <CreateChooseBar
@@ -117,7 +125,7 @@ function MachineLearnPage() {
                                 checked={state.finishSet}
                                 onChange={() => updateState('finishSet', !state.finishSet)}
                                 name="isFinish" />}
-                        label="完成设置"
+                        label="Finish"
                     />
                 </Paper>
                 :

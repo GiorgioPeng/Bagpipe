@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
         },
         '&:hover': {
             '&:after': {
-                content: "'现在仅支持csv格式数据文件'",
+                content: "'Only .csv format supporting now!'",
                 position: 'absolute',
                 fontSize: '18px',
                 color: 'red',
@@ -58,7 +58,7 @@ function UploadPage() {
         <div className={classes.root}>
             <input accept=".csv" ref={fileRef} onChange={readCSV} className={classes.input} id="icon-button-file" type="file" />
             <label className={classes.uploadButton} htmlFor="icon-button-file">
-                <p>上传数据</p>
+                <p>Upload Data</p>
                 <IconButton color="primary" aria-label="upload picture" component="span">
                     <PublishIcon />
                 </IconButton>

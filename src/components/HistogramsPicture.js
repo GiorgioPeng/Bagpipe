@@ -24,19 +24,19 @@ function LinePicture() {
             if (state.labelColumn.length !== 0) {
                 if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
                     let count = 0;
-                    for (const input of state.inputColumn) {
+                    for (const label of state.labelColumn) {
                         let dataArr = [];
-                        let yLabel = '';
-                        for (const label of state.labelColumn) {
+                        let xLabel = '';
+                        for (const input of state.inputColumn) {
                             let data = {}
                             data.x = state.data4Analyse.map((value) => value[input])
                             data.y = state.data4Analyse.map((value) => value[label])
                             data.type = 'histogram2d'
-                            data.name = label
+                            data.name = input
                             dataArr.push(data)
-                            yLabel.length === 0 ? yLabel += label : yLabel += ', ' + label
+                            xLabel.length === 0 ? xLabel += input : xLabel += ', ' + input
                         }
-                        graphArr.push(createGraph(dataArr, 'histogram2d', width, height, state.inputColumn[count], yLabel))
+                        graphArr.push(createGraph(dataArr, 'histogram2d', width, height, xLabel, label))
                         count++;
                     }
                 }

@@ -17,7 +17,8 @@
     "react-plotly.js": "^2.5.1",
     "react-scripts": "3.4.1",
     "react-virtualized": "^9.22.2",
-    "use-kbn": "^1.0.1"
+    "use-kbn": "^1.0.1",
+    "vega-embed": "^6.15.2"
   },
   "scripts": {
     "start": "react-scripts start",

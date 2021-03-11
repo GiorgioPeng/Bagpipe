@@ -7,7 +7,6 @@ import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import CropLandscapeIcon from '@material-ui/icons/CropLandscape'; // 窗口大小设置
 import FilterNoneIcon from '@material-ui/icons/FilterNone'; // 网络层数设置
-import DeviceHubIcon from '@material-ui/icons/DeviceHub'; // 神经元个数设置
 import SpeedIcon from '@material-ui/icons/Speed'; // 学习速率
 import RepeatIcon from '@material-ui/icons/Repeat'; //训练次数
 import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall'; // 训练集大小
@@ -48,9 +47,6 @@ const CreateChooseBar = (props) => {
                 break;
             case 'Training Dataset Size (%)':
                 updateState('trainingDataSize', newValue)
-                break;
-            default:
-                updateState('neurons', newValue)
                 break;
         }
     }
@@ -98,10 +94,8 @@ const CreateChooseBar = (props) => {
                                     type === 'Learning Rate' ?
                                         <SpeedIcon />
                                         :
-                                        type === 'Training Dataset Size (%)' ?
-                                            <PhotoSizeSelectSmallIcon />
-                                            :
-                                            < DeviceHubIcon />
+                                        <PhotoSizeSelectSmallIcon />
+
                     }
                 </Grid>
                 <Grid item xs>

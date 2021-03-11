@@ -39,17 +39,17 @@ function LinePicture() {
                     let count = 0;
                     for (const label of state.labelColumn) {
                         let dataArr = [];
-                        let xLabel = ''
+                        let yLabel = ''
                         for (const input of state.inputColumn) {
                             let data = {}
-                            data.x = state.data4Analyse.map((value) => value[input])
-                            data.y = state.data4Analyse.map((value) => value[label])
+                            data.y = state.data4Analyse.map((value) => value[input])
+                            data.x = state.data4Analyse.map((value) => value[label])
                             data.type = 'bar'
                             data.name = input
-                            xLabel.length === 0 ? xLabel += input : xLabel += ', ' + input
+                            yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
                             dataArr.push(data)
                         }
-                        graphArr.push(createGraph(dataArr, 'bar', width, height, xLabel, label))
+                        graphArr.push(createGraph(dataArr, 'bar', width, height, label, yLabel))
                         count++;
                     }
                 }

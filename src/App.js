@@ -10,6 +10,7 @@ import UploadPage from './subPages/UploadPage'
 import IntroductionPage from './subPages/IntroductionPage'
 import VisualizationPage from './subPages/VisualizationPage'
 import MachineLearnPage from './subPages/MachineLearnPage'
+import LearningResultPage from './subPages/LearningResultPage'
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: '30px auto',
@@ -18,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App() {
   const classes = useStyles();
-  const { element } = useKbn(
-    "/model/platelet/model.json",
-    'hello world',
-    400,
-    500
-  );
+  // const { element } = useKbn(
+  //   "/model/platelet/model.json",
+  //   'hello world',
+  //   400,
+  //   500
+  // );
   return (
     <GlobalStateProvider>
       <Paper className={classes.root}>
@@ -33,8 +34,9 @@ function App() {
         <VisualizationPage />
         <Divider variant="middle" />
         <MachineLearnPage />
+        {/* <LearningResultPage /> */}
       </Paper>
-      {element}
+      {/* {element} */}
     </GlobalStateProvider>
   );
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import head from '../assets/head.jpeg'
+import head from '../assets/gs.jpg'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -20,11 +20,11 @@ function IntroductionPage() {
 
   return (
     <Card className={classes.root}>
-      {/* <CardMedia
+      <CardMedia
             className={classes.media}
             image={head}
             title="Contemplative Reptile"
-          /> */}
+          />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           Privacy Preserving Time Series Data Mining Platform based on Front-End

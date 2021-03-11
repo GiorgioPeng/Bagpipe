@@ -4,10 +4,12 @@ import { useGlobalState } from '../globalState'
 import { withStyles } from '@material-ui/core/styles';
 import CreateChooseBar from '../utils/createChooseBar'
 import Paper from '@material-ui/core/Paper';
+import Button from '@material-ui/core/Button';
 import HelpIcon from '@material-ui/icons/Help';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
+import { trainSimpleModel } from '../utils/machineLearn'
 
 const useStyles = makeStyles({
     root: {
@@ -89,23 +91,39 @@ function MachineLearnPage() {
     const setting = [
         { type: 'Window Size', min: 1, max: 100, defaultNum: 20, step: 1 },
         { type: 'Number of Hidden Layer', min: 1, max: 50, defaultNum: 4, step: 1 },
-        { type: 'Epochs', min: 5, max: 500, defaultNum: 25, step: 1 },
+        { type: 'Epochs', min: 5, max: 500, defaultNum: 20, step: 1 },
         { type: 'Learning Rate', min: 0.01, max: 10, defaultNum: 0.05, step: 0.01 },
-        { type: 'Training Dataset Size (%)', min: 1, max: 100, defaultNum: 90, step: 1 },
-        { type: 'Number of Neurons', min: 1, max: 20, defaultNum: 3, step: 1 }
+        { type: 'Training Dataset Size (%)', min: 1, max: 100, defaultNum: 80, step: 1 },
 
     ]
+    const startTraining = async () => {
+        if (state.inputColumn.length !== 0) {
+            //todo 训练复杂模型
+        }
+        else {
+            const column = state.labelColumn
+            const data = state.data4Analyse.map(value => parseFloat(value[column]))
+            const { model, modelResult } = await trainSimpleModel(
+                data,
+                state.windowSize,
+                state.epochs,
+                state.learningRate,
+                state.layers,
+                state.trainingDataSize
+            )
+            updateState('model', model)
+            updateState('modelResult', modelResult)
+        }
+    }
     return (
         <div className={classes.root}>
             {state.finishChoose ?
                 <Paper elevation={3} className={classes.paper}>
-                    <p>
-                    (If you do not know the means or these chooses<HelpIcon fontSize='small' />, 
-                    <br/>
-                    Please use the default values!!) 
-                    </p>
-                    <Typography color={'secondary'} variant={'h5'}>
-                    Model training setting:
+                    <Typography color={'secondary'} variant={'subtitle2'}>
+                        If you do not know the means or these chooses<HelpIcon fontSize='small' />, Please use the default values!!
+                    </Typography>
+                    <Typography variant={'h5'}>
+                        Model training setting:
                     </Typography>
                     {
                         setting.map((value, index) =>
@@ -127,6 +145,7 @@ function MachineLearnPage() {
                                 name="isFinish" />}
                         label="Finish"
                     />
+                    <Button variant="contained" disabled={state.finishSet ? false : true} onClick={startTraining}>Start Training</Button>
                 </Paper>
                 :
                 ''

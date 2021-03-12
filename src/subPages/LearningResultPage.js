@@ -66,7 +66,7 @@ function LearningResultPage() {
             {nextDayData ?
                 <Card className={classes.card}>
                     <CardContent>
-                        {`In the next day, ${state.labelColumn[0]} will be ${nextDayData[0]}`}
+                        {`At the next time node, ${state.labelColumn[0]} will be ${nextDayData[0]}`}
                     </CardContent>
                 </Card>
                 :

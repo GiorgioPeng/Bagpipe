@@ -30,12 +30,10 @@ function IntroductionPage() {
           Privacy Preserving Time Series Data Mining Platform based on Front-End
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          这里应该写上项目的具体介绍和功能
-          这里应该写上项目的具体介绍和功能
-          这里应该写上项目的具体介绍和功能
-          这里应该写上项目的具体介绍和功能
-          这里应该写上项目的具体介绍和功能
-          这里应该写上项目的具体介绍和功能
+          In the platform, user can upload their own data to do data mining without care about the privacy leaking problem.
+          Because the platform is only depende on the front-end, that mean when the page finishes loading, you can run the
+          platform offline. You can finish data preprocess, data visualization, machine learning model training and prediction.
+          This platform have a really high freedom, you can choose different method according your data. Now, have a try!
         </Typography>
       </CardContent>
     </Card>

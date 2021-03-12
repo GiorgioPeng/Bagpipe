@@ -34,7 +34,7 @@ function App() {
         <VisualizationPage />
         <Divider variant="middle" />
         <MachineLearnPage />
-        {/* <LearningResultPage /> */}
+        <LearningResultPage />
       </Paper>
       {/* {element} */}
     </GlobalStateProvider>

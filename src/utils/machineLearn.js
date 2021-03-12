@@ -1,7 +1,7 @@
 import * as tf from '@tensorflow/tfjs'
 import * as tfvis from '@tensorflow/tfjs-vis'
 
-function ComputeSMA(data, windowSize) {
+function computeSimpleMoveAverage(data, windowSize) {
     {
         let max = Math.max(...data)
         let min = Math.min(...data)
@@ -32,7 +32,7 @@ function ComputeSMA(data, windowSize) {
  * @param {*} layers lstmcell个数
  */
 export const trainSimpleModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize) => {
-    let data2 = ComputeSMA(data, windowSize)
+    let data2 = computeSimpleMoveAverage(data, windowSize)
     const x = data2.map(e => e.x)
     const y = data2.map(e => e.y)
     const _xTest = x.slice(Math.floor(trainingDataSize / 100 * x.length), x.length)
@@ -61,23 +61,31 @@ export const trainSimpleModel = async (data, windowSize, epochs, learningRate, l
     model.add(tf.layers.dense({ units: lstmNeurons, inputShape: [inputLayerShape] }))
 
     model.add(tf.layers.reshape({ targetShape: lstmInputShape }))
-
-    model.add(tf.layers.lstm({
-        units: lstmNeurons,
-        inputShape: lstmInputShape,
-        returnSequences: true
-    }))
-
-    for (let i = 1; i < layers - 1; i++) {
+    if (layers !== 1) {
         model.add(tf.layers.lstm({
             units: lstmNeurons,
+            inputShape: lstmInputShape,
             returnSequences: true
         }))
+
+        for (let i = 1; i < layers - 1; i++) {
+            model.add(tf.layers.lstm({
+                units: lstmNeurons,
+                returnSequences: true
+            }))
+        }
+        model.add(tf.layers.lstm({
+            units: lstmNeurons,
+            returnSequences: false
+        }))
     }
-    model.add(tf.layers.lstm({
-        units: lstmNeurons,
-        returnSequences: false
-    }))
+    else {
+        model.add(tf.layers.lstm({
+            units: lstmNeurons,
+            inputShape: lstmInputShape,
+            returnSequences: false
+        }))
+    }
 
     model.add(tf.layers.dense({ units: outputLayerNeurons, inputShape: [outputLayerShape] }))
 
@@ -156,10 +164,20 @@ export const trainComplexModel = async (x, y, windowSize, neurons, epochs, learn
         )
     })
 }
-export const makePredictions = (input, model) => {
-    console.log(input)
+
+export const predictionsOfNow = (input, model, windowSize) => {
+    input = computeSimpleMoveAverage(input, windowSize)
+    input = input.map(e => e.x)
     const x = tf.tensor2d(input, [input.length, input[0].length])
-    x.print()
+    const predictedResults = model.predict(x);
+    return Array.from(predictedResults.dataSync());
+}
+
+export const makePredictions = (input, model, windowSize, trainingDataSize) => {
+    input = computeSimpleMoveAverage(input, windowSize)
+    input = input.map(e => e.x).slice(Math.floor(trainingDataSize / 100 * input.length), input.length)
+    input = [input[input.length-1]]
+    const x = tf.tensor2d(input, [input.length, input[0].length])
     const predictedResults = model.predict(x);
     return Array.from(predictedResults.dataSync());
 }

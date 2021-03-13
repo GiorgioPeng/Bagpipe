@@ -15,13 +15,13 @@ const useStyles = makeStyles((theme) => ({
         justifyContent: 'space-around',
         alignItems: 'center',
     },
-    card:{
-        marginTop:'10px',
-        height:'50px',
-        display:'flex',
-        backgroundColor:"skyblue",
-        alignContent:'center',
-        justifyContent:'center'
+    card: {
+        marginTop: '10px',
+        height: '50px',
+        display: 'flex',
+        backgroundColor: "skyblue",
+        alignContent: 'center',
+        justifyContent: 'center'
     }
 }));
 
@@ -32,32 +32,104 @@ function LearningResultPage() {
     const [nextDayData, setNextDayData] = React.useState(null)
     React.useEffect(() => {
         if (state.model) {
-            const column = state.labelColumn
-            const data = state.data4Analyse.map(value => parseFloat(value[column]))
-            let max = Math.max(...data)
-            let min = Math.min(...data)
-            let tempData = []
-            let prefix = [] // 补全预测偏移量
-            for (let index = 0; index < state.windowSize / 2; index++) {
-                prefix.push(NaN)
+            if (state.inputColumn.length === 0) { // 针对简单模型进行可视化
+                const column = state.labelColumn
+                const data = state.data4Analyse.map(value => parseFloat(value[column]))
+                let max = Math.max(...data)
+                let min = Math.min(...data)
+                let tempData = []
+                let prefix = [] // 补全预测可视化偏移量
+                let suffix = []
+                for (let index = 0; index < state.windowSize + 1; index++) {
+                    prefix.push(NaN)
+                }
+                const modelPredictData = prefix.concat(predictionsOfNow(data, state.model, state.windowSize).map(e => e * (max - min) + min))
+                const divide = Math.floor(modelPredictData.length * state.trainingDataSize / 100)
+                // console.log('divide',divide)
+                for (let index = divide; index < state.data4Analyse.length; index++) {
+                    suffix.push(NaN)
+                }
+                let prefix2 = []
+                for (let index = 0; index < divide; index++) {
+                    prefix2.push(NaN)
+                }
+
+                // console.log(data,modelPredictData.slice(0, divide).concat(suffix),prefix2.concat(modelPredictData.slice(divide, -1)))
+                tempData.push({
+                    x: state.data4Analyse.map((value) => value[state.timeColumn]),
+                    y: data,
+                    type: 'line',
+                    name: 'Origin Data'
+                })
+                tempData.push({
+                    x: (state.data4Analyse.map((value) => value[state.timeColumn])),
+                    y: modelPredictData.slice(0, divide).concat(suffix),
+                    type: 'line',
+                    name: 'Given by this Model'
+                })
+                tempData.push({
+                    x: (state.data4Analyse.map((value) => value[state.timeColumn])),
+                    y: prefix2.concat(modelPredictData.slice(divide, -1)),
+                    type: 'line',
+                    name: 'Validation of this Model'
+                })
+
+                setNewData(tempData)
+                // console.log(modelPredictData)
+                setNextDayData(modelPredictData[modelPredictData.length - 1])
+                // setTimeout(()=>{
+                //     alert(`to`)
+                // },0)
             }
-            tempData.push({
-                x: state.data4Analyse.map((value) => value[state.timeColumn]),
-                y: data,
-                type: 'line',
-                name: 'Origin Data'
-            })
-            tempData.push({
-                x: (state.data4Analyse.map((value) => value[state.timeColumn])),
-                y: prefix.concat(predictionsOfNow(data, state.model, state.windowSize).map(e => e * (max - min) + min).slice(0, -1)),
-                type: 'line',
-                name: 'Predict by this Model'
-            })
-            setNewData(tempData)
-            setNextDayData(makePredictions(data, state.model, state.windowSize, state.trainingDataSize).map(e => e * (max - min) + min))
-            // setTimeout(()=>{
-            //     alert(`to`)
-            // },0)
+            else { // 针对复杂模型进行可视化
+                const column = state.labelColumn
+                const data = state.data4Analyse.map(value => parseFloat(value[column]))
+                let max = Math.max(...data)
+                let min = Math.min(...data)
+                let tempData = []
+                let prefix = [] // 补全预测可视化偏移量
+                let suffix = []
+                for (let index = 0; index < state.windowSize + 1; index++) {
+                    prefix.push(NaN)
+                }
+                const modelPredictData = prefix.concat(predictionsOfNow(state.data4Analyse, state.model, state.windowSize, true, state.inputColumn, state.labelColumn).map(e => e * (max - min) + min))
+                const divide = Math.floor(modelPredictData.length * state.trainingDataSize / 100)
+                // console.log('divide',divide)
+                for (let index = divide; index < state.data4Analyse.length; index++) {
+                    suffix.push(NaN)
+                }
+                let prefix2 = []
+                for (let index = 0; index < divide; index++) {
+                    prefix2.push(NaN)
+                }
+
+                // console.log(data,modelPredictData.slice(0, divide).concat(suffix),prefix2.concat(modelPredictData.slice(divide, -1)))
+                tempData.push({
+                    x: state.data4Analyse.map((value) => value[state.timeColumn]),
+                    y: data,
+                    type: 'line',
+                    name: 'Origin Data'
+                })
+                tempData.push({
+                    x: (state.data4Analyse.map((value) => value[state.timeColumn])),
+                    y: modelPredictData.slice(0, divide).concat(suffix),
+                    type: 'line',
+                    name: 'Given by this Model'
+                })
+                tempData.push({
+                    x: (state.data4Analyse.map((value) => value[state.timeColumn])),
+                    y: prefix2.concat(modelPredictData.slice(divide, -1)),
+                    type: 'line',
+                    name: 'Validation of this Model'
+                })
+
+                setNewData(tempData)
+                // console.log(modelPredictData)
+                setNextDayData(modelPredictData[modelPredictData.length - 1])
+                // setTimeout(()=>{
+                //     alert(`to`)
+                // },0)
+            }
         }
     }, [state.model])
     return (
@@ -66,7 +138,7 @@ function LearningResultPage() {
             {nextDayData ?
                 <Card className={classes.card}>
                     <CardContent>
-                        {`At the next time node, ${state.labelColumn[0]} will be ${nextDayData[0]}`}
+                        {`At the next time node, ${state.labelColumn[0]} will be ${nextDayData}`}
                     </CardContent>
                 </Card>
                 :

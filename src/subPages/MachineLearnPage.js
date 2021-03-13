@@ -9,7 +9,7 @@ import HelpIcon from '@material-ui/icons/Help';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
-import { trainSimpleModel } from '../utils/machineLearn'
+import { trainComplexModel, trainSimpleModel } from '../utils/machineLearn'
 
 const useStyles = makeStyles({
     root: {
@@ -97,18 +97,32 @@ function MachineLearnPage() {
 
     ]
     const startTraining = async () => {
+        const column = state.labelColumn
+        const data = state.data4Analyse.map(value => parseFloat(value[column]))
+        if (state.model !== '') // 已经训练过模型就直接退出
+            return
         if (state.inputColumn.length !== 0) {
             //todo 训练复杂模型
+            const { model, modelResult } = await trainComplexModel(
+                state.data4Analyse,
+                state.windowSize,
+                state.epochs,
+                state.learningRate,
+                state.hiddenLayers,
+                state.trainingDataSize,
+                state.inputColumn,
+                column
+            )
+            updateState('model', model)
+            updateState('modelResult', modelResult)
         }
         else {
-            const column = state.labelColumn
-            const data = state.data4Analyse.map(value => parseFloat(value[column]))
             const { model, modelResult } = await trainSimpleModel(
                 data,
                 state.windowSize,
                 state.epochs,
                 state.learningRate,
-                state.layers,
+                state.hiddenLayers,
                 state.trainingDataSize
             )
             updateState('model', model)

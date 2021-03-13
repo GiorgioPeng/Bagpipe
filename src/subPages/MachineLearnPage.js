@@ -88,6 +88,7 @@ const IOSSwitch = withStyles((theme) => ({
 function MachineLearnPage() {
     const [state, updateState] = useGlobalState()
     const classes = useStyles()
+    // TODO 将默认值和 globalState 中的值进行绑定
     const setting = [
         { type: 'Window Size', min: 1, max: 100, defaultNum: 20, step: 1 },
         { type: 'Number of Hidden Layer', min: 1, max: 50, defaultNum: 4, step: 1 },

@@ -38,6 +38,7 @@ function computeInputAndOutput(data, windowSize) {
  * @param {*} layers lstmcell个数
  */
 export const trainSimpleModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize) => {
+    console.log('trainSimpleModel')
     let data2 = computeInputAndOutput(data, windowSize)
     const x = data2.map(e => e.x)
     const y = data2.map(e => e.y)
@@ -131,17 +132,25 @@ export const trainSimpleModel = async (data, windowSize, epochs, learningRate, l
  * @returns 
  */
 export const trainComplexModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize, inputColumn, labelColumn) => {
-    let data1 = [] // 这个数组用于装所有特征 [ [ [],[] ],[ [],[] ] ] 第一维为特征种类个数, 第二维为 特征组 的数量, 第三维为该组内特征的具体数值
+    console.log('trainComplexModel')
+    let data1 = [] // 这个数组用于装所有特征 [ [ ],[ ],[ ] ] 第一维为特征种类个数, 第二维为 特征 的数量
     for (const column of inputColumn) {
-        data1.push(computeInputAndOutput(data.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
+        data1.push(computeSimpleMoveAverage(data.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
     }
 
-    let data2 = computeInputAndOutput(data.map(value => parseFloat(value[labelColumn])), windowSize)
+    let data2 = computeSimpleMoveAverage(data.map(value => parseFloat(value[labelColumn])), windowSize)
     data1.push(data2.map(e => e.x))
-
-
-    const x = data1
+    // console.log(data1)
+    const x = []
     const y = data2.map(e => e.y)
+    for (let index1 = 0; index1 < data1[0].length; index1++) { // 这里index1 指代的是每个特征的数量
+        let tempArr = [] // 用于存储每一批特征 [1,2,3]
+        for (let index2 = 0; index2 < data1.length; index2++) { // 这里 index2 指代的是特征的数量
+            tempArr.push(data1[index2][index1])
+        }
+        x.push(tempArr)
+    }
+    // console.log(x, y)
     // const _xTest = x.slice(Math.floor(trainingDataSize / 100 * x.length), x.length)
     const inputX = x.slice(0, Math.floor(trainingDataSize / 100 * x.length))
     // const inputX = x
@@ -150,7 +159,7 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
     // const inputY = y
     // console.log(_xTest, inputX, _yTest, inputY)
 
-    const inputLayerShape = windowSize
+    const inputLayerShape = inputColumn.length + 1
     const lstmNeurons = 20
     const lstmInputLayerFeatures = 10
     const lstmInputLayerTimesteps = lstmNeurons / lstmInputLayerFeatures
@@ -163,13 +172,13 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
     const outputLayerNeurons = 1
 
     // const input = tf.tensor2d(inputX, [inputX.length, inputX[0].length, input[0][0].length]) // [X,20]
-    const input = tf.tensor3d(inputX, [inputX.length, inputX[0].length, inputX[0][0].length])
+    const input = tf.tensor2d(inputX)
     const output = tf.tensor2d(inputY, [inputY.length, 1]).reshape([inputY.length, 1])  // [X]
     // const xTest = tf.tensor2d(_xTest, [_xTest.length, _xTest[0].length]) // [X,20]
     // const yTest = tf.tensor2d(_yTest, [_yTest.length, 1]).reshape([_yTest.length, 1])  // [X]
     // console.log(input,output,xTest,yTest)
     const model = tf.sequential()
-    model.add(tf.layers.dense({ units: lstmNeurons, inputShape: [inputX[0].length, inputLayerShape] }))
+    model.add(tf.layers.dense({ units: lstmNeurons, inputShape: [inputLayerShape] }))
 
     model.add(tf.layers.reshape({ targetShape: lstmInputShape }))
     if (layers !== 1) {
@@ -240,6 +249,8 @@ function computeSimpleMoveAverage(data, windowSize) {
     // console.log(result)
     return result
 }
+
+
 /**
  * 通过现有数据得到模型计算出的数据
  * @param {*} input 输出的数据,为一个一维数组, 如果是复杂模型,这就是一个对象数组
@@ -259,14 +270,22 @@ export const predictionsOfNow = (input, model, windowSize, isComplex, inputColum
         x = tf.tensor2d(input, [input.length, input[0].length])
     }
     else {
-        let data1 = []
+        let data1 = [] // 这个数组用于装所有特征 [ [ ],[ ],[ ] ] 第一维为特征种类个数, 第二维为 特征 的数量
         for (const column of inputColumn) {
-            data1.push(computeInputAndOutput(input.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
+            data1.push(computeSimpleMoveAverage(input.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
         }
 
-        let data2 = computeInputAndOutput(input.map(value => parseFloat(value[labelColumn])), windowSize)
+        let data2 = computeSimpleMoveAverage(input.map(value => parseFloat(value[labelColumn])), windowSize)
         data1.push(data2.map(e => e.x))
-        x = tf.tensor3d(data1)
+        const xInput = []
+        for (let index1 = 0; index1 < data1[0].length; index1++) { // 这里index1 指代的是每个特征的数量
+            let tempArr = [] // 用于存储每一批特征 [1,2,3]
+            for (let index2 = 0; index2 < data1.length; index2++) { // 这里 index2 指代的是特征的数量
+                tempArr.push(data1[index2][index1])
+            }
+            xInput.push(tempArr)
+        }
+        x = tf.tensor2d(xInput)
     }
     const predictedResults = model.predict(x);
     return Array.from(predictedResults.dataSync());
@@ -280,11 +299,33 @@ export const predictionsOfNow = (input, model, windowSize, isComplex, inputColum
  * @param {*} trainingDataSize 训练数据集百分比
  * @returns 
  */
-export const makePredictions = (input, model, windowSize, trainingDataSize) => {
-    input = computeInputAndOutput(input, windowSize)
-    input = input.map(e => e.x).slice(Math.floor(trainingDataSize / 100 * input.length), input.length)
-    input = [input[input.length - 1]]
-    const x = tf.tensor2d(input, [input.length, input[0].length])
+export const makePredictions = (input, model, windowSize, trainingDataSize, isComplex, inputColumn, labelColumn) => {
+    let x
+    if (!isComplex) {
+        input = computeInputAndOutput(input, windowSize)
+        input = input.map(e => e.x).slice(Math.floor(trainingDataSize / 100 * input.length), input.length)
+        input = [input[input.length - 1]]
+        x = tf.tensor2d(input, [input.length, input[0].length])
+    }
+    else {
+        let data1 = [] // 这个数组用于装所有特征 [ [ ],[ ],[ ] ] 第一维为特征种类个数, 第二维为 特征 的数量
+        for (const column of inputColumn) {
+            data1.push(computeSimpleMoveAverage(input.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
+        }
+
+        let data2 = computeSimpleMoveAverage(input.map(value => parseFloat(value[labelColumn])), windowSize)
+        data1.push(data2.map(e => e.x))
+        const xInput = []
+        for (let index1 = 0; index1 < data1[0].length; index1++) { // 这里index1 指代的是每个特征的数量
+            let tempArr = [] // 用于存储每一批特征 [1,2,3]
+            for (let index2 = 0; index2 < data1.length; index2++) { // 这里 index2 指代的是特征的数量
+                tempArr.push(data1[index2][index1])
+            }
+            xInput.push(tempArr)
+        }
+        xInput = [xInput[xInput.length - 1]]
+        x = tf.tensor2d(xInput)
+    }
     const predictedResults = model.predict(x);
     return Array.from(predictedResults.dataSync());
 }

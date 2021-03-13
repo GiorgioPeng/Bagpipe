@@ -3,7 +3,6 @@ import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { makePredictions, predictionsOfNow } from '../utils/machineLearn'
 import createGraph from '../utils/createGraph'
-import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 

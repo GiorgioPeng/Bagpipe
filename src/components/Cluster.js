@@ -1,15 +1,19 @@
 import React from 'react';
 import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
-import getPearsonCoefficient from '../algorithm/pearsonCoefficient'
-import embed from 'vega-embed';
 import { BaseTable } from 'ali-react-table'
 import Paper from '@material-ui/core/Paper'
+import Typography from '@material-ui/core/Typography';
+import getPearsonCoefficient from '../algorithm/pearsonCoefficient'
+import embed from 'vega-embed';
 
 
 const useStyles = makeStyles((theme) => ({
+    root: {
+        marginTop: '20px',
+        padding: '5px'
+    },
     container: {
-        margin: '15px',
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center'
@@ -51,8 +55,9 @@ const ClusterBoard = () => {
             tree.nodes.push(
                 {
                     "name": columns[index],
-                    "index": count++,
+                    "index": count,
                     "value": 3,
+                    'group': count++
                 })
         }
         setCoefficients(cs)
@@ -62,8 +67,8 @@ const ClusterBoard = () => {
                 "$schema": "https://vega.github.io/schema/vega/v5.json",
                 "width": 600,
                 "height": 400,
-                "padding": 0,
-                "autosize": "none",
+                "padding": 5,
+                "autosize": "fit",
 
                 "signals": [
                     { "name": "cx", "update": "width / 2" },
@@ -122,7 +127,7 @@ const ClusterBoard = () => {
                         "name": "color",
                         "type": "ordinal",
                         "domain": { "data": "node-data", "field": "group" },
-                        "range": { "scheme": "tableau20" }
+                        "range": { "scheme": "redpurple" }
                     },
                     {
                         "name": "colorEdge",
@@ -155,7 +160,7 @@ const ClusterBoard = () => {
                             "enter": {
                                 "fill": { "scale": "color", "field": "group" },
                                 "text": { "field": "name" },
-                                "fontSize": { "value": 14 },
+                                "fontSize": { "value": 16 },
                                 "fontWeight": { "value": 600 }
                             },
                             "update": {
@@ -188,8 +193,8 @@ const ClusterBoard = () => {
                                     "scale": "colorEdge",
                                     "field": "value"
                                 },
-                                "strokeWidth": { "value": 0.8 },
-                                "opacity": { "value": 0.5 }
+                                "strokeWidth": { "value": 1 },
+                                "opacity": { "value": 0.9 }
                             },
                         },
                         "transform": [
@@ -204,45 +209,36 @@ const ClusterBoard = () => {
                     }
                 ]
             })
-            // .then(res => {
-            //     res.view.addEventListener('click', function (e, item) {
-            //         // if (item) {
-            //         //     let record = item.datum;
-            //         //     let group = record.group;
-            //         //     let measuresInView = measures.filter((mea, index) => {
-            //         //         return clusterResult.groups[index] === group
-            //         //     });
-            //         //     onFocusGroup(measuresInView);
-            //         // }
-            //     })
-            // })
         }
     }, [state.displayCluster])
     return (
-        <Paper elevation={3} className={classes.container}>
+        <>
             {state.displayCluster && state.inputColumn.length !== 0 ?
-                <>
-                    <div ref={chartRef} />
-                    <BaseTable
-                        style={{ maxWidth: 300, maxHeight: 400, overflow: 'auto' }}
-                        dataSource={coefficients}
-                        columns={[
-                            {
-                                code: 'column1', width: 100, name: 'column 1'
-                            },
-                            {
-                                code: 'column2', width: 100, name: 'column 2'
-                            },
-                            {
-                                code: 'coefficient', width: 100, name: 'relative coefficient'
-                            },
-                        ]}
-                    />
-                </>
+                <Paper elevation={3} className={classes.root}>
+                    <Typography variant={'subtitle2'} color="textSecondary" style={{ textAlign: 'center' }}>Correlation Between Each Feature</Typography>
+                    <div className={classes.container}>
+                        <div ref={chartRef} />
+                        <BaseTable
+                            style={{ maxWidth: 300, maxHeight: 400, overflow: 'auto' }}
+                            dataSource={coefficients}
+                            columns={[
+                                {
+                                    code: 'column1', width: 100, name: 'column 1'
+                                },
+                                {
+                                    code: 'column2', width: 100, name: 'column 2'
+                                },
+                                {
+                                    code: 'coefficient', width: 100, name: 'relative coefficient'
+                                },
+                            ]}
+                        />
+                    </div>
+                </Paper >
                 :
                 ''
             }
-        </Paper>
+        </>
     )
 }
 

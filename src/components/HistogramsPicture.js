@@ -33,7 +33,7 @@ function LinePicture() {
                         data.type = 'histogram2d'
                         data.name = input
                         dataArr.push(data)
-                        yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
+                        // yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
                     }
                     graphArr.push(createGraph(dataArr, 'histogram2d', width, height, state.timeColumn, yLabel))
                     count++;

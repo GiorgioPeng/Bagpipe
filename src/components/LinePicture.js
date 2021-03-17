@@ -5,6 +5,7 @@ import createGraph from '../utils/createGraph'
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
+        marginTop: '10px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
@@ -45,7 +46,7 @@ function LinePicture() {
                         data.x = state.data4Analyse.map((value) => value[state.timeColumn])
                         data.type = 'line'
                         data.name = input
-                        yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
+                        // yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
                         dataArr.push(data)
                     }
                     graphArr.push(createGraph(dataArr, 'line', width, height, state.timeColumn, yLabel))

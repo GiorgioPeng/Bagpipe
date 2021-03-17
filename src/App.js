@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App() {
   const classes = useStyles();
-  // const { element } = useKbn(
-  //   "/model/platelet/model.json",
-  //   'hello world',
-  //   400,
-  //   500
-  // );
+  const { element } = useKbn(
+    "/model/platelet/model.json",
+    'hello world',
+    400,
+    500
+  );
   return (
     <GlobalStateProvider>
       <Paper className={classes.root}>
@@ -32,11 +32,10 @@ function App() {
         <UploadPage />
         <Divider variant="middle" />
         <VisualizationPage />
-        <Divider variant="middle" />
         <MachineLearnPage />
         <LearningResultPage />
       </Paper>
-      {/* {element} */}
+      {element}
     </GlobalStateProvider>
   );
 }

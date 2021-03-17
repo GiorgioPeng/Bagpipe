@@ -13,6 +13,7 @@ import deleteNull from '../algorithm/deleteNull'
 
 const useStyles = makeStyles((theme) => ({
     root: {
+        marginTop:'10px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',

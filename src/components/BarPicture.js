@@ -45,7 +45,7 @@ function LinePicture() {
                         data.x = state.data4Analyse.map((value) => value[state.timeColumn])
                         data.type = 'bar'
                         data.name = input
-                        yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
+                        // yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
                         dataArr.push(data)
                     }
                     graphArr.push(createGraph(dataArr, 'bar', width, height, state.timeColumn, yLabel))

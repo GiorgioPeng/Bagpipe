@@ -2,6 +2,7 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
 import DataTable from '../components/DataTable'
+import Divider from '@material-ui/core/Divider';
 import VariableChoose from '../components/VariableChoose'
 import LinePicture from '../components/LinePicture'
 import BarPicture from '../components/BarPicture'
@@ -10,7 +11,6 @@ import SortStatisticTable from '../components/SortStatisticTable'
 import SunburstPicture from '../components/SunburstPicture'
 import DataOverviewTable from '../components/DataOverviewTable'
 import Cluster from '../components/Cluster'
-import Paper from '@material-ui/core/Paper'
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {
@@ -24,11 +24,9 @@ function VisualizationPage() {
     return (
         <div>
             <div className={classes.tableContainer}>
-                {/* <DataTable /> */}
                 <DataOverviewTable />
-                <Paper elevation={3}>
-                    <VariableChoose />
-                </Paper>
+                <Divider variant="middle" />
+                <VariableChoose />
             </div>
             {state.finishChoose ?
                 <>
@@ -37,7 +35,7 @@ function VisualizationPage() {
                     <BarPicture />
                     <HistogramsPicture />
                     {/* <SunburstPicture /> */}
-                    <SortStatisticTable />
+                    {/* <SortStatisticTable /> */}
                 </>
                 :
                 ''

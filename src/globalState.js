@@ -3,7 +3,7 @@ import React, { useState, createContext, useContext, } from 'react';
 const GloalStateContext = createContext(null)
 
 const initState = {
-    data: undefined,// 这里保存的是当次需要分析的用于可视化表格的数据
+    // data: undefined,// 这里保存的是当次需要分析的用于可视化表格的数据
     data4Analyse: '', // 这里保存的是用于分析的数据格式
     proprocessWay: 'Delelt Null', // 数据预处理方式
     column: [], // 这里保存的是当次需要分析的数据中所有的表头名称
@@ -19,6 +19,7 @@ const initState = {
     finishSet: false,
     model: '',
     modelResult: '',
+    displayCluster:false, // 是否显示不同列之间的关系图
     /**
      * [columns...]
      * [row data]

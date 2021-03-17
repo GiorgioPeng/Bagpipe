@@ -32,6 +32,6 @@ const getPearsonCoefficient = (objectArr, column1, column2) => {
     // console.log(sum_1, sum_2, sum_1_2, sum_1_1, sum_2_2)
     // console.log(molecular, denominator)
     const coefficient = molecular / denominator
-    return isNaN(coefficient) ? 0 : -coefficient
+    return isNaN(coefficient) ? 0 : coefficient
 }
 export default getPearsonCoefficient

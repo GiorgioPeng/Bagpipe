@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "ali-react-table": "^2.4.0",
     "d3": "^6.3.1",
     "dataframe-js": "^1.4.4",
     "plotly.js": "^1.58.4",

@@ -12,17 +12,19 @@ const dataReader = (csvFile, updateState) => {
         const charset = 'utf-8'
         fileReader.readAsText(csvFile, charset)
         fileReader.addEventListener("load", () => {
-            const data = d3.csvParseRows(fileReader.result, function (d) {
-                return d;
-            });
+            // const data = d3.csvParseRows(fileReader.result, function (d) {
+            //     return d;
+            // });
             let data4Analyse = (d3.csvParse(fileReader.result, function (d) {
                 return d;
             }))
-            console.log(data)
+            // console.log(data)
+            // console.log(data4Analyse.columns)
             // data4Analyse = linearInterpolation(data4Analyse, 'value1')
             // data4Analyse = linearInterpolation(data4Analyse, 'value2')
             // console.log(data4Analyse)
-            updateState('data', data)
+            // updateState('data', data)
+            updateState('column', data4Analyse.columns)
             updateState('data4Analyse', data4Analyse)
         });
     }

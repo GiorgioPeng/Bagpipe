@@ -37,21 +37,19 @@ function LinePicture() {
 
                 if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
                     let count = 0;
-                    for (const label of state.labelColumn) {
-                        let dataArr = [];
-                        let yLabel = ''
-                        for (const input of state.inputColumn) {
-                            let data = {}
-                            data.y = state.data4Analyse.map((value) => value[input])
-                            data.x = state.data4Analyse.map((value) => value[label])
-                            data.type = 'line'
-                            data.name = input
-                            yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
-                            dataArr.push(data)
-                        }
-                        graphArr.push(createGraph(dataArr, 'line', width, height, label, yLabel))
-                        count++;
+                    let dataArr = [];
+                    let yLabel = ''
+                    for (const input of state.inputColumn) {
+                        let data = {}
+                        data.y = state.data4Analyse.map((value) => value[input])
+                        data.x = state.data4Analyse.map((value) => value[state.timeColumn])
+                        data.type = 'line'
+                        data.name = input
+                        yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
+                        dataArr.push(data)
                     }
+                    graphArr.push(createGraph(dataArr, 'line', width, height, state.timeColumn, yLabel))
+                    count++;
                 }
                 setInnerGraph(graphArr)
             }

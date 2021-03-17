@@ -155,6 +155,7 @@ function VariableChoose() {
                         tempDataObj = hotDecking(tempDataObj, columns)
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         updateState('data4Analyse', tempDataObj)
+                        updateState('displayCluster', true)  // 如果使用热卡填充法, 则选择显示关系状态图
                         break;
                 }
             }
@@ -186,7 +187,7 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.inputColumn}>Please choose other independent variables:</div>
+                    <div className={classes.inputColumn}>Please choose features:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.inputColumn}
@@ -195,7 +196,7 @@ function VariableChoose() {
                         multiple={true}
                     />
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose dependent variable:</div>
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose output:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.labelColumn}

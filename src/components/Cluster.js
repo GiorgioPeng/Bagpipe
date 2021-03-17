@@ -1,62 +1,67 @@
-import React, { useEffect, useMemo, useRef } from 'react';
-import { Cluster } from 'visual-insights';
-import { useGlobalState } from '../../state';
+import React from 'react';
+import { useGlobalState } from '../globalState'
+import { makeStyles } from '@material-ui/core/styles';
+import getPearsonCoefficient from '../algorithm/pearsonCoefficient'
 import embed from 'vega-embed';
-// cluster should be used for small graph because the number of measure is limited. 
-// Browser may be more likely crashed by other algorithm or data structure or memory used in the whole analysis pipline.
-/**
- * adjMatrix and measures share a common index system;
- */
-const ClusterBoard = (props) => {
-    // const { adjMatrix, measures, onFocusGroup } = props;
-    const [state,] = useGlobalState();
-    // const chart = useRef(null);
-    // const groups = useMemo<string[][]>(() => {
-    //   return clusterMeasures({
-    //     matrix: adjMatrix,
-    //     measures,
-    //   })
-    // }, [adjMatrix, measures]);
-    const clusterResult = useMemo(() => {
-        /**
-         * todo: 
-         * maxGroupNumber = the measures length / max visual channel for measure.
-         */
-        let { edgesInMST, groups } = Cluster.kruskalWithFullMST(adjMatrix, state.maxGroupNumber);
-        return { edgesInMST, groups }
-    }, [adjMatrix, state.maxGroupNumber])
+import { BaseTable } from 'ali-react-table'
+import Paper from '@material-ui/core/Paper'
 
-    const treeData = useMemo(() => {
-        let { edgesInMST, groups } = clusterResult;
-        const edges = edgesInMST.map(edge => {
-            return {
-                source: edge[0][0],
-                target: edge[0][1],
-                value: 1 / edge[1],
-                inCutEdge: edge[2]
+
+const useStyles = makeStyles((theme) => ({
+    container: {
+        margin: '15px',
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center'
+    }
+}));
+
+const ClusterBoard = () => {
+    const [state,] = useGlobalState()
+    const chartRef = React.useRef()
+    const classes = useStyles()
+    const [coefficients, setCoefficients] = React.useState()
+    React.useEffect(() => {
+        const columns = state.inputColumn
+        const data = state.data4Analyse
+        const tree = {
+            nodes: [],
+            edges: []
+        }
+        let count = 0;
+        let cs = [] // 临时存储相关系数
+        for (let index = 0; index < columns.length; index++) {
+            for (let j = index + 1; j < columns.length; j++) {
+                let pearsonCoefficient = getPearsonCoefficient(data, columns[index], columns[j])
+                console.log(pearsonCoefficient, index, j)
+                if (Math.abs(pearsonCoefficient) > 0.4)
+                    tree.edges.push({
+                        "source": index,
+                        "target": j,
+                        "value": 1 / pearsonCoefficient,
+                        "inCutEdge": Math.abs(pearsonCoefficient) > 0.7 ? true : false
+                    })
+
+                cs.push({
+                    column1: columns[index],
+                    column2: columns[j],
+                    coefficient: pearsonCoefficient.toFixed(5)
+                })
             }
-        });
-        const nodes = [];
-        for (let i = 0; i < groups.length; i++) {
-            nodes.push({
-                name: measures[i],
-                index: i,
-                value: 1,
-                group: groups[i]
-            })
+            tree.nodes.push(
+                {
+                    "name": columns[index],
+                    "index": count++,
+                    "value": 3,
+                })
         }
-        return {
-            nodes,
-            edges
-        }
-    }, [measures, clusterResult])
-    
-    useEffect(() => {
-        if (chart.current && measures.length > 0) {
-            embed(chart.current, {
+        setCoefficients(cs)
+        // console.log(tree)
+        if (chartRef.current && state.displayCluster) {
+            embed(chartRef.current, {
                 "$schema": "https://vega.github.io/schema/vega/v5.json",
-                "width": 700,
-                "height": 500,
+                "width": 600,
+                "height": 400,
                 "padding": 0,
                 "autosize": "none",
 
@@ -104,11 +109,11 @@ const ClusterBoard = (props) => {
                 "data": [
                     {
                         "name": "node-data",
-                        values: treeData.nodes,
+                        values: tree.nodes,
                     },
                     {
                         "name": "link-data",
-                        values: treeData.edges
+                        values: tree.edges
                     }
                 ],
 
@@ -198,24 +203,46 @@ const ClusterBoard = (props) => {
                         ]
                     }
                 ]
-            }).then(res => {
-                res.view.addEventListener('click', function (e, item) {
-                    if (item) {
-                        let record = item.datum;
-                        let group = record.group;
-                        let measuresInView = measures.filter((mea, index) => {
-                            return clusterResult.groups[index] === group
-                        });
-                        onFocusGroup(measuresInView);
-                    }
-                })
             })
+            // .then(res => {
+            //     res.view.addEventListener('click', function (e, item) {
+            //         // if (item) {
+            //         //     let record = item.datum;
+            //         //     let group = record.group;
+            //         //     let measuresInView = measures.filter((mea, index) => {
+            //         //         return clusterResult.groups[index] === group
+            //         //     });
+            //         //     onFocusGroup(measuresInView);
+            //         // }
+            //     })
+            // })
         }
-    }, [treeData, measures, clusterResult.groups, onFocusGroup])
-    return
-    (
-        <div ref={chart}>
-        </div>
+    }, [state.displayCluster])
+    return (
+        <Paper elevation={3} className={classes.container}>
+            {state.displayCluster && state.inputColumn.length !== 0 ?
+                <>
+                    <div ref={chartRef} />
+                    <BaseTable
+                        style={{ maxWidth: 300, maxHeight: 400, overflow: 'auto' }}
+                        dataSource={coefficients}
+                        columns={[
+                            {
+                                code: 'column1', width: 100, name: 'column 1'
+                            },
+                            {
+                                code: 'column2', width: 100, name: 'column 2'
+                            },
+                            {
+                                code: 'coefficient', width: 100, name: 'relative coefficient'
+                            },
+                        ]}
+                    />
+                </>
+                :
+                ''
+            }
+        </Paper>
     )
 }
 

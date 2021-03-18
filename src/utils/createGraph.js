@@ -15,7 +15,7 @@ import Plot from 'react-plotly.js';
 const createGraph = (data, type, width, height, xaxis, yaxis) => {
     return (
         <Plot
-            key={xaxis+type}
+            key={yaxis + xaxis + type}
             data={data}
             layout={{
                 // width: width,

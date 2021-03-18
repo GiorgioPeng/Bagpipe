@@ -20,6 +20,7 @@ const initState = {
     model: '',
     modelResult: '',
     displayCluster:false, // 是否显示不同列之间的关系图
+    anomalyDataPercentage:0 // 异常值占比
     /**
      * [columns...]
      * [row data]

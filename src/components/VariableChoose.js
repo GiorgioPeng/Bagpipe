@@ -6,10 +6,12 @@ import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
 import linearInterpolation from '../algorithm/linearInterpolation'
 import inverseDistanceWeightingInterpolation from '../algorithm/inverseDistanceWeightingInterpolation'
 import hotDecking from '../algorithm/hotDecking'
 import deleteNull from '../algorithm/deleteNull'
+import removeAnomaly from '../algorithm/chebyshev'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -101,6 +103,76 @@ const IOSSwitch = withStyles((theme) => ({
     );
 });
 
+
+const iOSBoxShadow =
+    '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.13),0 0 0 1px rgba(0,0,0,0.02)';
+const marks = [
+    {
+        value: 0,
+    },
+    {
+        value: 10,
+    },
+    {
+        value: 25,
+    },
+    {
+        value: 50,
+    },
+];
+
+const IOSSlider = withStyles({
+    root: {
+        marginTop: '12px',
+        width: '20vw',
+        color: '#3880ff',
+        height: 2,
+        padding: '15px 0',
+    },
+    thumb: {
+        height: 28,
+        width: 28,
+        backgroundColor: '#fff',
+        boxShadow: iOSBoxShadow,
+        marginTop: -14,
+        marginLeft: -14,
+        '&:focus, &:hover, &$active': {
+            boxShadow: '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
+            // Reset on touch devices, it doesn't add specificity
+            '@media (hover: none)': {
+                boxShadow: iOSBoxShadow,
+            },
+        },
+    },
+    active: {},
+    valueLabel: {
+        left: 'calc(-50% + 12px)',
+        top: -22,
+        '& *': {
+            background: 'transparent',
+            color: '#000',
+        },
+    },
+    track: {
+        height: 2,
+    },
+    rail: {
+        height: 2,
+        opacity: 0.5,
+        backgroundColor: '#bfbfbf',
+    },
+    mark: {
+        backgroundColor: '#bfbfbf',
+        height: 8,
+        width: 1,
+        marginTop: -3,
+    },
+    markActive: {
+        opacity: 1,
+        backgroundColor: 'currentColor',
+    },
+})(Slider);
+
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
@@ -117,6 +189,9 @@ function VariableChoose() {
     const handleProprocessWayChange = (event) => {
         updateState('proprocessWay', event.target.value)
     };
+    const handleAnomalyDataPercentageChange = (event, newValue) => {
+        setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // 避免ui阻塞, 增加流畅性
+    }
     const finishAndDataClean = () => {
         if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
             updateState('finishChoose', !state.finishChoose)
@@ -133,7 +208,7 @@ function VariableChoose() {
                             tempDataObj = deleteNull(tempDataObj, column)
                         }
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        updateState('data4Analyse', tempDataObj)
+                        // updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Linear Interpolation':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
@@ -141,7 +216,7 @@ function VariableChoose() {
                             tempDataObj = linearInterpolation(tempDataObj, column)
                         }
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        updateState('data4Analyse', tempDataObj)
+                        // updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Inverse Distance Weighting':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
@@ -149,18 +224,21 @@ function VariableChoose() {
                             tempDataObj = inverseDistanceWeightingInterpolation(tempDataObj, column)
                         }
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        updateState('data4Analyse', tempDataObj)
+                        // updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Hot Decking':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
                         tempDataObj = hotDecking(tempDataObj, columns)
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        updateState('data4Analyse', tempDataObj)
+                        // updateState('data4Analyse', tempDataObj)
                         updateState('displayCluster', true)  // 如果使用热卡填充法, 则选择显示关系状态图
                         break;
                     default:
+                        tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
                         break;
                 }
+                if (state.anomalyDataPercentage !== 0)
+                    updateState('data4Analyse', removeAnomaly(tempDataObj, state.anomalyDataPercentage, [state.labelColumn]))
             }
         }
         else
@@ -208,7 +286,8 @@ function VariableChoose() {
                         // multiple={true}
                         multiple={false}
                     />
-
+                    <Typography gutterBottom>Anomaly Data Percentage:</Typography>
+                    <IOSSlider aria-label="ios slider" marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
                     <FormControlLabel
                         control={
                             <IOSSwitch

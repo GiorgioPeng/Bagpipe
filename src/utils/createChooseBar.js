@@ -48,6 +48,8 @@ const CreateChooseBar = (props) => {
             case 'Training Dataset Size (%)':
                 updateState('trainingDataSize', newValue)
                 break;
+            default:
+                break
         }
     }
 

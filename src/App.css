@@ -48,3 +48,8 @@ body {
 #use-kbn-message {
   display: none;
 }
+
+/* 隐藏vega选项 */
+details {
+  display:none
+}

@@ -14,6 +14,7 @@ const hotDecking = (objectArr, columns) => {
             if (isNaN(value[column]) || !value[column]) {
                 indexes.push(index)
             }
+            return ''
         })
         const { columnIndex, coefficient } = pearsonCoefficientArr.shift()
         if (indexes.length === 0) { // 如果该列没有缺失数据

@@ -11,6 +11,7 @@ const inverseDistanceWeightingInterpolation = (objectArr, column) => {
         if (isNaN(value[column]) || !value[column]) {
             indexes.push(index)
         }
+        return ''
     })
     indexes.forEach(nullIndex => {
         let molecular = 0

@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 // import logo from './logo.svg';
 import './App.css';
 import { GlobalStateProvider } from "./globalState";
-import { useKbn } from "use-kbn";
+// import { useKbn } from "use-kbn";
 import Divider from '@material-ui/core/Divider';
 import UploadPage from './subPages/UploadPage'
 import IntroductionPage from './subPages/IntroductionPage'
@@ -19,12 +19,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App() {
   const classes = useStyles();
-  const { element } = useKbn(
-    "/model/platelet/model.json",
-    'hello world',
-    400,
-    500
-  );
+  // const { element } = useKbn(
+  //   "/model/platelet/model.json",
+  //   'hello world',
+  //   400,
+  //   500
+  // );
   return (
     <GlobalStateProvider>
       <Paper className={classes.root}>
@@ -35,7 +35,7 @@ function App() {
         <MachineLearnPage />
         <LearningResultPage />
       </Paper>
-      {element}
+      {/* {element} */}
     </GlobalStateProvider>
   );
 }

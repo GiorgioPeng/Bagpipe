@@ -31,6 +31,7 @@ const linearInterpolation = (objectArr, column) => {
             }
             nearIndexes.push(tempIndex)
         }
+        return ''
     })
     if (objectArr.length > 1) {
         for (let i = 0; i < indexes.length; i++) {

@@ -37,7 +37,7 @@ const ClusterBoard = () => {
         for (let index = 0; index < columns.length; index++) {
             for (let j = index + 1; j < columns.length; j++) {
                 let pearsonCoefficient = getPearsonCoefficient(data, columns[index], columns[j])
-                console.log(pearsonCoefficient, index, j)
+                // console.log(pearsonCoefficient, index, j)
                 if (Math.abs(pearsonCoefficient) > 0.4)
                     tree.edges.push({
                         "source": index,

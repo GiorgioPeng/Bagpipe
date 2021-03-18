@@ -13,7 +13,7 @@ import deleteNull from '../algorithm/deleteNull'
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        marginTop:'10px',
+        marginTop: '10px',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-around',
@@ -157,6 +157,8 @@ function VariableChoose() {
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         updateState('data4Analyse', tempDataObj)
                         updateState('displayCluster', true)  // 如果使用热卡填充法, 则选择显示关系状态图
+                        break;
+                    default:
                         break;
                 }
             }

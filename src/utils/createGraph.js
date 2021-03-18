@@ -15,10 +15,10 @@ import Plot from 'react-plotly.js';
 const createGraph = (data, type, width, height, xaxis, yaxis) => {
     return (
         <Plot
-            key={xaxis}
+            key={xaxis+type}
             data={data}
             layout={{
-                width: width,
+                // width: width,
                 height: height,
                 xaxis: {
                     title: {

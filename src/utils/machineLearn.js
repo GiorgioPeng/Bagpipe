@@ -315,7 +315,7 @@ export const makePredictions = (input, model, windowSize, trainingDataSize, isCo
 
         let data2 = computeSimpleMoveAverage(input.map(value => parseFloat(value[labelColumn])), windowSize)
         data1.push(data2.map(e => e.x))
-        const xInput = []
+        let xInput = []
         for (let index1 = 0; index1 < data1[0].length; index1++) { // 这里index1 指代的是每个特征的数量
             let tempArr = [] // 用于存储每一批特征 [1,2,3]
             for (let index2 = 0; index2 < data1.length; index2++) { // 这里 index2 指代的是特征的数量

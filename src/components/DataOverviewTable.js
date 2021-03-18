@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { max, min, sum, mean, median, variance, deviation } from 'd3-array';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fade from '@material-ui/core/Fade';
-import createGraph from '../utils/createGraph'
+// import createGraph from '../utils/createGraph'
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {
@@ -15,11 +15,6 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center'
     }
 }));
-const StatisticGraph = (props) => {
-    const { data, column,timeColumn } = props
-    const graph = createGraph({x:data[timeColumn],y:data[column]},'bar',120,50,'','')
-    return graph
-}
 function DataOverviewTable() {
     const [state, updateState] = useGlobalState()
     const classes = useStyles()

@@ -1,14 +1,16 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
-import DataTable from '../components/DataTable'
+// import DataTable from '../components/DataTable'
 import Divider from '@material-ui/core/Divider';
 import VariableChoose from '../components/VariableChoose'
 import LinePicture from '../components/LinePicture'
 import BarPicture from '../components/BarPicture'
 import HistogramsPicture from '../components/HistogramsPicture'
-import SortStatisticTable from '../components/SortStatisticTable'
-import SunburstPicture from '../components/SunburstPicture'
+// import SortStatisticTable from '../components/SortStatisticTable'
+// import SunburstPicture from '../components/SunburstPicture'
+// import MiniLinePicture from '../components/MiniLinePicture'
+import ParallelCoordinatesPicture from '../components/ParallelCoordinatesPicture'
 import DataOverviewTable from '../components/DataOverviewTable'
 import Cluster from '../components/Cluster'
 
@@ -20,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 function VisualizationPage() {
     const classes = useStyles();
-    const [state, updateState] = useGlobalState()
+    const [state, ] = useGlobalState()
     return (
         <div>
             <div className={classes.tableContainer}>
@@ -34,6 +36,7 @@ function VisualizationPage() {
                     <LinePicture />
                     <BarPicture />
                     <HistogramsPicture />
+                    <ParallelCoordinatesPicture/>
                     {/* <SunburstPicture /> */}
                     {/* <SortStatisticTable /> */}
                 </>

@@ -7,9 +7,7 @@ import VariableChoose from '../components/VariableChoose'
 import LinePicture from '../components/LinePicture'
 import BarPicture from '../components/BarPicture'
 import HistogramsPicture from '../components/HistogramsPicture'
-// import SortStatisticTable from '../components/SortStatisticTable'
-// import SunburstPicture from '../components/SunburstPicture'
-// import MiniLinePicture from '../components/MiniLinePicture'
+import SunburstPicture from '../components/SunburstPicture'
 import ParallelCoordinatesPicture from '../components/ParallelCoordinatesPicture'
 import DataOverviewTable from '../components/DataOverviewTable'
 import Cluster from '../components/Cluster'
@@ -22,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 
 function VisualizationPage() {
     const classes = useStyles();
-    const [state, ] = useGlobalState()
+    const [state,] = useGlobalState()
     return (
         <div>
             <div className={classes.tableContainer}>
@@ -36,8 +34,8 @@ function VisualizationPage() {
                     <LinePicture />
                     <BarPicture />
                     <HistogramsPicture />
-                    <ParallelCoordinatesPicture/>
-                    {/* <SunburstPicture /> */}
+                    <ParallelCoordinatesPicture />
+                    <SunburstPicture />
                     {/* <SortStatisticTable /> */}
                 </>
                 :

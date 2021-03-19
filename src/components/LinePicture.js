@@ -6,8 +6,8 @@ import createGraph from '../utils/createGraph'
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
-        maxWidth:'90vw',
-        overflowX:'scroll',
+        maxWidth: '90vw',
+        overflowX: 'scroll',
         marginTop: '10px',
         display: 'flex',
         // flexDirection: 'column',
@@ -65,7 +65,7 @@ function LinePicture() {
     return (
         <div ref={linePictureRef} className={classes.graphContainer}>
             {innerGraph?.map(e => e)}
-            <MiniLinePicture />
+            {state.inputColumn.length !== 0 ? <MiniLinePicture /> : ''}
         </div>
     )
 }

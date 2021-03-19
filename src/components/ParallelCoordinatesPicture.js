@@ -66,9 +66,15 @@ function ParallelCoordinatesPicture() {
         }
     }, [])
     return (
-        <div ref={parallelCoordinatesPictureRef} className={classes.graphContainer}>
-            {innerGraph?.map(e => e)}
-        </div>
+        <>
+            {state.inputColumn.length !== 0 ?
+                <div ref={parallelCoordinatesPictureRef} className={classes.graphContainer}>
+                    {innerGraph?.map(e => e)}
+                </div>
+                :
+                ''
+            }
+        </>
     )
 }
 export default ParallelCoordinatesPicture

@@ -20,17 +20,19 @@ function DataOverviewTable() {
     const classes = useStyles()
     React.useEffect(() => {
         // 通常来说, 日期格式不能转化成数字, 通过 isNaN函数来预先判断一个列是不是数字格式
-        let timeColumn = ''
-        for (const column of state.column) {
-            timeColumn = state.data4Analyse.every((value) => {
-                // console.log(value[column])
-                return isNaN(value[column])
-            }) ? column : ''
-            if (timeColumn !== '') {
-                break
+        if (state.timeColumn === '') {
+            let timeColumn = ''
+            for (const column of state.column) {
+                timeColumn = state.data4Analyse.every((value) => {
+                    // console.log(value[column])
+                    return isNaN(value[column])
+                }) ? column : ''
+                if (timeColumn !== '') {
+                    break
+                }
             }
+            updateState('timeColumn', timeColumn)
         }
-        updateState('timeColumn', timeColumn)
     }, [state.data4Analyse])
     return (
         <div className={classes.tableContainer}>

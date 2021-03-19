@@ -329,3 +329,27 @@ export const makePredictions = (input, model, windowSize, trainingDataSize, isCo
     const predictedResults = model.predict(x);
     return Array.from(predictedResults.dataSync());
 }
+
+// const addTemporalAttention = (lstmNeurons, inputLayerShape) => {
+//     const attentionlayer = tf.layers.dense({ units: lstmNeurons, inputShape: [inputLayerShape] })
+//     const m1 = tf.layers.addWeight(name = 'M_1',
+//         shape = [inputLayerShape, 1],
+//         initializer = 'uniform',
+//         trainable = true)
+//     const m2 = tf.layers.addWeight(name = 'M_2',
+//         shape = [inputLayerShape, inputLayerShape],
+//         initializer = 'uniform',
+//         trainable = true)
+//     const m3 = tf.layers.addWeight(name = 'M_3',
+//         shape = [inputLayerShape],
+//         initializer = 'uniform',
+//         trainable = true)
+//     const bq = tf.layers.addWeight(name = 'B_q',
+//         shape = (1, 1, 1),
+//         initializer = 'uniform',
+//         trainable = true)
+//     const vq = tf.layers.addWeight(name = 'V_q',
+//         shape = (1, 1),
+//         initializer = 'uniform',
+//         trainable = true)
+// }

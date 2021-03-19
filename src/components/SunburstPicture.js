@@ -43,7 +43,7 @@ function SunburstPicture() {
                 return e === centerText ? "" : centerText
             })
             const values = [, ...unpack(state.data4Analyse, state.labelColumn)]
-            console.log(labels, parents, values)
+            // console.log(labels, parents, values)
             const data = [{
                 type: "sunburst",
                 labels: labels,

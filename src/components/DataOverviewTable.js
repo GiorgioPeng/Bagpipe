@@ -19,12 +19,11 @@ function DataOverviewTable() {
     const [state, updateState] = useGlobalState()
     const classes = useStyles()
     React.useEffect(() => {
-        // 通常来说, 日期格式不能转化成数字, 通过 isNaN函数来预先判断一个列是不是数字格式
+        // detect the time column
         if (state.timeColumn === '') {
             let timeColumn = ''
             for (const column of state.column) {
                 timeColumn = state.data4Analyse.every((value) => {
-                    // console.log(value[column])
                     return isNaN(value[column])
                 }) ? column : ''
                 if (timeColumn !== '') {
@@ -64,7 +63,6 @@ function DataOverviewTable() {
                                         ''
                                     }>
                                     <h4>{e}</h4>
-                                    {/* {state.timeColumn?<StatisticGraph data={state.data4Analyse} column={e} timeColumn={state.timeColumn}/>:''} */}
                                 </Tooltip>
                             )
                         }

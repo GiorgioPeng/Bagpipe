@@ -1,8 +1,7 @@
 import React from 'react'
-import Plot from 'react-plotly.js';
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
-
+import { createComplexGraph } from '../utils/createGraph'
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
         display: 'flex',
@@ -12,15 +11,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const createGraph = (data, key, layout) => {
-    return (
-        <Plot
-            key={key}
-            data={data}
-            layout={layout}
-        />
-    )
-}
 
 function SunburstPicture() {
     const [state,] = useGlobalState()
@@ -28,7 +18,6 @@ function SunburstPicture() {
     const sunburstPictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
     React.useEffect(() => {
-
         function unpack(rows, key) {
             return rows.map(function (row) {
                 return row[key];
@@ -41,7 +30,6 @@ function SunburstPicture() {
                 return e === centerText ? "" : centerText
             })
             const values = [, ...unpack(state.data4Analyse, state.labelColumn)]
-            // console.log(labels, parents, values)
             const data = [{
                 type: "sunburst",
                 labels: labels,
@@ -58,7 +46,7 @@ function SunburstPicture() {
                 height: 500
             };
 
-            setInnerGraph([createGraph(data, 'Sunburst', layout)])
+            setInnerGraph([createComplexGraph(data, 'Sunburst', layout)])
         }
         return () => {
             setInnerGraph([])
@@ -67,7 +55,7 @@ function SunburstPicture() {
     return (
         <>
             {
-                state.data4Analyse.length < 600  ?
+                state.data4Analyse.length < 600 ?
                     <div ref={sunburstPictureRef} className={classes.graphContainer}>
                         {innerGraph?.map(e => e)}
                     </div>

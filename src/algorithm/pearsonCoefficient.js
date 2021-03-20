@@ -1,10 +1,10 @@
 import { sum } from 'd3-array';
 /**
- * 获得两个相互独立的变量的皮尔逊系数
- * @param {*} objectArr 待分析数据
- * @param {*} column1 第一列
- * @param {*} column2 第二列
- * @returns 这两列的皮尔逊相关系数
+ * get the pearson ceofficient of two columns
+ * @param {Array} objectArr the data 
+ * @param {String} column1 the name of the first column
+ * @param {String} column2 the name of the seconde column
+ * @returns {Number} the pearson ceofficient of the two columns
  */
 const getPearsonCoefficient = (objectArr, column1, column2) => {
     const n = objectArr.length
@@ -29,8 +29,6 @@ const getPearsonCoefficient = (objectArr, column1, column2) => {
 
     const molecular = sum_1_2 - (sum_1 * sum_2 / n)
     const denominator = Math.sqrt((sum_1_1 - (sum_1 ** 2) / n) * (sum_2_2 - (sum_2 ** 2) / n))
-    // console.log(sum_1, sum_2, sum_1_2, sum_1_1, sum_2_2)
-    // console.log(molecular, denominator)
     const coefficient = molecular / denominator
     return isNaN(coefficient) ? 0 : coefficient
 }

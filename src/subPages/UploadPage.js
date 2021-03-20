@@ -4,7 +4,7 @@ import IconButton from '@material-ui/core/IconButton';
 import PublishIcon from '@material-ui/icons/Publish';
 import dataReader from '../utils/dataReader'
 import { useGlobalState } from '../globalState'
-// import Tesla from '../assets/Tesla.csv'
+
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {

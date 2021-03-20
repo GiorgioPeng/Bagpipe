@@ -1,12 +1,11 @@
 /**
- * 
- * @param {*} objectArr 待处理的对象数组
- * @param {*} column 需要验证为空的列
- * 
- * @return {*} 处理过后的数组对象
+ * delete empty row of a data array
+ * @param {Array} objectArr the origin data
+ * @param {String} column the aim column name
+ * @return {Array} the result data array
  */
 const deleteNull = (objectArr, column) => {
-    const indexes = [] // 存储存在为空数值的索引
+    const indexes = []
     objectArr.filter((value, index) => {
         if (isNaN(value[column]) || !value[column]) {
             indexes.push(index)
@@ -16,7 +15,6 @@ const deleteNull = (objectArr, column) => {
     indexes.forEach((value, index) => {
         objectArr.splice(value - index, 1);
     })
-    // console.log(objectArr)
     return objectArr
 };
 

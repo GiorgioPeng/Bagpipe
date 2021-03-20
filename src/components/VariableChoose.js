@@ -36,13 +36,11 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         '&:hover': {
             '&:after': {
-                content: "'自变量个数增多会导致训练时长激增'",
+                content: "'selected by the dependency default, can be modified'",
                 position: 'absolute',
                 fontSize: '18px',
                 color: 'red',
-                // top: '80%',
                 left: '100%',
-                // transform: 'translateX(-50%)',
                 whiteSpace: 'nowrap',
             }
         }
@@ -140,7 +138,6 @@ const IOSSlider = withStyles({
         marginLeft: -14,
         '&:focus, &:hover, &$active': {
             boxShadow: '0 3px 1px rgba(0,0,0,0.1),0 4px 8px rgba(0,0,0,0.3),0 0 0 1px rgba(0,0,0,0.02)',
-            // Reset on touch devices, it doesn't add specificity
             '@media (hover: none)': {
                 boxShadow: iOSBoxShadow,
             },
@@ -178,8 +175,8 @@ const IOSSlider = withStyles({
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
-    const [isClear, setIsClear] = React.useState(false) // 是否已经进行过数据清洗(只能清洗一次)
-    const [relative, setRelative] = React.useState([]) // 存储相关性
+    const [isClear, setIsClear] = React.useState(false) 
+    const [relative, setRelative] = React.useState([]) 
     const handleTimeColumnChange = (event) => {
         updateState('timeColumn', event.target.value)
     };
@@ -204,7 +201,7 @@ function VariableChoose() {
         }
         setRelative(relativeArr)
 
-        if (state.inputColumn.length === 0) { // 如果特征选择为空的话, 那么分别计算当前输出与每个特征的相关性, 选择相关性大于0.6的作为预设特征
+        if (state.inputColumn.length === 0) {  // if the input column array is empty, set it
             updateState('inputColumn', tempInputColumn)
         }
     };
@@ -212,16 +209,14 @@ function VariableChoose() {
         updateState('proprocessWay', event.target.value)
     };
     const handleAnomalyDataPercentageChange = (event, newValue) => {
-        setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // 避免ui阻塞, 增加流畅性
+        setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // avoid ui refresh be blockd避免ui阻塞, 增加流畅性
     }
     const finishAndDataClean = () => {
         if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
             updateState('finishChoose', !state.finishChoose)
             if (!isClear) {
                 setIsClear(true)
-                // const columns = JSON.parse(JSON.stringify(state.column))
                 const columns = JSON.parse(JSON.stringify(state.inputColumn))
-                // columns.splice(state.column.indexOf(state.timeColumn), 1)
                 let tempDataObj;
                 switch (state.proprocessWay) {
                     case 'Delelt Null':
@@ -230,7 +225,6 @@ function VariableChoose() {
                             tempDataObj = deleteNull(tempDataObj, column)
                         }
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        // updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Linear Interpolation':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
@@ -238,7 +232,6 @@ function VariableChoose() {
                             tempDataObj = linearInterpolation(tempDataObj, column)
                         }
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        // updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Inverse Distance Weighting':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
@@ -246,14 +239,11 @@ function VariableChoose() {
                             tempDataObj = inverseDistanceWeightingInterpolation(tempDataObj, column)
                         }
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        // updateState('data4Analyse', tempDataObj)
                         break;
                     case 'Hot Decking':
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
                         tempDataObj = hotDecking(tempDataObj, columns)
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
-                        // updateState('data4Analyse', tempDataObj)
-                        // updateState('displayCluster', true)  // 如果使用热卡填充法, 则选择显示关系状态图
                         break;
                     default:
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
@@ -299,7 +289,6 @@ function VariableChoose() {
                         value={state.labelColumn}
                         f={handleLabelColumnChange}
                         element={state.column}
-                        // multiple={true}
                         multiple={false}
                     />
 

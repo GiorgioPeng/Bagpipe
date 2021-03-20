@@ -25,12 +25,12 @@ const MenuProps = {
     },
 };
 /**
- * 
- * @param {*} value 该选择框绑定的变量, 变量
- * @param {*} f 修改该选择框时触发的函数, 函数
- * @param {*} element 可供选择的元素列表, 数组
- * @param {*} multiple 是否为多选,布尔值
- * @returns 
+ * create a choose dialog
+ * @param {Array} value the value which should be binded to the dialog
+ * @param {Function} f the callback of modify the value of the dialog
+ * @param {Array} element the choosable value, an array
+ * @param {Boolean} multiple whether the dialog allow multiple choose
+ * @returns {HTMLelement} the HTML element of the choose dialog
  */
 const CreateChooseDialog = (props) => {
     const { value, f, element, multiple, disabled } = props

@@ -1,12 +1,11 @@
 /**
- * 
- * @param {*} objectArr 待处理的对象数组
- * @param {*} column 需要验证为空的列
- * 
- * @return {*} 处理过后的数组对象
+ * use inverse distance weighting interpolation to fill the missing data
+ * @param {Array} objectArr the origin data array
+ * @param {String} column the name of column which should be filled 
+ * @return {Array} the result data array
  */
 const inverseDistanceWeightingInterpolation = (objectArr, column) => {
-    const indexes = [] // 存储存在为空数值的索引
+    const indexes = [] // store the index of empty value
     objectArr.filter((value, index) => {
         if (isNaN(value[column]) || !value[column]) {
             indexes.push(index)
@@ -17,7 +16,7 @@ const inverseDistanceWeightingInterpolation = (objectArr, column) => {
         let molecular = 0
         let denominator = 0
         for (let i = 0; i < objectArr.length; i++) {
-            if (indexes.indexOf(i) === -1) { // 如果当前这个不是缺失值
+            if (indexes.indexOf(i) === -1) { // if current cell is not missing
                 molecular += parseFloat(objectArr[i][column]) / Math.abs(nullIndex - i)
                 denominator += 1 / Math.abs(nullIndex - i)
             }

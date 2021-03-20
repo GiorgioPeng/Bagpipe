@@ -53,36 +53,7 @@ const ClusterBoard = (props) => {
                     'group': index + 1
                 })
         })
-        // for (let index = 0; index < columns.length; index++) {
-        //     for (let j = index + 1; j < columns.length; j++) {
-        //         let pearsonCoefficient = getPearsonCoefficient(data, columns[index], columns[j])
-        //         // console.log(pearsonCoefficient, index, j)
-        //         if (Math.abs(pearsonCoefficient) > 0.4)
-        //             tree.edges.push({
-        //                 "source": index,
-        //                 "target": j,
-        //                 "value": 1 / pearsonCoefficient,
-        //                 "inCutEdge": Math.abs(pearsonCoefficient) > 0.7 ? true : false
-        //             })
-
-        //         // cs.push({
-        //         //     column1: columns[index],
-        //         //     column2: columns[j],
-        //         //     coefficient: pearsonCoefficient.toFixed(5)
-        //         // })
-        //     }
-        //     tree.nodes.push(
-        //         {
-        //             "name": columns[index],
-        //             "index": count,
-        //             "value": 3,
-        //             'group': count++
-        //         })
-        // }
-        // setCoefficients(cs)
-        // console.log(tree)
         if (chartRef.current && relativeArr.length !== 0) {
-            // console.log(tree)
             embed(chartRef.current, {
                 // "$schema": "https://vega.github.io/schema/vega/v5.json",
                 "$schema": process.env.PUBLIC_URL + "/schema/vega/v5.json",

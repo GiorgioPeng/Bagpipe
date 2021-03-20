@@ -17,7 +17,7 @@ function ParallelCoordinatesPicture() {
     const parallelCoordinatesPictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
     const width = 800;
-    const height = 500; // 高度可能根据图的大小进行更改
+    const height = 500; 
     React.useEffect(() => {
         function unpack(rows, key) {
             return rows.map(function (row) {

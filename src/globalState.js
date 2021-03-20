@@ -3,24 +3,22 @@ import React, { useState, createContext, useContext, } from 'react';
 const GloalStateContext = createContext(null)
 
 const initState = {
-    // data: undefined,// 这里保存的是当次需要分析的用于可视化表格的数据
-    data4Analyse: '', // 这里保存的是用于分析的数据格式
-    proprocessWay: 'Delelt Null', // 数据预处理方式
-    column: [], // 这里保存的是当次需要分析的数据中所有的表头名称
-    timeColumn: '', // 这里保存的是时序字段的字段名称
-    labelColumn: '', // 这里保存的是因变量字段
-    inputColumn: [], // 这里保存的是其余自变量字段
-    finishChoose: false, // 这里保存的是是否用户设置完变量的变量
-    windowSize: 20, // 数据窗口大小
-    hiddenLayers: 4, // 隐藏层数量
-    epochs: 20,   // 训练次数
-    learnRate: 0.05,  // 学习速率
-    trainingDataSize: 80,  // 训练集大小
-    finishSet: false,
-    model: '',
-    modelResult: '',
-    // displayCluster:false, // 是否显示不同列之间的关系图
-    anomalyDataPercentage:0 // 异常值占比
+    data4Analyse: '', // save the data which format is easy to analyse
+    proprocessWay: 'Delelt Null', // the way of data preprocess
+    column: [], // the column name array of data
+    timeColumn: '', // the time column name of the data
+    labelColumn: '', // the output/label column of the data
+    inputColumn: [], // the feature/input column of the data
+    finishChoose: false, // whether the user finish visualization settings
+    windowSize: 20, // the window size of the data 
+    hiddenLayers: 4, // the numbers of hidden layers
+    epochs: 20,   // the numbers of training epochs
+    learnRate: 0.05,  // learning 
+    trainingDataSize: 80,  // the size of training
+    finishSet: false, // whether the user finish the setting of training neural network
+    model: '', // the trained model
+    modelResult: '', // the result of the model
+    anomalyDataPercentage:0 // the percentage of the anomaly data
     /**
      * [columns...]
      * [row data]

@@ -28,13 +28,11 @@ function VisualizationPage() {
             </div>
             {state.finishChoose ?
                 <>
-                    {/* <Cluster /> */}
                     <LinePicture />
                     <BarPicture />
                     <HistogramsPicture />
                     <ParallelCoordinatesPicture />
                     <SunburstPicture />
-                    {/* <SortStatisticTable /> */}
                 </>
                 :
                 ''

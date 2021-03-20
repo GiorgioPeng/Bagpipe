@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
-import Plot from 'react-plotly.js';
+import { createComplexGraph } from '../utils/createGraph'
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
@@ -12,15 +12,6 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const createGraph = (data, key, layout) => {
-    return (
-        <Plot
-            key={key}
-            data={data}
-            layout={layout}
-        />
-    )
-}
 function MiniLinePicture() {
     const [state,] = useGlobalState()
     const classes = useStyles();
@@ -45,7 +36,6 @@ function MiniLinePicture() {
                 tickfont: { size: 10 },
             }
             let layout = {
-                // width: 100,
                 height: 500,
                 title: "Features Line Graph",
                 plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
@@ -55,14 +45,12 @@ function MiniLinePicture() {
                 let x = unpack(state.data4Analyse, state.timeColumn)
                 let y = unpack(state.data4Analyse, column)
 
-                // console.log(count, count + 'x')
                 let obj = {
                     x: x,
                     y: y,
                     xaxis: 'x' + count,
                     yaxis: 'y' + count,
                     mode: 'lines',
-                    // line: { width: 2, color: '#9748a1' },
                     name: column
                 }
                 layout['xaxis' + count] = Object.assign({ domain: [0.5, 1], anchor: 'y' + count, showticklabels: count === 1 ? true : false }, axis)
@@ -70,7 +58,7 @@ function MiniLinePicture() {
                 data.push(obj)
                 count++;
             }
-            setInnerGraph([createGraph(data, 'miniline', layout)])
+            setInnerGraph([createComplexGraph(data, 'miniline', layout)])
 
             return () => {
                 setInnerGraph([])

@@ -1,24 +1,25 @@
 /**
- * 
- * @param {*} objectArr 一个对象数组
- * @param {*} column 需要补全的字段
+ * use linear interpolation to fill the data
+ * @param {Array} objectArr the origin data array
+ * @param {String} column the name of the column which should be filled
+ * @return {Array} the result data arry
  */
 const linearInterpolation = (objectArr, column) => {
-    const indexes = [] // 存储所有存在空值的索引
-    const nearIndexes = [] // 存储缺失值前后的索引的对象数组
+    const indexes = [] // store the index of empty value
+    const nearIndexes = [] // store the nearest index of non-empty value
     objectArr.filter((value, index) => {
         if (isNaN(value[column]) || !value[column]) {
             indexes.push(index)
-            const tempIndex = {} // 临时存放前后两个变量索引的对象
+            const tempIndex = {} 
             for (let i = index - 1; i >= 0; i--) {
-                if (isNaN(objectArr[i][column]) || !value[column]) {// 找到了前一个存在值的索引
+                if (isNaN(objectArr[i][column]) || !value[column]) { // find before non-empty value index
                     tempIndex.last = i
                     break
                 }
             }
 
             for (let i = index + 1; i < objectArr.length; i++) {
-                if (isNaN(objectArr[i][column]) || !value[column]) {// 找到了后一个存在值的索引
+                if (isNaN(objectArr[i][column]) || !value[column]) {// find next non-empty value index
                     tempIndex.next = i
                     break
                 }
@@ -43,8 +44,6 @@ const linearInterpolation = (objectArr, column) => {
                 objectArr[indexes[i]][column] = objectArr[nearIndexes[i]['last']][column]
                 continue
             }
-            // console.log(objectArr[indexes[i]][column])
-            // console.log(indexes[i])
             objectArr[indexes[i]][column] = coreAlgorithm(
                 indexes[i],
                 parseInt(nearIndexes[i]['last']),
@@ -54,22 +53,20 @@ const linearInterpolation = (objectArr, column) => {
             )
         }
     }
-    // console.log(objectArr)
     return objectArr
 }
 
 /**
- * 
- * @param {*} index 需要补全的变量的索引
- * @param {*} indexA 需要补全的变量的最近的上一个有值的索引
- * @param {*} indexB 需要补全的变量的最近的下一个有值的索引
- * @param {*} valueA 需要补全的变量的最近的上一个的值
- * @param {*} valueB 需要补全的变量的最近的下一个的值
- * @returns 返回应该补全的值
+ * compute the value which should be filled to the empty position
+ * @param {Number} index the index of empty value
+ * @param {Number} indexA last non-empty value index
+ * @param {Number} indexB next non-empty value index
+ * @param {Number} valueA last nont-empty value
+ * @param {Number} valueB next non-empty value
+ * @returns {Number} the value of computing result
  */
 
 const coreAlgorithm = (index, indexA, indexB, valueA, valueB) => {
-    // console.log(index, indexA, indexB, valueA, valueB)
     return ((valueB - valueA) / (indexB - indexA)) * (index - indexA) + valueA
 }
 export default linearInterpolation

@@ -5,11 +5,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
-import CropLandscapeIcon from '@material-ui/icons/CropLandscape'; // 窗口大小设置
-import FilterNoneIcon from '@material-ui/icons/FilterNone'; // 网络层数设置
-import SpeedIcon from '@material-ui/icons/Speed'; // 学习速率
-import RepeatIcon from '@material-ui/icons/Repeat'; //训练次数
-import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall'; // 训练集大小
+import CropLandscapeIcon from '@material-ui/icons/CropLandscape';
+import FilterNoneIcon from '@material-ui/icons/FilterNone'; 
+import SpeedIcon from '@material-ui/icons/Speed'; 
+import RepeatIcon from '@material-ui/icons/Repeat';
+import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall'; 
 
 const useStyles = makeStyles({
     root: {
@@ -21,9 +21,9 @@ const useStyles = makeStyles({
 });
 
 /**
- * 
- * @param {*} props 包含类型,最大值,最小值,每次调节步长
- * @returns 
+ * create a choose bar
+ * @param {Object} props an object include the type, maximum value, minimum value and modify step
+ * @returns {HTMLelemt} the HTML element of the choose bar
  */
 const CreateChooseBar = (props) => {
     const classes = useStyles();

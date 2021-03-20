@@ -31,20 +31,19 @@ function LearningResultPage() {
     const [nextDayData, setNextDayData] = React.useState(null)
     React.useEffect(() => {
         if (state.model) {
-            if (state.inputColumn.length === 0) { // 针对简单模型进行可视化
+            if (state.inputColumn.length === 0) { 
                 const column = state.labelColumn
                 const data = state.data4Analyse.map(value => parseFloat(value[column]))
                 let max = Math.max(...data)
                 let min = Math.min(...data)
                 let tempData = []
-                let prefix = [] // 补全预测可视化偏移量
+                let prefix = [] 
                 let suffix = []
                 for (let index = 0; index < state.windowSize + 1; index++) {
                     prefix.push(NaN)
                 }
                 const modelPredictData = prefix.concat(predictionsOfNow(data, state.model, state.windowSize).map(e => e * (max - min) + min))
                 const divide = Math.floor(modelPredictData.length * state.trainingDataSize / 100)
-                // console.log('divide',divide)
                 for (let index = divide; index < state.data4Analyse.length; index++) {
                     suffix.push(NaN)
                 }
@@ -53,7 +52,6 @@ function LearningResultPage() {
                     prefix2.push(NaN)
                 }
 
-                // console.log(data,modelPredictData.slice(0, divide).concat(suffix),prefix2.concat(modelPredictData.slice(divide, -1)))
                 tempData.push({
                     x: state.data4Analyse.map((value) => value[state.timeColumn]),
                     y: data,
@@ -74,26 +72,21 @@ function LearningResultPage() {
                 })
 
                 setNewData(tempData)
-                // console.log(modelPredictData)
                 setNextDayData(modelPredictData[modelPredictData.length - 1])
-                // setTimeout(()=>{
-                //     alert(`to`)
-                // },0)
             }
-            else { // 针对复杂模型进行可视化
+            else { 
                 const column = state.labelColumn
                 const data = state.data4Analyse.map(value => parseFloat(value[column]))
                 let max = Math.max(...data)
                 let min = Math.min(...data)
                 let tempData = []
-                let prefix = [] // 补全预测可视化偏移量
+                let prefix = [] 
                 let suffix = []
                 for (let index = 0; index < state.windowSize + 1; index++) {
                     prefix.push(NaN)
                 }
                 const modelPredictData = prefix.concat(predictionsOfNow(state.data4Analyse, state.model, state.windowSize, true, state.inputColumn, state.labelColumn).map(e => e * (max - min) + min))
                 const divide = Math.floor(modelPredictData.length * state.trainingDataSize / 100)
-                // console.log('divide',divide)
                 for (let index = divide; index < state.data4Analyse.length; index++) {
                     suffix.push(NaN)
                 }
@@ -102,7 +95,6 @@ function LearningResultPage() {
                     prefix2.push(NaN)
                 }
 
-                // console.log(data,modelPredictData.slice(0, divide).concat(suffix),prefix2.concat(modelPredictData.slice(divide, -1)))
                 tempData.push({
                     x: state.data4Analyse.map((value) => value[state.timeColumn]),
                     y: data,
@@ -123,11 +115,7 @@ function LearningResultPage() {
                 })
 
                 setNewData(tempData)
-                // console.log(modelPredictData)
                 setNextDayData(modelPredictData[modelPredictData.length - 1])
-                // setTimeout(()=>{
-                //     alert(`to`)
-                // },0)
             }
         }
     }, [state.model])

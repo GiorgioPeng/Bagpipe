@@ -1,11 +1,11 @@
 import { mean, variance } from 'd3-array';
 
 /**
- * 
- * @param {*} dataArr 原数组
- * @param {*} probability 排除%多少的异常点
- * @param {*} column 某一列列名
- * @returns 异常点索引
+ * get the anomaly data index array
+ * @param {Array} dataArr the origin data
+ * @param {Number} probability percentage of anomaly data
+ * @param {String} column the aim column name
+ * @returns {Array} the array of anomaly data index
  */
 const getAnomalyDataIndex = (dataArr, probability, column) => {
     const bound = {}
@@ -21,16 +21,15 @@ const getAnomalyDataIndex = (dataArr, probability, column) => {
             indexes.push(count)
         count++;
     }
-    // console.log(indexes)
     return indexes
 }
 
 /**
- * 
- * @param {*} dataArr 原数组
- * @param {*} probability 排除%多少的异常点
- * @param {*} columns 数组列名
- * @returns 删除异常之后的数组
+ * remove the anomaly data of a data array
+ * @param {Array} dataArr the origin data array
+ * @param {Number} probability the percentage of anomaly data
+ * @param {Array} columns the array of names of all column which should remove the anomaly data
+ * @returns {Array} the result data array
  */
 const removeAnomaly = (dataArr, probability, columns) => {
     const result = JSON.parse(JSON.stringify(dataArr))
@@ -38,12 +37,10 @@ const removeAnomaly = (dataArr, probability, columns) => {
     for (const column of columns) {
         anomalyIndexes.push(...getAnomalyDataIndex(dataArr, probability, column))
     }
-    // console.log(anomalyIndexes)
-    anomalyIndexes = [...new Set(anomalyIndexes)] // 去重
+    anomalyIndexes = [...new Set(anomalyIndexes)] // duplicate removal
     for (const index of anomalyIndexes) {
         result.splice(index, 1)
     }
-    // console.log(result)
     return result
 }
 export default removeAnomaly

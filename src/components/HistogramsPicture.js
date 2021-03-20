@@ -17,13 +17,12 @@ function HistogramsPicture() {
     const histogramsPictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
     const width = 800;
-    const height = 500; // 高度可能根据图的大小进行更改
+    const height = 500; 
     React.useEffect(() => {
         if (histogramsPictureRef.current) {
             const graphArr = []
             if (state.labelColumn.length !== 0) {
-                if (state.inputColumn.length !== 0) {// 以其他变量为x轴的数据拆分
-                    // let count = 0;
+                if (state.inputColumn.length !== 0) {
                     let dataArr = [];
                     let yLabel = '';
                     for (const input of state.inputColumn) {
@@ -33,10 +32,8 @@ function HistogramsPicture() {
                         data.type = 'histogram2d'
                         data.name = input
                         dataArr.push(data)
-                        // yLabel.length === 0 ? yLabel += input : yLabel += ', ' + input
                     }
                     graphArr.push(createGraph(dataArr, 'histogram2d', width, height, state.timeColumn, yLabel))
-                    // count++;
                 }
                 setInnerGraph(graphArr)
             }

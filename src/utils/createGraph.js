@@ -2,15 +2,14 @@ import React from 'react'
 import Plot from 'react-plotly.js';
 
 /**
- * 
- * @param {*} data 一个对象, 包含x,y两个属性
- * @param {*} type 图像类型,比如 scatter, bar, line, pie 等
- * @param {*} mode 图像模式, 比如 line+markers
- * @param {*} marker 标记的样式
- * @param {*} width 图像宽度
- * @param {*} height 图像高度
- * @param {*} xaxis x轴标签
- * @param {*} yaxis y轴标签
+ * create some simple graph like the line, bar graph
+ * @param {Array} data a data object array, include x and y attributes
+ * @param {String} type the type of the graph like bar, scatter...
+ * @param {Number} width the width of the graph
+ * @param {Number} height the height of the graph
+ * @param {String} xaxis the label of x axis
+ * @param {String} yaxis the label of y axis
+ * @return {HTMLelement} the HTML element of the graph
  */
 const createGraph = (data, type, width, height, xaxis, yaxis) => {
     return (
@@ -45,3 +44,20 @@ const createGraph = (data, type, width, height, xaxis, yaxis) => {
     )
 }
 export default createGraph
+
+/**
+ * create some complex graph
+ * @param {Array} data the data of the graph
+ * @param {String} key the key of the graph
+ * @param {Object} layout the layout of the graph
+ * @returns {HTMLelement} the HTML element of the graph
+ */
+export const createComplexGraph = (data, key, layout) => {
+    return (
+        <Plot
+            key={key}
+            data={data}
+            layout={layout}
+        />
+    )
+}

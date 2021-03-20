@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { max, min, sum, mean, median, variance, deviation } from 'd3-array';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fade from '@material-ui/core/Fade';
-// import createGraph from '../utils/createGraph'
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {

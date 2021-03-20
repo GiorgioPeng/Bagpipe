@@ -5,7 +5,9 @@ import CreateChooseDialog from '../utils/createChooseDialog'
 import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
+import Fade from '@material-ui/core/Fade';
 import Slider from '@material-ui/core/Slider';
 import linearInterpolation from '../algorithm/linearInterpolation'
 import inverseDistanceWeightingInterpolation from '../algorithm/inverseDistanceWeightingInterpolation'
@@ -32,18 +34,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center'
     },
-    inputColumn: {
-        position: 'relative',
-        '&:hover': {
-            '&:after': {
-                content: "'selected by the dependency default, can be modified'",
-                position: 'absolute',
-                fontSize: '18px',
-                color: 'red',
-                left: '100%',
-                whiteSpace: 'nowrap',
-            }
-        }
+    anomalyText: {
+        margin: '10px'
     },
     button: {
         fontSize: '10px'
@@ -175,8 +167,8 @@ const IOSSlider = withStyles({
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
-    const [isClear, setIsClear] = React.useState(false) 
-    const [relative, setRelative] = React.useState([]) 
+    const [isClear, setIsClear] = React.useState(false)
+    const [relative, setRelative] = React.useState([])
     const handleTimeColumnChange = (event) => {
         updateState('timeColumn', event.target.value)
     };
@@ -209,7 +201,7 @@ function VariableChoose() {
         updateState('proprocessWay', event.target.value)
     };
     const handleAnomalyDataPercentageChange = (event, newValue) => {
-        setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // avoid ui refresh be blockd避免ui阻塞, 增加流畅性
+        setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // avoid ui refresh be blockd
     }
     const finishAndDataClean = () => {
         if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
@@ -265,7 +257,12 @@ function VariableChoose() {
         <div className={classes.root} >
             {state.column.length !== 0 ?
                 <>
-                    <div>Please choose data filled way:</div>
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title={'Hot Decking can only be used in multiple feature situation!'}>
+                        <div>Please choose data filled way:</div>
+                    </Tooltip>
                     <CreateChooseDialog
                         disabled={state.finishChoose || isClear ? true : false}
                         value={state.proprocessWay}
@@ -274,7 +271,7 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time variable:</div>
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time column:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.timeColumn}
@@ -283,7 +280,8 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose output:</div>
+
+                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose mining aim column:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.labelColumn}
@@ -292,7 +290,12 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.inputColumn}>Please choose features:</div>
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title={'Selected by the dependency defaultly, but can be modified'}>
+                        <div>Please choose input features:</div>
+                    </Tooltip>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.inputColumn}
@@ -303,7 +306,12 @@ function VariableChoose() {
 
                     <Cluster relativeArr={relative} />
 
-                    <Typography gutterBottom>Anomaly Data Percentage:</Typography>
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title={'Pay attention of using the option! Please estimate the percentage of anomaly data in your dataset before setting this!'}>
+                        <Typography className={classes.anomalyText} gutterBottom>Anomaly Data Percentage:</Typography>
+                    </Tooltip>
                     <IOSSlider aria-label="ios slider" marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
                     <FormControlLabel
                         control={

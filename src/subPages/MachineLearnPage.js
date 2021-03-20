@@ -4,8 +4,10 @@ import { useGlobalState } from '../globalState'
 import { withStyles } from '@material-ui/core/styles';
 import CreateChooseBar from '../utils/createChooseBar'
 import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import HelpIcon from '@material-ui/icons/Help';
+import Fade from '@material-ui/core/Fade';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Typography from '@material-ui/core/Typography';
@@ -134,7 +136,14 @@ function MachineLearnPage() {
             {state.finishChoose ?
                 <Paper elevation={3} className={classes.paper}>
                     <Typography color={'secondary'} variant={'subtitle2'}>
-                        If you do not know the means or these chooses<HelpIcon fontSize='small' />, Please use the default values!!
+                        If you do not know the means or these chooses
+                        <Tooltip
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
+                            title={'In general, precise model need bigger window size, more hidden layers, more epochs, less learning rate and more data! But please consider these options according the requirements and machine performance!'}>
+                            <HelpIcon fontSize='small' />
+                        </Tooltip>
+                        , Please use the default values!!
                     </Typography>
                     <Typography variant={'h5'}>
                         Model training setting:

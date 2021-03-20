@@ -67,7 +67,7 @@ function ParallelCoordinatesPicture() {
     }, [])
     return (
         <>
-            {state.inputColumn.length !== 0 ?
+            {state.inputColumn.length > 1 ?
                 <div ref={parallelCoordinatesPictureRef} className={classes.graphContainer}>
                     {innerGraph?.map(e => e)}
                 </div>

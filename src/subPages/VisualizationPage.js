@@ -1,7 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
-// import DataTable from '../components/DataTable'
 import Divider from '@material-ui/core/Divider';
 import VariableChoose from '../components/VariableChoose'
 import LinePicture from '../components/LinePicture'
@@ -10,7 +9,6 @@ import HistogramsPicture from '../components/HistogramsPicture'
 import SunburstPicture from '../components/SunburstPicture'
 import ParallelCoordinatesPicture from '../components/ParallelCoordinatesPicture'
 import DataOverviewTable from '../components/DataOverviewTable'
-import Cluster from '../components/Cluster'
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {
@@ -30,7 +28,7 @@ function VisualizationPage() {
             </div>
             {state.finishChoose ?
                 <>
-                    <Cluster />
+                    {/* <Cluster /> */}
                     <LinePicture />
                     <BarPicture />
                     <HistogramsPicture />

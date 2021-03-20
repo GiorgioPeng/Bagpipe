@@ -91,7 +91,7 @@ function indexOfAbsMax(arr) {
  * @returns 最相近值的索引
  */
 const findLikely = (index, columnData, inverse) => {
-    console.log(columnData, index)
+    // console.log(columnData, index)
     let likelyIndex = -1 // 最相近的对应的索引
     const value = columnData[index]
     if (inverse) { // 如果两者是正相关

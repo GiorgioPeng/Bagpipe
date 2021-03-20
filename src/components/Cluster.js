@@ -1,10 +1,8 @@
 import React from 'react';
-import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { BaseTable } from 'ali-react-table'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
-import getPearsonCoefficient from '../algorithm/pearsonCoefficient'
 import embed from 'vega-embed';
 
 
@@ -20,51 +18,74 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ClusterBoard = () => {
-    const [state,] = useGlobalState()
+const ClusterBoard = (props) => {
+    const { relativeArr } = props
     const chartRef = React.useRef()
     const classes = useStyles()
-    const [coefficients, setCoefficients] = React.useState()
     React.useEffect(() => {
-        const columns = state.inputColumn
-        const data = state.data4Analyse
         const tree = {
             nodes: [],
             edges: []
         }
-        let count = 0;
-        let cs = [] // 临时存储相关系数
-        for (let index = 0; index < columns.length; index++) {
-            for (let j = index + 1; j < columns.length; j++) {
-                let pearsonCoefficient = getPearsonCoefficient(data, columns[index], columns[j])
-                // console.log(pearsonCoefficient, index, j)
-                if (Math.abs(pearsonCoefficient) > 0.4)
-                    tree.edges.push({
-                        "source": index,
-                        "target": j,
-                        "value": 1 / pearsonCoefficient,
-                        "inCutEdge": Math.abs(pearsonCoefficient) > 0.7 ? true : false
-                    })
-
-                cs.push({
-                    column1: columns[index],
-                    column2: columns[j],
-                    coefficient: pearsonCoefficient.toFixed(5)
+        relativeArr.forEach((element, index, array) => {
+            if (Math.abs(element.pearsonCoefficient) > 0.4) {
+                tree.edges.push({
+                    "source": 0,
+                    "target": index + 1,
+                    "value": element.pearsonCoefficient === 0 ? 0 : 1 / element.pearsonCoefficient,
+                    "inCutEdge": Math.abs(element.pearsonCoefficient) > 0.7 ? true : false
                 })
+            }
+            if (index === 0) {
+                tree.nodes.push(
+                    {
+                        "name": element.column1,
+                        "index": 0,
+                        "value": 1,
+                        'group': 0
+                    })
             }
             tree.nodes.push(
                 {
-                    "name": columns[index],
-                    "index": count,
-                    "value": 3,
-                    'group': count++
+                    "name": element.column2,
+                    "index": index + 1,
+                    "value": 1,
+                    'group': index + 1
                 })
-        }
-        setCoefficients(cs)
+        })
+        // for (let index = 0; index < columns.length; index++) {
+        //     for (let j = index + 1; j < columns.length; j++) {
+        //         let pearsonCoefficient = getPearsonCoefficient(data, columns[index], columns[j])
+        //         // console.log(pearsonCoefficient, index, j)
+        //         if (Math.abs(pearsonCoefficient) > 0.4)
+        //             tree.edges.push({
+        //                 "source": index,
+        //                 "target": j,
+        //                 "value": 1 / pearsonCoefficient,
+        //                 "inCutEdge": Math.abs(pearsonCoefficient) > 0.7 ? true : false
+        //             })
+
+        //         // cs.push({
+        //         //     column1: columns[index],
+        //         //     column2: columns[j],
+        //         //     coefficient: pearsonCoefficient.toFixed(5)
+        //         // })
+        //     }
+        //     tree.nodes.push(
+        //         {
+        //             "name": columns[index],
+        //             "index": count,
+        //             "value": 3,
+        //             'group': count++
+        //         })
+        // }
+        // setCoefficients(cs)
         // console.log(tree)
-        if (chartRef.current && state.displayCluster) {
+        if (chartRef.current && relativeArr.length !== 0) {
+            // console.log(tree)
             embed(chartRef.current, {
-                "$schema": "https://vega.github.io/schema/vega/v5.json",
+                // "$schema": "https://vega.github.io/schema/vega/v5.json",
+                "$schema": process.env.PUBLIC_URL + "/schema/vega/v5.json",
                 "width": 600,
                 "height": 400,
                 "padding": 5,
@@ -210,17 +231,17 @@ const ClusterBoard = () => {
                 ]
             })
         }
-    }, [state.displayCluster])
+    }, [relativeArr])
     return (
         <>
-            {state.displayCluster && state.inputColumn.length !== 0 ?
+            {relativeArr.length !== 0 ?
                 <Paper elevation={3} className={classes.root}>
-                    <Typography variant={'subtitle2'} color="textSecondary" style={{ textAlign: 'center' }}>Correlation Between Each Feature</Typography>
+                    <Typography variant={'subtitle2'} color="textSecondary" style={{ textAlign: 'center' }}>Correlation Between Each Feature and Output</Typography>
                     <div className={classes.container}>
                         <div ref={chartRef} />
                         <BaseTable
                             style={{ maxWidth: 300, maxHeight: 400, overflow: 'auto' }}
-                            dataSource={coefficients}
+                            dataSource={relativeArr}
                             columns={[
                                 {
                                     code: 'column1', width: 100, name: 'column 1'
@@ -229,7 +250,7 @@ const ClusterBoard = () => {
                                     code: 'column2', width: 100, name: 'column 2'
                                 },
                                 {
-                                    code: 'coefficient', width: 100, name: 'relative coefficient'
+                                    code: 'pearsonCoefficient', width: 100, name: 'relative coefficient'
                                 },
                             ]}
                         />

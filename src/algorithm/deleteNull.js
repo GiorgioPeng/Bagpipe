@@ -13,9 +13,10 @@ const deleteNull = (objectArr, column) => {
         }
         return ''
     })
-    indexes.forEach(value => {
-        objectArr.splice(value, 1);
+    indexes.forEach((value, index) => {
+        objectArr.splice(value - index, 1);
     })
+    // console.log(objectArr)
     return objectArr
 };
 

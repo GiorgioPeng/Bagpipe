@@ -12,6 +12,8 @@ import inverseDistanceWeightingInterpolation from '../algorithm/inverseDistanceW
 import hotDecking from '../algorithm/hotDecking'
 import deleteNull from '../algorithm/deleteNull'
 import removeAnomaly from '../algorithm/chebyshev'
+import getPearsonCoefficient from '../algorithm/pearsonCoefficient'
+import Cluster from './Cluster'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -177,6 +179,7 @@ function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
     const [isClear, setIsClear] = React.useState(false) // 是否已经进行过数据清洗(只能清洗一次)
+    const [relative, setRelative] = React.useState([]) // 存储相关性
     const handleTimeColumnChange = (event) => {
         updateState('timeColumn', event.target.value)
     };
@@ -185,6 +188,25 @@ function VariableChoose() {
     };
     const handleLabelColumnChange = (event) => {
         updateState('labelColumn', [event.target.value])
+        let tempInputColumn = []
+        let relativeArr = []
+        for (const column of state.column) {
+            if (column === event.target.value || column === state.timeColumn) {
+                continue;
+            }
+            else {
+                let temp = getPearsonCoefficient(state.data4Analyse, column, event.target.value).toFixed(5)
+                relativeArr.push({ column1: event.target.value, column2: column, pearsonCoefficient: temp })
+                if (Math.abs(temp) > 0.6) {
+                    tempInputColumn.push(column)
+                }
+            }
+        }
+        setRelative(relativeArr)
+
+        if (state.inputColumn.length === 0) { // 如果特征选择为空的话, 那么分别计算当前输出与每个特征的相关性, 选择相关性大于0.6的作为预设特征
+            updateState('inputColumn', tempInputColumn)
+        }
     };
     const handleProprocessWayChange = (event) => {
         updateState('proprocessWay', event.target.value)
@@ -231,7 +253,7 @@ function VariableChoose() {
                         tempDataObj = hotDecking(tempDataObj, columns)
                         tempDataObj = deleteNull(tempDataObj, state.labelColumn)
                         // updateState('data4Analyse', tempDataObj)
-                        updateState('displayCluster', true)  // 如果使用热卡填充法, 则选择显示关系状态图
+                        // updateState('displayCluster', true)  // 如果使用热卡填充法, 则选择显示关系状态图
                         break;
                     default:
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
@@ -239,6 +261,9 @@ function VariableChoose() {
                 }
                 if (state.anomalyDataPercentage !== 0)
                     updateState('data4Analyse', removeAnomaly(tempDataObj, state.anomalyDataPercentage, [state.labelColumn]))
+                else {
+                    updateState('data4Analyse', tempDataObj)
+                }
             }
         }
         else
@@ -268,15 +293,6 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.inputColumn}>Please choose features:</div>
-                    <CreateChooseDialog
-                        disabled={state.finishChoose ? true : false}
-                        value={state.inputColumn}
-                        f={handleInputColumnChange}
-                        element={state.column}
-                        multiple={true}
-                    />
-
                     <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose output:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
@@ -286,6 +302,18 @@ function VariableChoose() {
                         // multiple={true}
                         multiple={false}
                     />
+
+                    <div className={classes.inputColumn}>Please choose features:</div>
+                    <CreateChooseDialog
+                        disabled={state.finishChoose ? true : false}
+                        value={state.inputColumn}
+                        f={handleInputColumnChange}
+                        element={state.column}
+                        multiple={true}
+                    />
+
+                    <Cluster relativeArr={relative} />
+
                     <Typography gutterBottom>Anomaly Data Percentage:</Typography>
                     <IOSSlider aria-label="ios slider" marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
                     <FormControlLabel

@@ -27,8 +27,6 @@ function SunburstPicture() {
     const classes = useStyles();
     const sunburstPictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
-    const width = 800;
-    const height = 500; // 高度可能根据图的大小进行更改
     React.useEffect(() => {
 
         function unpack(rows, key) {
@@ -69,7 +67,7 @@ function SunburstPicture() {
     return (
         <>
             {
-                state.data4Analyse.length < 600 ?
+                state.data4Analyse.length < 600  ?
                     <div ref={sunburstPictureRef} className={classes.graphContainer}>
                         {innerGraph?.map(e => e)}
                     </div>

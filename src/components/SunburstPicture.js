@@ -43,7 +43,9 @@ function SunburstPicture() {
             let layout = {
                 margin: { l: 0, r: 0, b: 0, t: 0 },
                 width: 500,
-                height: 500
+                height: 500,
+                plot_bgcolor:'rgba(255,255,255,0)',
+                paper_bgcolor:'rgba(255,255,255,0)'
             };
 
             setInnerGraph([createComplexGraph(data, 'Sunburst', layout)])

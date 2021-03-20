@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center',
-        width: '100%'
+        width: '100%',
     },
     choose: {
         color: 'red',
@@ -124,7 +124,7 @@ const IOSSlider = withStyles({
     thumb: {
         height: 28,
         width: 28,
-        backgroundColor: '#fff',
+        backgroundImage: 'radial-gradient(#f5efff, #a594f9, #e5d9f2)',
         boxShadow: iOSBoxShadow,
         marginTop: -14,
         marginLeft: -14,
@@ -186,7 +186,7 @@ function VariableChoose() {
             else {
                 let temp = getPearsonCoefficient(state.data4Analyse, column, event.target.value).toFixed(5)
                 relativeArr.push({ column1: event.target.value, column2: column, pearsonCoefficient: temp })
-                if (Math.abs(temp) > 0.6) {
+                if (Math.abs(temp) > 0.8) {
                     tempInputColumn.push(column)
                 }
             }
@@ -312,15 +312,20 @@ function VariableChoose() {
                         title={'Pay attention of using the option! Please estimate the percentage of anomaly data in your dataset before setting this!'}>
                         <Typography className={classes.anomalyText} gutterBottom>Anomaly Data Percentage:</Typography>
                     </Tooltip>
-                    <IOSSlider aria-label="ios slider" marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
-                    <FormControlLabel
-                        control={
-                            <IOSSwitch
-                                checked={state.finishChoose}
-                                onChange={finishAndDataClean}
-                                name="isFinishChoose" />}
-                        label="Finish"
-                    />
+                    <IOSSlider aria-label="ios slider" disabled={state.finishChoose ? true : false} marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title={state.labelColumn === '' ? 'You should choose mining aim column or time column at first!' : ''}>
+                        <FormControlLabel
+                            control={
+                                <IOSSwitch
+                                    checked={state.finishChoose}
+                                    onChange={finishAndDataClean}
+                                    name="isFinishChoose" />}
+                            label="Finish"
+                        />
+                    </Tooltip>
                 </>
                 : ''}
         </div >

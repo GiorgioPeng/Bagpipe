@@ -2,27 +2,32 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import PublishIcon from '@material-ui/icons/Publish';
+import Button from '@material-ui/core/Button';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import dataReader from '../utils/dataReader'
 import { useGlobalState } from '../globalState'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         '& > *': {
-            margin: theme.spacing(1),
+            // margin: theme.spacing(1),
         },
     },
+
     input: {
         display: 'none',
     },
     uploadButton: {
+        marginTop:'10px',
+        marginBottom:'10px',
         height: 40,
-        width: 200,
+        width: 250,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
         left: '50%',
-        cursor:'pointer',
+        cursor: 'pointer',
         transform: 'translateX(-50%)',
         '& > p': {
             fontSize: '14px',
@@ -45,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
 
 function UploadPage() {
     const classes = useStyles();
-    const [, updateState,resetState] = useGlobalState()
+    const [, updateState, resetState] = useGlobalState()
     const fileRef = React.createRef()
 
     const readCSV = () => {
@@ -58,10 +63,9 @@ function UploadPage() {
         <div className={classes.root}>
             <input accept=".csv" ref={fileRef} onChange={readCSV} className={classes.input} id="icon-button-file" type="file" />
             <label className={classes.uploadButton} htmlFor="icon-button-file">
-                <p>Upload Data</p>
-                <IconButton color="primary" aria-label="upload picture" component="span">
-                    <PublishIcon />
-                </IconButton>
+                <Button variant="contained" color="primary" component="span"  startIcon={<CloudUploadIcon />}>
+                    Upload Dataset
+                </Button>
             </label>
         </div>
     );

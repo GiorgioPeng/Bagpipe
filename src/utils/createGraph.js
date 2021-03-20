@@ -18,6 +18,8 @@ const createGraph = (data, type, width, height, xaxis, yaxis) => {
             data={data}
             layout={{
                 // width: width,
+                plot_bgcolor:'rgba(255,255,255,0)',
+                paper_bgcolor:'rgba(255,255,255,0)',
                 height: height,
                 xaxis: {
                     title: {

@@ -7,8 +7,9 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 const useStyles = makeStyles((theme) => ({
   root: {
-    margin: '5px auto',
-    width: '95%',
+    // margin: '15px auto',
+    marginBottom: 0
+
   },
   media: {
     height: 400,
@@ -21,10 +22,10 @@ function IntroductionPage() {
   return (
     <Card className={classes.root}>
       <CardMedia
-            className={classes.media}
-            image={head}
-            title="Contemplative Reptile"
-          />
+        className={classes.media}
+        image={head}
+        title="Privacy Preserving Time Series Data Mining Platform based on Front-End"
+      />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           Privacy Preserving Time Series Data Mining Platform based on Front-End

@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme) => ({
     graphContainer: {
         maxWidth: '90vw',
         overflowX: 'scroll',
-        marginTop: '10px',
+        // marginTop: '10px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

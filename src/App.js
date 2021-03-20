@@ -5,7 +5,6 @@ import Paper from '@material-ui/core/Paper';
 import './App.css';
 import { GlobalStateProvider } from "./globalState";
 import { useKbn } from "use-kbn";
-import Divider from '@material-ui/core/Divider';
 import UploadPage from './subPages/UploadPage'
 import IntroductionPage from './subPages/IntroductionPage'
 import VisualizationPage from './subPages/VisualizationPage'
@@ -15,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     margin: '30px auto',
     width: '90vw',
+    backgroundImage: 'linear-gradient(to bottom, #5b61e5 0%, #e9c1db 49%, #ffe8c9 100%)'
   },
 }));
 function App() {
@@ -30,7 +30,6 @@ function App() {
       <Paper className={classes.root}>
         <IntroductionPage />
         <UploadPage />
-        <Divider variant="middle" />
         <VisualizationPage />
         <MachineLearnPage />
         <LearningResultPage />

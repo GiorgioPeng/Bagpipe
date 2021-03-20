@@ -9,7 +9,8 @@ import embed from 'vega-embed';
 const useStyles = makeStyles((theme) => ({
     root: {
         marginTop: '20px',
-        padding: '5px'
+        padding: '5px',
+        backgroundColor:'#edf2fb'
     },
     container: {
         display: 'flex',

@@ -187,7 +187,7 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
 
     model.compile({
         optimizer: tf.train.adam(learningRate),
-        loss: 'meanSquaredError'
+        loss: tf.losses.huberLoss,
     });
 
     const modelResult = await model.fit(input, output, {
@@ -195,7 +195,7 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
         epochs: epochs,
         callbacks: tfvis.show.fitCallbacks(
             { name: 'RESULTs' },
-            ['loss', 'acc'],
+            ['loss'],
             { callbacks: ['onEpochEnd', 'onBatchEnd'] }
         )
     })

@@ -8,7 +8,7 @@ import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {
-        margin: '5px',
+        // margin: '5px',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center'

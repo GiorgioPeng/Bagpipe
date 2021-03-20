@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
     },
     chip: {
         margin: 2,
+        backgroundColor:'#f8edeb'
     }
 }));
 const ITEM_HEIGHT = 48;
@@ -19,6 +20,7 @@ const ITEM_PADDING_TOP = 8;
 const MenuProps = {
     PaperProps: {
         style: {
+            backgroundColor:'#fcefb4',
             maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
             width: 300,
         },

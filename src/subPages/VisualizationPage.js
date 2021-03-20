@@ -12,18 +12,20 @@ import DataOverviewTable from '../components/DataOverviewTable'
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {
-        margin: '5px'
+        // margin: '5px',
+        // backgroundImage: 'linear-gradient(to bottom, red, aliceblue)'
     }
+
 }));
 
 function VisualizationPage() {
     const classes = useStyles();
     const [state,] = useGlobalState()
     return (
-        <div>
+        <>
             <div className={classes.tableContainer}>
                 <DataOverviewTable />
-                <Divider variant="middle" />
+                {/* <Divider variant="middle" /> */}
                 <VariableChoose />
             </div>
             {state.finishChoose ?
@@ -37,8 +39,7 @@ function VisualizationPage() {
                 :
                 ''
             }
-
-        </div>
+        </>
     )
 }
 

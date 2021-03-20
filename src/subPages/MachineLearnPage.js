@@ -22,6 +22,7 @@ const useStyles = makeStyles({
         justifyContent: 'center',
     },
     paper: {
+        backgroundColor: '#f2e8cf',
         width: '90%',
         padding: '10px',
         display: 'flex',
@@ -168,7 +169,7 @@ function MachineLearnPage() {
                                 name="isFinish" />}
                         label="Finish"
                     />
-                    <Button variant="contained" disabled={state.finishSet ? false : true} onClick={startTraining}>Start Training</Button>
+                    <Button variant="contained" disabled={state.finishSet || state.model ? false : true} onClick={startTraining}>Start Training</Button>
                 </Paper>
                 :
                 ''

@@ -40,6 +40,8 @@ function MiniLinePicture() {
                 title: "Features Line Graph",
                 plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
                 showlegend: false,
+                plot_bgcolor:'rgba(255,255,255,0)',
+                paper_bgcolor:'rgba(255,255,255,0)'
             }
             for (const column of state.inputColumn) {
                 let x = unpack(state.data4Analyse, state.timeColumn)

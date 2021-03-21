@@ -47,11 +47,12 @@ function DataOverviewTable() {
                             align: 'center',
                             title: (
                                 <h2>{e}
-                                    <Tooltip
-                                        TransitionComponent={Fade}
-                                        TransitionProps={{ timeout: 600 }}
-                                        title={e !== state.timeColumn ?
-                                            (`
+                                    {e !== state.timeColumn ?
+                                        <Tooltip
+                                            TransitionComponent={Fade}
+                                            TransitionProps={{ timeout: 600 }}
+                                            title={
+                                                (`
                                             max:       ${max(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             min:       ${min(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             sum:       ${sum(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
@@ -59,12 +60,13 @@ function DataOverviewTable() {
                                             median:    ${median(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             variance:  ${variance(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             deviation: ${deviation(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}
-                                        `)
-                                            :
-                                            ''
-                                        }>
-                                        <HelpIcon fontSize='small' />
-                                    </Tooltip>
+                                            `)
+                                            }>
+                                            <HelpIcon fontSize='small' />
+                                        </Tooltip>
+                                        :
+                                        ''
+                                    }
                                 </h2>
                             )
                         }

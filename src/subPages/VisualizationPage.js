@@ -1,7 +1,5 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
-import Divider from '@material-ui/core/Divider';
 import VariableChoose from '../components/VariableChoose'
 import LinePicture from '../components/LinePicture'
 import BarPicture from '../components/BarPicture'

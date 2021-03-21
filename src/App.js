@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     margin: '30px auto',
     width: '90vw',
     backgroundImage: 'linear-gradient(to bottom, #5b61e5 0%, #e9c1db 49%, #ffe8c9 100%)'
+    // backgroundImage: 'linear-gradient(-225deg, #7085B6 0%, #87A7D9 50%, #DEF3F8 100%)'
   },
 }));
 function App() {

@@ -170,6 +170,7 @@ function VariableChoose() {
     const [state, updateState] = useGlobalState()
     const [isClear, setIsClear] = React.useState(false)
     const [relative, setRelative] = React.useState([])
+    const [anomalyDataPercentage, setAnomalyDataPercentage] = React.useState(0)
     const handleTimeColumnChange = (event) => {
         updateState('timeColumn', event.target.value)
     };
@@ -202,7 +203,8 @@ function VariableChoose() {
         updateState('proprocessWay', event.target.value)
     };
     const handleAnomalyDataPercentageChange = (event, newValue) => {
-        setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // avoid ui refresh be blockd
+        // setTimeout(() => updateState('anomalyDataPercentage', newValue), 0) // avoid ui refresh be blockd
+        setAnomalyDataPercentage(newValue)
     }
     const finishAndDataClean = () => {
         if (state.labelColumn.length !== 0 && state.timeColumn.length !== 0) {
@@ -242,8 +244,11 @@ function VariableChoose() {
                         tempDataObj = JSON.parse(JSON.stringify(state.data4Analyse))
                         break;
                 }
-                if (state.anomalyDataPercentage !== 0)
-                    updateState('data4Analyse', removeAnomaly(tempDataObj, state.anomalyDataPercentage, [state.labelColumn]))
+                if (anomalyDataPercentage !== 0) {
+                    updateState('anomalyDataPercentage', anomalyDataPercentage)
+                    console.log(anomalyDataPercentage)
+                    updateState('data4Analyse', removeAnomaly(tempDataObj, anomalyDataPercentage, [state.labelColumn]))
+                }
                 else {
                     updateState('data4Analyse', tempDataObj)
                 }
@@ -326,7 +331,7 @@ function VariableChoose() {
                             <HelpIcon fontSize='small' />
                         </Tooltip>
                     </Typography>
-                    <IOSSlider aria-label="ios slider" disabled={state.finishChoose ? true : false} marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
+                    <IOSSlider aria-label="ios slider" disabled={state.finishChoose ? true : false} marks={marks} onChange={handleAnomalyDataPercentageChange} value={anomalyDataPercentage} max={50} valueLabelDisplay="on" />
                     <Tooltip
                         TransitionComponent={Fade}
                         TransitionProps={{ timeout: 600 }}

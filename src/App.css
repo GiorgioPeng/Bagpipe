@@ -1,6 +1,7 @@
 body {
-  background-color: #003459;
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
 }
+
 .App {
   text-align: center;
 }
@@ -39,17 +40,20 @@ body {
     transform: rotate(360deg);
   }
 }
-#use-kbn-root{
-  right:-100px !important;
-  bottom:-50px !important;
+
+#use-kbn-root {
+  right: -100px !important;
+  bottom: -50px !important;
   /* width: 200px;
   height:300px */
 }
+
 #use-kbn-message {
   display: none;
 }
 
 /* 隐藏vega选项 */
+
 details {
-  display:none
+  display: none
 }

@@ -8,6 +8,7 @@ import { mean, variance } from 'd3-array';
  * @returns {Array} the array of anomaly data index
  */
 const getAnomalyDataIndex = (dataArr, probability, column) => {
+    probability = 1 - probability / 100
     const bound = {}
     const indexes = []
     const local_mean = mean(dataArr, (d) => parseFloat(d[column]))

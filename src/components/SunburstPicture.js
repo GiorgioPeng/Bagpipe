@@ -10,7 +10,14 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
 }));
-
+const compare = (a, b) => {
+    if (isNaN(a) && isNaN(b)) {
+        return 0
+    }
+    else {
+        return - parseFloat(a) + parseFloat(b)
+    }
+}
 
 function SunburstPicture() {
     const [state,] = useGlobalState()
@@ -23,13 +30,30 @@ function SunburstPicture() {
                 return row[key];
             });
         }
-        if (sunburstPictureRef.current && state.data4Analyse.length < 600) {
+        if (sunburstPictureRef.current) {
+            let layout = {
+                margin: { l: 0, r: 0, b: 0, t: 0 },
+                width: 500,
+                height: 500,
+                plot_bgcolor: 'rgba(255,255,255,0)',
+                paper_bgcolor: 'rgba(255,255,255,0)'
+            };
+            let values = [, ...unpack(state.data4Analyse, state.labelColumn)]
             const centerText = state.labelColumn
-            const labels = [centerText, ...unpack(state.data4Analyse, state.timeColumn)]
+            let labels = [centerText, ...unpack(state.data4Analyse, state.timeColumn)]
+
+            if (state.data4Analyse.length > 150) {
+                values = values.sort(compare)
+                values = [...values.slice(0, 75), ...values.slice(-75, -1)]
+                labels = labels.slice(0, 150)
+            }
+
             const parents = labels.map(e => {
                 return e === centerText ? "" : centerText
             })
-            const values = [, ...unpack(state.data4Analyse, state.labelColumn)]
+
+
+
             const data = [{
                 type: "sunburst",
                 labels: labels,
@@ -39,32 +63,17 @@ function SunburstPicture() {
                 leaf: { opacity: 0.4 },
                 marker: { line: { width: 2 } },
             }];
-
-            let layout = {
-                margin: { l: 0, r: 0, b: 0, t: 0 },
-                width: 500,
-                height: 500,
-                plot_bgcolor:'rgba(255,255,255,0)',
-                paper_bgcolor:'rgba(255,255,255,0)'
-            };
-
             setInnerGraph([createComplexGraph(data, 'Sunburst', layout)])
+
         }
         return () => {
             setInnerGraph([])
         }
     }, [])
     return (
-        <>
-            {
-                state.data4Analyse.length < 600 ?
-                    <div ref={sunburstPictureRef} className={classes.graphContainer}>
-                        {innerGraph?.map(e => e)}
-                    </div>
-                    :
-                    ''
-            }
-        </>
+        <div ref={sunburstPictureRef} className={classes.graphContainer}>
+            {innerGraph?.map(e => e)}
+        </div>
     )
 }
 export default SunburstPicture

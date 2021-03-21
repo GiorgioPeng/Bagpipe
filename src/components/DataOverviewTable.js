@@ -4,6 +4,7 @@ import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { max, min, sum, mean, median, variance, deviation } from 'd3-array';
 import Tooltip from '@material-ui/core/Tooltip';
+import HelpIcon from '@material-ui/icons/Help';
 import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
@@ -45,11 +46,12 @@ function DataOverviewTable() {
                             width: 150,
                             align: 'center',
                             title: (
-                                <Tooltip
-                                    TransitionComponent={Fade}
-                                    TransitionProps={{ timeout: 600 }}
-                                    title={e !== state.timeColumn ?
-                                        (`
+                                <h2>{e}
+                                    <Tooltip
+                                        TransitionComponent={Fade}
+                                        TransitionProps={{ timeout: 600 }}
+                                        title={e !== state.timeColumn ?
+                                            (`
                                             max:       ${max(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             min:       ${min(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             sum:       ${sum(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
@@ -58,11 +60,12 @@ function DataOverviewTable() {
                                             variance:  ${variance(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             deviation: ${deviation(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}
                                         `)
-                                        :
-                                        ''
-                                    }>
-                                    <h4>{e}</h4>
-                                </Tooltip>
+                                            :
+                                            ''
+                                        }>
+                                        <HelpIcon fontSize='small' />
+                                    </Tooltip>
+                                </h2>
                             )
                         }
                     })}

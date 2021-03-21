@@ -14,6 +14,7 @@ import inverseDistanceWeightingInterpolation from '../algorithm/inverseDistanceW
 import hotDecking from '../algorithm/hotDecking'
 import deleteNull from '../algorithm/deleteNull'
 import removeAnomaly from '../algorithm/chebyshev'
+import HelpIcon from '@material-ui/icons/Help';
 import getPearsonCoefficient from '../algorithm/pearsonCoefficient'
 import Cluster from './Cluster'
 
@@ -30,11 +31,11 @@ const useStyles = makeStyles((theme) => ({
         color: 'red',
         fontWeight: 'bold'
     },
-    hint: {
+    require: {
         display: 'flex',
         alignItems: 'center'
     },
-    anomalyText: {
+    text: {
         margin: '10px'
     },
     button: {
@@ -271,7 +272,7 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time column:</div>
+                    <div className={classes.require}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time column:</div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.timeColumn}
@@ -281,7 +282,15 @@ function VariableChoose() {
                     />
 
 
-                    <div className={classes.hint}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose mining aim column:</div>
+                    <div className={classes.require}><Typography color={'secondary'} variant={'h4'}>*</Typography>
+                        <Typography gutterBottom>Please choose mining aim column:</Typography>
+                        <Tooltip
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
+                            title={'This column will be what you want to analyse and predict!'}>
+                            <HelpIcon fontSize='small' />
+                        </Tooltip>
+                    </div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.labelColumn}
@@ -290,12 +299,14 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <Tooltip
-                        TransitionComponent={Fade}
-                        TransitionProps={{ timeout: 600 }}
-                        title={'Selected by the dependency defaultly, but can be modified'}>
-                        <div>Please choose input features:</div>
-                    </Tooltip>
+                    <Typography className={classes.text} gutterBottom>Please choose input features:
+                        <Tooltip
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
+                            title={'The default selection is made by correlation, but can be modified'}>
+                            <HelpIcon fontSize='small' />
+                        </Tooltip>
+                    </Typography>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.inputColumn}
@@ -306,12 +317,15 @@ function VariableChoose() {
 
                     <Cluster relativeArr={relative} />
 
-                    <Tooltip
-                        TransitionComponent={Fade}
-                        TransitionProps={{ timeout: 600 }}
-                        title={'Pay attention of using the option! Please estimate the percentage of anomaly data in your dataset before setting this!'}>
-                        <Typography className={classes.anomalyText} gutterBottom>Anomaly Data Percentage:</Typography>
-                    </Tooltip>
+                    <Typography className={classes.text} gutterBottom>
+                        Anomaly Data Percentage:
+                        <Tooltip
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
+                            title={'Pay attention of using the option! Please estimate the percentage of anomaly data in your dataset before setting this!'}>
+                            <HelpIcon fontSize='small' />
+                        </Tooltip>
+                    </Typography>
                     <IOSSlider aria-label="ios slider" disabled={state.finishChoose ? true : false} marks={marks} onChange={handleAnomalyDataPercentageChange} value={state.anomalyDataPercentage} max={50} valueLabelDisplay="on" />
                     <Tooltip
                         TransitionComponent={Fade}

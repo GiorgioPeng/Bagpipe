@@ -30,14 +30,14 @@ function LearningResultPage() {
     const [newData, setNewData] = React.useState(null)
     const [nextDayData, setNextDayData] = React.useState(null)
     React.useEffect(() => {
-        if (state.model) {
-            if (state.inputColumn.length === 0) { 
+        if (state.model !== '') {
+            if (state.inputColumn.length === 0) {
                 const column = state.labelColumn
                 const data = state.data4Analyse.map(value => parseFloat(value[column]))
                 let max = Math.max(...data)
                 let min = Math.min(...data)
                 let tempData = []
-                let prefix = [] 
+                let prefix = []
                 let suffix = []
                 for (let index = 0; index < state.windowSize + 1; index++) {
                     prefix.push(NaN)
@@ -74,13 +74,13 @@ function LearningResultPage() {
                 setNewData(tempData)
                 setNextDayData(modelPredictData[modelPredictData.length - 1])
             }
-            else { 
+            else {
                 const column = state.labelColumn
                 const data = state.data4Analyse.map(value => parseFloat(value[column]))
                 let max = Math.max(...data)
                 let min = Math.min(...data)
                 let tempData = []
-                let prefix = [] 
+                let prefix = []
                 let suffix = []
                 for (let index = 0; index < state.windowSize + 1; index++) {
                     prefix.push(NaN)
@@ -117,6 +117,10 @@ function LearningResultPage() {
                 setNewData(tempData)
                 setNextDayData(modelPredictData[modelPredictData.length - 1])
             }
+        }
+        return ()=>{
+            setNewData(null)
+            setNextDayData(null)
         }
     }, [state.model])
     return (

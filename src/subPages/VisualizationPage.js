@@ -10,20 +10,12 @@ import SunburstPicture from '../components/SunburstPicture'
 import ParallelCoordinatesPicture from '../components/ParallelCoordinatesPicture'
 import DataOverviewTable from '../components/DataOverviewTable'
 
-const useStyles = makeStyles((theme) => ({
-    tableContainer: {
-        // margin: '5px',
-        // backgroundImage: 'linear-gradient(to bottom, red, aliceblue)'
-    }
-
-}));
 
 function VisualizationPage() {
-    const classes = useStyles();
     const [state,] = useGlobalState()
     return (
         <>
-            <div className={classes.tableContainer}>
+            <div>
                 <DataOverviewTable />
                 {/* <Divider variant="middle" /> */}
                 <VariableChoose />

@@ -29,6 +29,12 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'space-around',
         alignItems: 'center'
+    },
+    buttons:{
+        display: 'flex',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        width:'600px'
     }
 
 });
@@ -91,6 +97,7 @@ const IOSSwitch = withStyles((theme) => ({
 function MachineLearnPage() {
     const [state, updateState] = useGlobalState()
     const classes = useStyles()
+    const [modelTraining, setModelTraining] = React.useState(false)
     // TODO 将默认值和 globalState 中的值进行绑定
     const setting = [
         { type: 'Window Size', min: 1, max: 100, defaultNum: 20, step: 1 },
@@ -101,10 +108,11 @@ function MachineLearnPage() {
 
     ]
     const startTraining = async () => {
+        setModelTraining(true)
         const column = state.labelColumn
         const data = state.data4Analyse.map(value => parseFloat(value[column]))
-        if (state.model !== '') // exit if the model is trainied
-            return
+        // if (state.model !== '') // exit if the model is trainied
+        //     return
         if (state.inputColumn.length !== 0) {
             const { model, modelResult } = await trainComplexModel(
                 state.data4Analyse,
@@ -131,6 +139,11 @@ function MachineLearnPage() {
             updateState('model', model)
             updateState('modelResult', modelResult)
         }
+        setModelTraining(false)
+    }
+    const clearModel = () => {
+        updateState('model', '')
+        updateState('modelResult', '')
     }
     return (
         <div className={classes.root}>
@@ -141,7 +154,7 @@ function MachineLearnPage() {
                         <Tooltip
                             TransitionComponent={Fade}
                             TransitionProps={{ timeout: 600 }}
-                            title={'In general, precise model need bigger window size, more hidden layers, more epochs, less learning rate and more data! But please consider these options according the requirements and machine performance!'}>
+                            title={'In general, a precise model needs bigger window size, more hidden layers, more epochs, less learning rate and more data! But please consider these options according the requirements and machine performance!'}>
                             <HelpIcon fontSize='small' />
                         </Tooltip>
                         , Please use the default values!!
@@ -169,7 +182,10 @@ function MachineLearnPage() {
                                 name="isFinish" />}
                         label="Finish"
                     />
-                    <Button variant="contained" disabled={state.finishSet || state.model ? false : true} onClick={startTraining}>Start Training</Button>
+                    <div className={classes.buttons}>
+                        <Button variant="contained" color="primary" disabled={state.finishSet && state.model === '' && !modelTraining ? false : true} onClick={startTraining}>Start Training</Button>
+                        <Button variant="contained" color="secondary" disabled={state.model === '' ? true : false} onClick={clearModel}>Clear exist model</Button>
+                    </div>
                 </Paper>
                 :
                 ''

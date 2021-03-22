@@ -4087,6 +4087,11 @@ connect-history-api-fallback@^1.6.0:
   resolved "https://registry.npm.taobao.org/connect-history-api-fallback/download/connect-history-api-fallback-1.6.0.tgz#8b32089359308d111115d81cad3fceab888f97bc"
   integrity sha1-izIIk1kwjRERFdgcrT/Oq4iPl7w=
 
+console-ban@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.npm.taobao.org/console-ban/download/console-ban-2.1.0.tgz#08c9cb0f223b3e1c73fdd63f6eb6420238b2508f"
+  integrity sha1-CMnLDyI7Phxz/dY/brZCAjiyUI8=
+
 console-browserify@^1.1.0:
   version "1.2.0"
   resolved "https://registry.npm.taobao.org/console-browserify/download/console-browserify-1.2.0.tgz#67063cef57ceb6cf4993a2ab3a55840ae8c49336"

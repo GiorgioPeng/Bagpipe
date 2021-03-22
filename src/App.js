@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-// import logo from './logo.svg';
 import './App.css';
 import { GlobalStateProvider } from "./globalState";
 import { useKbn } from "use-kbn";
@@ -10,6 +9,7 @@ import IntroductionPage from './subPages/IntroductionPage'
 import VisualizationPage from './subPages/VisualizationPage'
 import MachineLearnPage from './subPages/MachineLearnPage'
 import LearningResultPage from './subPages/LearningResultPage'
+import { init as ConsoleBan } from 'console-ban'
 const useStyles = makeStyles((theme) => ({
   root: {
     margin: '30px auto',
@@ -26,6 +26,11 @@ function App() {
     400,
     500
   );
+  React.useEffect(()=>{
+    ConsoleBan({
+      redirect: 'https://www.baidu.com'
+    })
+  })
   return (
     <GlobalStateProvider>
       <Paper className={classes.root}>

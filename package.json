@@ -12,7 +12,6 @@
     "@testing-library/user-event": "^7.1.2",
     "ali-react-table": "^2.4.0",
     "d3": "^6.3.1",
-    "dataframe-js": "^1.4.4",
     "plotly.js": "^1.58.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

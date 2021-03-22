@@ -38,7 +38,6 @@ function MiniLinePicture() {
             let layout = {
                 height: 500,
                 title: "Features Line Graph",
-                plot_bgcolor: 'rgba(228, 222, 249, 0.65)',
                 showlegend: false,
                 plot_bgcolor:'rgba(255,255,255,0)',
                 paper_bgcolor:'rgba(255,255,255,0)'

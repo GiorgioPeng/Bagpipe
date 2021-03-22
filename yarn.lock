@@ -4200,11 +4200,6 @@ core-js@^2.4.0:
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-2.6.11.tgz?cache=0&sync_timestamp=1604675508568&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha1-OIMUafmSK97Y7iHJ3EaYXgOZMIw=
 
-core-js@^3.1.4:
-  version "3.8.1"
-  resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.8.1.tgz?cache=0&sync_timestamp=1607216074284&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcore-js%2Fdownload%2Fcore-js-3.8.1.tgz#f51523668ac8a294d1285c3b9db44025fda66d47"
-  integrity sha1-9RUjZorIopTRKFw7nbRAJf2mbUc=
-
 core-util-is@1.0.2, core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.npm.taobao.org/core-util-is/download/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -4719,28 +4714,10 @@ d3-drag@2:
     d3-dispatch "1 - 2"
     d3-selection "2"
 
-d3-dsv@1:
-  version "1.2.0"
-  resolved "https://registry.npm.taobao.org/d3-dsv/download/d3-dsv-1.2.0.tgz#9d5f75c3a5f8abd611f74d3f5847b0d4338b885c"
-  integrity sha1-nV91w6X4q9YR900/WEew1DOLiFw=
-  dependencies:
-    commander "2"
-    iconv-lite "0.4"
-    rw "1"
-
 "d3-dsv@1 - 2", d3-dsv@2, d3-dsv@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npm.taobao.org/d3-dsv/download/d3-dsv-2.0.0.tgz#b37b194b6df42da513a120d913ad1be22b5fe7c5"
   integrity sha1-s3sZS230LaUToSDZE60b4itf58U=
-  dependencies:
-    commander "2"
-    iconv-lite "0.4"
-    rw "1"
-
-d3-dsv@~1.0.10:
-  version "1.0.10"
-  resolved "https://registry.npm.taobao.org/d3-dsv/download/d3-dsv-1.0.10.tgz#4371c489a2a654a297aca16fcaf605a6f31a6f51"
-  integrity sha1-Q3HEiaKmVKKXrKFvyvYFpvMab1E=
   dependencies:
     commander "2"
     iconv-lite "0.4"
@@ -4857,16 +4834,6 @@ d3-random@2:
   version "2.2.2"
   resolved "https://registry.npm.taobao.org/d3-random/download/d3-random-2.2.2.tgz#5eebd209ef4e45a2b362b019c1fb21c2c98cbb6e"
   integrity sha1-XuvSCe9ORaKzYrAZwfshwsmMu24=
-
-d3-request@~1.0.6:
-  version "1.0.6"
-  resolved "https://registry.npm.taobao.org/d3-request/download/d3-request-1.0.6.tgz#a1044a9ef4ec28c824171c9379fae6d79474b19f"
-  integrity sha1-oQRKnvTsKMgkFxyTefrm15R0sZ8=
-  dependencies:
-    d3-collection "1"
-    d3-dispatch "1"
-    d3-dsv "1"
-    xmlhttprequest "1"
 
 d3-scale-chromatic@2:
   version "2.0.0"
@@ -5043,16 +5010,6 @@ data-urls@^1.0.0, data-urls@^1.1.0:
     abab "^2.0.0"
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
-
-dataframe-js@^1.4.4:
-  version "1.4.4"
-  resolved "https://registry.npm.taobao.org/dataframe-js/download/dataframe-js-1.4.4.tgz#0a4db4aca3ae400dd0878c39b89c1a2312a7e261"
-  integrity sha1-Ck20rKOuQA3Qh4w5uJwaIxKn4mE=
-  dependencies:
-    core-js "^3.1.4"
-    d3-dsv "~1.0.10"
-    d3-request "~1.0.6"
-    regenerator-runtime "^0.13.3"
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -15164,11 +15121,6 @@ xmlchars@^2.1.1:
   version "2.2.0"
   resolved "https://registry.npm.taobao.org/xmlchars/download/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha1-Bg/hvLf5x2/ioX24apvDq4lCEMs=
-
-xmlhttprequest@1:
-  version "1.8.0"
-  resolved "https://registry.npm.taobao.org/xmlhttprequest/download/xmlhttprequest-1.8.0.tgz#67fe075c5c24fef39f9d65f5f7b7fe75171968fc"
-  integrity sha1-Z/4HXFwk/vOfnWX197f+dRcZaPw=
 
 xregexp@^4.3.0:
   version "4.4.0"

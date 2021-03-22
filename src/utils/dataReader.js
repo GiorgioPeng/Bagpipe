@@ -1,5 +1,4 @@
 import * as d3 from "d3";
-// import DataFrame from "dataframe-js";
 
 /**
  * load the uploaded data and update thte globale state

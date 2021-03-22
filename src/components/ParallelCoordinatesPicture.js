@@ -2,12 +2,14 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
 import createGraph from '../utils/createGraph'
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
     },
 }));
@@ -17,7 +19,7 @@ function ParallelCoordinatesPicture() {
     const parallelCoordinatesPictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
     const width = 800;
-    const height = 500; 
+    const height = 500;
     React.useEffect(() => {
         function unpack(rows, key) {
             return rows.map(function (row) {
@@ -70,6 +72,12 @@ function ParallelCoordinatesPicture() {
             {state.inputColumn.length > 1 ?
                 <div ref={parallelCoordinatesPictureRef} className={classes.graphContainer}>
                     {innerGraph?.map(e => e)}
+                    <Tooltip
+                        TransitionComponent={Fade}
+                        TransitionProps={{ timeout: 600 }}
+                        title={'The graph focus on the relationship between the each feature. You can try to add, move and remove purple bar(s) to get more details.'}>
+                        <HelpIcon fontSize='small' />
+                    </Tooltip>
                 </div>
                 :
                 ''

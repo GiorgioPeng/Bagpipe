@@ -2,11 +2,14 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
 import { createComplexGraph } from '../utils/createGraph'
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
+
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
     },
 }));
@@ -73,6 +76,12 @@ function SunburstPicture() {
     return (
         <div ref={sunburstPictureRef} className={classes.graphContainer}>
             {innerGraph?.map(e => e)}
+            <Tooltip
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                title={'This graph use a clear way to show you the difference of output column!'}>
+                <HelpIcon fontSize='small' />
+            </Tooltip>
         </div>
     )
 }

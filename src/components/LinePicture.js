@@ -3,6 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
 import MiniLinePicture from './MiniLinePicture'
 import createGraph from '../utils/createGraph'
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
@@ -20,7 +23,7 @@ function LinePicture() {
     const linePictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
     const width = 400;
-    const height = 500; 
+    const height = 500;
     React.useEffect(() => {
         if (linePictureRef.current) {
             const graphArr = []
@@ -47,6 +50,12 @@ function LinePicture() {
     return (
         <div ref={linePictureRef} className={classes.graphContainer}>
             {innerGraph?.map(e => e)}
+            <Tooltip
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                title={'The graph focus on the change rate of the data. From the graph, you can know the trend of data changing. The graph supports zooming.'}>
+                <HelpIcon fontSize='small' />
+            </Tooltip>
             {state.inputColumn.length !== 0 ? <MiniLinePicture /> : ''}
         </div>
     )

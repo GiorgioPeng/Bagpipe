@@ -2,12 +2,14 @@ import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { useGlobalState } from '../globalState'
 import createGraph from '../utils/createGraph'
+import HelpIcon from '@material-ui/icons/Help';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fade from '@material-ui/core/Fade';
 
 const useStyles = makeStyles((theme) => ({
     graphContainer: {
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-around',
+        justifyContent: 'center',
         alignItems: 'center',
     },
 }));
@@ -17,7 +19,7 @@ function HistogramsPicture() {
     const histogramsPictureRef = React.useRef(null)
     const [innerGraph, setInnerGraph] = React.useState([])
     const width = 800;
-    const height = 500; 
+    const height = 500;
     React.useEffect(() => {
         if (histogramsPictureRef.current) {
             const graphArr = []
@@ -45,6 +47,12 @@ function HistogramsPicture() {
     return (
         <div ref={histogramsPictureRef} className={classes.graphContainer}>
             {innerGraph?.map(e => e)}
+            <Tooltip
+                TransitionComponent={Fade}
+                TransitionProps={{ timeout: 600 }}
+                title={'From this graph, you can know the distribution of the data set clearer!'}>
+                <HelpIcon fontSize='small' />
+            </Tooltip>
         </div>
     )
 }

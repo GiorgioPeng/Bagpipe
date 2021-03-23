@@ -1,4 +1,4 @@
-import { mean,max, variance } from 'd3-array';
+import { mean, variance } from 'd3-array';
 
 /**
  * get the anomaly data index array
@@ -44,8 +44,10 @@ const removeAnomaly = (dataArr, probability, columns) => {
         hint.push({ column: column[0], bound: temp.bound })
     }
     anomalyIndexes = [...new Set(anomalyIndexes)] // duplicate removal
+    let count = 0;
     for (const index of anomalyIndexes) {
-        removedElement.push(...result.splice(index, 1))
+        removedElement.push(...result.splice(index + count, 1))
+        count--;
     }
     // console.log(result,removedElement)
     return { result: result, removedElement: removedElement, hint: hint }

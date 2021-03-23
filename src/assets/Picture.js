@@ -2,7 +2,7 @@ import React from 'react'
 
 function Picture() {
     return (
-        <svg class="canvas" viewBox="0 0 1920 1080" preserveAspectRatio="xMaxYMid slice" version="1.1" >
+        <svg className="canvas" viewBox="0 0 1920 1080" preserveAspectRatio="xMaxYMid slice" version="1.1" >
             <rect width="1920" height="1080" fill="hsl(153, 65%, 15%)">
             </rect>
             <defs>

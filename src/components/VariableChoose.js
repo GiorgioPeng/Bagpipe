@@ -5,6 +5,7 @@ import CreateChooseDialog from '../utils/createChooseDialog'
 import { useGlobalState } from '../globalState'
 import { makeStyles } from '@material-ui/core/styles';
 import { withStyles } from '@material-ui/core/styles';
+import { BaseTable } from 'ali-react-table'
 import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
@@ -104,20 +105,23 @@ const marks = [
         value: 0,
     },
     {
-        value: 10,
+        value: 4,
+        label:'3 σ(Sigma)'
+    },
+    {
+        value: 11.1,
+        label:'2 σ(Sigma)'
     },
     {
         value: 25,
-    },
-    {
-        value: 50,
+        label:'1 σ(Sigma)'
     },
 ];
 
 const IOSSlider = withStyles({
     root: {
         marginTop: '12px',
-        width: '20vw',
+        width: '30vw',
         color: '#3880ff',
         height: 2,
         padding: '15px 0',
@@ -165,12 +169,66 @@ const IOSSlider = withStyles({
     },
 })(Slider);
 
+const RemovedTable = (props) => {
+    const { removedElement, columns, hint } = props;
+    // console.log(hint)
+    return (
+        <>
+            {
+                removedElement.length !== 0 ?
+                    <>
+                        <Typography >Removed Elements Table ({removedElement.length} rows)</Typography>
+                        <BaseTable
+                            style={{ maxWidth: 1200, height: 300, overflow: 'auto', fontSize: '15px' }}
+                            dataSource={removedElement}
+                            columns={columns.map(e => {
+                                if (hint[0].column === e) {
+                                    return {
+                                        code: e,
+                                        name: e,
+                                        width: 150,
+                                        align: 'center',
+                                        title: (
+                                            <h2>{e}
+                                                <Tooltip
+                                                    TransitionComponent={Fade}
+                                                    TransitionProps={{ timeout: 600 }}
+                                                    title={
+                                                        `Top Bound: ${hint[0].bound.top};
+                                                        Bottom Bound: ${hint[0].bound.bottom}`}>
+                                                    <HelpIcon fontSize='small' />
+                                                </Tooltip>
+                                            </h2>
+                                        )
+                                    }
+                                }
+                                else {
+                                    return {
+                                        code: e,
+                                        name: e,
+                                        width: 150,
+                                        align: 'center',
+                                        title: (
+                                            <h2>{e}</h2>
+                                        )
+                                    }
+                                }
+                            })}
+                        />
+                    </>
+                    :
+                    ''
+            }
+        </>
+    )
+}
 function VariableChoose() {
     const classes = useStyles()
     const [state, updateState] = useGlobalState()
     const [isClear, setIsClear] = React.useState(false)
     const [relative, setRelative] = React.useState([])
     const [anomalyDataPercentage, setAnomalyDataPercentage] = React.useState(0)
+    const [removedElement, setRemovedElement] = React.useState(null)
     const handleTimeColumnChange = (event) => {
         updateState('timeColumn', event.target.value)
     };
@@ -246,8 +304,10 @@ function VariableChoose() {
                 }
                 if (anomalyDataPercentage !== 0) {
                     updateState('anomalyDataPercentage', anomalyDataPercentage)
-                    console.log(anomalyDataPercentage)
-                    updateState('data4Analyse', removeAnomaly(tempDataObj, anomalyDataPercentage, [state.labelColumn]))
+                    // console.log(anomalyDataPercentage)
+                    const removeResult = removeAnomaly(tempDataObj, anomalyDataPercentage, [state.labelColumn])
+                    updateState('data4Analyse', removeResult.result)
+                    setRemovedElement(removeResult)
                 }
                 else {
                     updateState('data4Analyse', tempDataObj)
@@ -263,12 +323,14 @@ function VariableChoose() {
         <div className={classes.root} >
             {state.column.length !== 0 ?
                 <>
-                    <Tooltip
-                        TransitionComponent={Fade}
-                        TransitionProps={{ timeout: 600 }}
-                        title={'Hot Decking can only be used in multiple feature situation!'}>
-                        <div>Please choose data filled way:</div>
-                    </Tooltip>
+                    <Typography className={classes.text} gutterBottom>Please choose data filled way:
+                        <Tooltip
+                            TransitionComponent={Fade}
+                            TransitionProps={{ timeout: 600 }}
+                            title={'Hot Decking can only be used in multiple feature situation! Once you click finish button, you cannot go back unless you refresh the page.Because this choose will make the uploaded data set be changed.'}>
+                            <HelpIcon fontSize='small' />
+                        </Tooltip>
+                    </Typography>
                     <CreateChooseDialog
                         disabled={state.finishChoose || isClear ? true : false}
                         value={state.proprocessWay}
@@ -277,7 +339,9 @@ function VariableChoose() {
                         multiple={false}
                     />
 
-                    <div className={classes.require}><Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time column:</div>
+                    <div className={classes.require}>
+                        <Typography color={'secondary'} variant={'h4'}>*</Typography>Please choose time column:
+                    </div>
                     <CreateChooseDialog
                         disabled={state.finishChoose ? true : false}
                         value={state.timeColumn}
@@ -327,15 +391,24 @@ function VariableChoose() {
                         <Tooltip
                             TransitionComponent={Fade}
                             TransitionProps={{ timeout: 600 }}
-                            title={'Pay attention of using the option! Please estimate the percentage of anomaly data in your dataset before setting this!'}>
+                            title={'Pay attention of using the option! Please estimate the percentage of anomaly data in your dataset before setting this! Once you click finish button, you cannot go back unless you refresh the page.Because this choose will make the uploaded data set be changed.'}>
                             <HelpIcon fontSize='small' />
                         </Tooltip>
                     </Typography>
-                    <IOSSlider aria-label="ios slider" disabled={state.finishChoose ? true : false} marks={marks} onChange={handleAnomalyDataPercentageChange} value={anomalyDataPercentage} max={50} valueLabelDisplay="on" />
+                    <IOSSlider
+                        aria-label="ios slider"
+                        disabled={state.finishChoose || isClear ? true : false}
+                        marks={marks}
+                        onChange={handleAnomalyDataPercentageChange}
+                        value={anomalyDataPercentage}
+                        max={25}
+                        valueLabelDisplay="on"
+                    />
+
                     <Tooltip
                         TransitionComponent={Fade}
                         TransitionProps={{ timeout: 600 }}
-                        title={state.labelColumn === '' ? 'You should choose mining aim column or time column at first!' : ''}>
+                        title={state.labelColumn === '' ? 'You should choose mining aim column and time column at first!' : ''}>
                         <FormControlLabel
                             control={
                                 <IOSSwitch
@@ -345,6 +418,17 @@ function VariableChoose() {
                             label="Finish"
                         />
                     </Tooltip>
+
+                    {
+                        removedElement ?
+                            <RemovedTable
+                                removedElement={removedElement.removedElement}
+                                columns={state.column}
+                                hint={removedElement.hint}
+                            />
+                            :
+                            ''
+                    }
                 </>
                 : ''}
         </div >

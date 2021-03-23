@@ -6,11 +6,13 @@ import { max, min, sum, mean, median, variance, deviation } from 'd3-array';
 import Tooltip from '@material-ui/core/Tooltip';
 import HelpIcon from '@material-ui/icons/Help';
 import Fade from '@material-ui/core/Fade';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     tableContainer: {
         // margin: '5px',
         display: 'flex',
+        flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center'
     }
@@ -36,23 +38,25 @@ function DataOverviewTable() {
     return (
         <div className={classes.tableContainer}>
             {state.data4Analyse ?
-                <BaseTable
-                    style={{ maxWidth: 1200, height: 600, overflow: 'auto', fontSize: '15px' }}
-                    dataSource={state.data4Analyse}
-                    columns={state.column.map(e => {
-                        return {
-                            code: e,
-                            name: e,
-                            width: 150,
-                            align: 'center',
-                            title: (
-                                <h2>{e}
-                                    {e !== state.timeColumn ?
-                                        <Tooltip
-                                            TransitionComponent={Fade}
-                                            TransitionProps={{ timeout: 600 }}
-                                            title={
-                                                (`
+                <>
+                    <Typography>Data Set Table ({state.data4Analyse.length} rows)</Typography>
+                    <BaseTable
+                        style={{ maxWidth: 1200, height: 600, overflow: 'auto', fontSize: '15px' }}
+                        dataSource={state.data4Analyse}
+                        columns={state.column.map(e => {
+                            return {
+                                code: e,
+                                name: e,
+                                width: 150,
+                                align: 'center',
+                                title: (
+                                    <h2>{e}
+                                        {e !== state.timeColumn ?
+                                            <Tooltip
+                                                TransitionComponent={Fade}
+                                                TransitionProps={{ timeout: 600 }}
+                                                title={
+                                                    (`
                                             max:       ${max(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             min:       ${min(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             sum:       ${sum(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
@@ -61,17 +65,18 @@ function DataOverviewTable() {
                                             variance:  ${variance(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
                                             deviation: ${deviation(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}
                                             `)
-                                            }>
-                                            <HelpIcon fontSize='small' />
-                                        </Tooltip>
-                                        :
-                                        ''
-                                    }
-                                </h2>
-                            )
-                        }
-                    })}
-                />
+                                                }>
+                                                <HelpIcon fontSize='small' />
+                                            </Tooltip>
+                                            :
+                                            ''
+                                        }
+                                    </h2>
+                                )
+                            }
+                        })}
+                    />
+                </>
                 :
                 ''
             }

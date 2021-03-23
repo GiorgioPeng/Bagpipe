@@ -1,4 +1,4 @@
-import { mean, variance } from 'd3-array';
+import { mean,max, variance } from 'd3-array';
 
 /**
  * get the anomaly data index array
@@ -8,7 +8,7 @@ import { mean, variance } from 'd3-array';
  * @returns {Array} the array of anomaly data index
  */
 const getAnomalyDataIndex = (dataArr, probability, column) => {
-    probability = 1 - probability / 100
+    probability = probability / 100
     const bound = {}
     const indexes = []
     const local_mean = mean(dataArr, (d) => parseFloat(d[column]))
@@ -18,11 +18,11 @@ const getAnomalyDataIndex = (dataArr, probability, column) => {
     bound.bottom = local_mean - k
     let count = 0;
     for (const row of dataArr) {
-        if (row[column] < bound.bottom || row[column] > bound.up)
+        if (row[column] <= bound.bottom || row[column] >= bound.top)
             indexes.push(count)
         count++;
     }
-    return indexes
+    return { indexes: indexes, bound: bound }
 }
 
 /**
@@ -30,18 +30,24 @@ const getAnomalyDataIndex = (dataArr, probability, column) => {
  * @param {Array} dataArr the origin data array
  * @param {Number} probability the percentage of anomaly data
  * @param {Array} columns the array of names of all column which should remove the anomaly data
- * @returns {Array} the result data array
+ * @returns {Object} the result data array, the removed elements and bound detail
  */
 const removeAnomaly = (dataArr, probability, columns) => {
     const result = JSON.parse(JSON.stringify(dataArr))
+    const removedElement = []
+    const hint = []
     let anomalyIndexes = []
+    let temp;
     for (const column of columns) {
-        anomalyIndexes.push(...getAnomalyDataIndex(dataArr, probability, column))
+        temp = getAnomalyDataIndex(dataArr, probability, column[0])
+        anomalyIndexes.push(...temp.indexes)
+        hint.push({ column: column[0], bound: temp.bound })
     }
     anomalyIndexes = [...new Set(anomalyIndexes)] // duplicate removal
     for (const index of anomalyIndexes) {
-        result.splice(index, 1)
+        removedElement.push(...result.splice(index, 1))
     }
-    return result
+    // console.log(result,removedElement)
+    return { result: result, removedElement: removedElement, hint: hint }
 }
 export default removeAnomaly

@@ -28,7 +28,7 @@ function App() {
   // );
   React.useEffect(()=>{
     ConsoleBan({
-      redirect: 'https://www.baidu.com'
+      redirect: 'https://github.com/GiorgioPeng'
     })
   })
   return (

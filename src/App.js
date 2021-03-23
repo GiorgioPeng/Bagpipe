@@ -27,9 +27,9 @@ function App() {
   //   500
   // );
   React.useEffect(()=>{
-    // ConsoleBan({
-    //   redirect: 'https://www.baidu.com'
-    // })
+    ConsoleBan({
+      redirect: 'https://www.baidu.com'
+    })
   })
   return (
     <GlobalStateProvider>

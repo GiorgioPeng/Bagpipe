@@ -16,7 +16,7 @@ function computeInputAndOutput(data, windowSize) {
 
     const result = []
     for (let i = 0; i <= data.length - windowSize - 1; i++) {
-        result.push({ x: data.slice(i, i + windowSize), y: data[i + windowSize + 1] })
+        result.push({ x: data.slice(i, i + windowSize).map(e => [e]), y: data[i + windowSize + 1] })
     }
     return result
 }
@@ -39,24 +39,20 @@ export const trainSimpleModel = async (data, windowSize, epochs, learningRate, l
     const inputX = x.slice(0, Math.floor(trainingDataSize / 100 * x.length))
     const inputY = y.slice(0, Math.floor(trainingDataSize / 100 * y.length))
 
-    const inputLayerShape = windowSize
-    const lstmNeurons = 20
-    const lstmInputLayerFeatures = 10
+    const lstmNeurons = windowSize
+    const lstmInputLayerFeatures = 1
     const lstmInputLayerTimesteps = lstmNeurons / lstmInputLayerFeatures
 
-    const lstmInputShape = [lstmInputLayerFeatures, lstmInputLayerTimesteps]
-    const lstmOutputNeurons = 20
+    const lstmInputShape = [lstmInputLayerTimesteps, lstmInputLayerFeatures]
+    const lstmOutputNeurons = lstmNeurons
 
     const lstmBatchSize = windowSize
     const outputLayerShape = lstmOutputNeurons
     const outputLayerNeurons = 1
 
-    const input = tf.tensor2d(inputX, [inputX.length, inputX[0].length])
+    const input = tf.tensor3d(inputX)
     const output = tf.tensor2d(inputY, [inputY.length, 1]).reshape([inputY.length, 1])
     const model = tf.sequential()
-    model.add(tf.layers.dense({ units: lstmNeurons, inputShape: [inputLayerShape] }))
-
-    model.add(tf.layers.reshape({ targetShape: lstmInputShape }))
     if (layers !== 1) {
         model.add(tf.layers.lstm({
             units: lstmNeurons,
@@ -120,43 +116,42 @@ export const trainSimpleModel = async (data, windowSize, epochs, learningRate, l
  */
 export const trainComplexModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize, inputColumn, labelColumn) => {
     console.log('trainComplexModel')
-    let data1 = [] 
+    let data1 = []
     for (const column of inputColumn) {
-        data1.push(computeSimpleMoveAverage(data.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
+        data1.push(computeInputAndOutput(data.map(value => parseFloat(value[column])), windowSize).map(e => e.x))
     }
-
-    let data2 = computeSimpleMoveAverage(data.map(value => parseFloat(value[labelColumn])), windowSize)
+    let data2 = computeInputAndOutput(data.map(value => parseFloat(value[labelColumn])), windowSize)
     data1.push(data2.map(e => e.x))
     const x = []
     const y = data2.map(e => e.y)
-    for (let index1 = 0; index1 < data1[0].length; index1++) { 
-        let tempArr = [] 
-        for (let index2 = 0; index2 < data1.length; index2++) {
-            tempArr.push(data1[index2][index1])
+    for (let index1 = 0; index1 < data1[0].length; index1++) {
+        let tempArr = []
+        for (let index3 = 0; index3 < data1[0][0].length; index3++) {
+            let tempArr2 = []
+            for (let index2 = 0; index2 < data1.length; index2++) {
+                tempArr2.push(...data1[index2][index1][index3])
+            }
+            tempArr.push(tempArr2)
         }
         x.push(tempArr)
     }
     const inputX = x.slice(0, Math.floor(trainingDataSize / 100 * x.length))
     const inputY = y.slice(0, Math.floor(trainingDataSize / 100 * y.length))
 
-    const inputLayerShape = inputColumn.length + 1
-    const lstmNeurons = 20
-    const lstmInputLayerFeatures = 10
-    const lstmInputLayerTimesteps = lstmNeurons / lstmInputLayerFeatures
+    const lstmNeurons = windowSize
+    const lstmInputLayerTimesteps = windowSize
+    const lstmInputLayerFeatures = inputColumn.length + 1
 
-    const lstmInputShape = [lstmInputLayerFeatures, lstmInputLayerTimesteps]
-    const lstmOutputNeurons = 20
+    const lstmInputShape = [lstmInputLayerTimesteps, lstmInputLayerFeatures]
+    const lstmOutputNeurons = lstmNeurons
 
     const lstmBatchSize = windowSize
     const outputLayerShape = lstmOutputNeurons
     const outputLayerNeurons = 1
 
-    const input = tf.tensor2d(inputX)
+    const input = tf.tensor3d(inputX)
     const output = tf.tensor2d(inputY, [inputY.length, 1]).reshape([inputY.length, 1])  // [X]
     const model = tf.sequential()
-    model.add(tf.layers.dense({ units: lstmNeurons, inputShape: [inputLayerShape] }))
-
-    model.add(tf.layers.reshape({ targetShape: lstmInputShape }))
     if (layers !== 1) {
         model.add(tf.layers.lstm({
             units: lstmNeurons,
@@ -187,7 +182,7 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
 
     model.compile({
         optimizer: tf.train.adam(learningRate),
-        loss: tf.losses.huberLoss,
+        loss: 'meanSquaredError',
     });
 
     const modelResult = await model.fit(input, output, {
@@ -203,32 +198,6 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
     tfvis.show.modelSummary(modelSummary, model);
 
     return { model: model, modelResult: modelResult }
-}
-
-/**
- * descending dimension of the input data base on simple move average
- * @param {Array} data input data
- * @param {Number} windowSize window size of the data
- * @returns {Array} the feature and ouput before handling
- */
-function computeSimpleMoveAverage(data, windowSize) {
-    {
-        let max = Math.max(...data)
-        let min = Math.min(...data)
-        data = data.map(value => (value - min) / (max - min))
-    }
-
-    const result = []
-    for (let i = 0; i <= data.length - windowSize - 1; i++) {
-        let currentAverage = 0
-        let t = i + windowSize 
-        for (let k = i; k < t && k <= data.length; k++) {
-            currentAverage += data[k]
-        }
-        currentAverage /= windowSize 
-        result.push({ x: currentAverage, y: data[i + windowSize + 1] })
-    }
-    return result
 }
 
 
@@ -248,64 +217,28 @@ export const predictionsOfNow = (input, model, windowSize, isComplex, inputColum
     if (!isComplex) {
         input = computeInputAndOutput(input, windowSize)
         input = input.map(e => e.x)
-        x = tf.tensor2d(input, [input.length, input[0].length])
+        x = tf.tensor3d(input)
     }
     else {
         let data1 = []
         for (const column of inputColumn) {
-            data1.push(computeSimpleMoveAverage(input.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
+            data1.push(computeInputAndOutput(input.map(value => parseFloat(value[column])), windowSize).map(e => e.x))
         }
-
-        let data2 = computeSimpleMoveAverage(input.map(value => parseFloat(value[labelColumn])), windowSize)
+        let data2 = computeInputAndOutput(input.map(value => parseFloat(value[labelColumn])), windowSize)
         data1.push(data2.map(e => e.x))
         const xInput = []
         for (let index1 = 0; index1 < data1[0].length; index1++) {
-            let tempArr = [] 
-            for (let index2 = 0; index2 < data1.length; index2++) {
-                tempArr.push(data1[index2][index1])
+            let tempArr = []
+            for (let index3 = 0; index3 < data1[0][0].length; index3++) {
+                let tempArr2 = []
+                for (let index2 = 0; index2 < data1.length; index2++) {
+                    tempArr2.push(...data1[index2][index1][index3])
+                }
+                tempArr.push(tempArr2)
             }
             xInput.push(tempArr)
         }
-        x = tf.tensor2d(xInput)
-    }
-    const predictedResults = model.predict(x);
-    return Array.from(predictedResults.dataSync());
-}
-
-/**
- * predict the data of the next time node
- * @param {Array} input input data
- * @param {Model} model the model of the trained network
- * @param {Number} windowSize window size of the data
- * @param {Number} trainingDataSize training data set
- * @returns {Array} the output array
- */
-export const makePredictions = (input, model, windowSize, trainingDataSize, isComplex, inputColumn, labelColumn) => {
-    let x
-    if (!isComplex) {
-        input = computeInputAndOutput(input, windowSize)
-        input = input.map(e => e.x).slice(Math.floor(trainingDataSize / 100 * input.length), input.length)
-        input = [input[input.length - 1]]
-        x = tf.tensor2d(input, [input.length, input[0].length])
-    }
-    else {
-        let data1 = []
-        for (const column of inputColumn) {
-            data1.push(computeSimpleMoveAverage(input.map(value => parseFloat(value[column])), windowSize).map(e => e.x)) // 对每一个变量进行特者提取
-        }
-
-        let data2 = computeSimpleMoveAverage(input.map(value => parseFloat(value[labelColumn])), windowSize)
-        data1.push(data2.map(e => e.x))
-        let xInput = []
-        for (let index1 = 0; index1 < data1[0].length; index1++) { 
-            let tempArr = [] 
-            for (let index2 = 0; index2 < data1.length; index2++) { 
-                tempArr.push(data1[index2][index1])
-            }
-            xInput.push(tempArr)
-        }
-        xInput = [xInput[xInput.length - 1]]
-        x = tf.tensor2d(xInput)
+        x = tf.tensor3d(xInput)
     }
     const predictedResults = model.predict(x);
     return Array.from(predictedResults.dataSync());

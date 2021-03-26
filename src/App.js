@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import './App.css';
 import { GlobalStateProvider } from "./globalState";
-import { useKbn } from "use-kbn";
+// import { useKbn } from "use-kbn";
 import UploadPage from './subPages/UploadPage'
 import IntroductionPage from './subPages/IntroductionPage'
 import VisualizationPage from './subPages/VisualizationPage'
@@ -20,12 +20,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 function App() {
   const classes = useStyles();
-  const { element } = useKbn(
-    "/model/platelet/model.json",
-    'hello world',
-    400,
-    500
-  );
+  // const { element } = useKbn(
+  //   "/model/platelet/model.json",
+  //   'hello world',
+  //   400,
+  //   500
+  // );
   React.useEffect(()=>{
     ConsoleBan({
       redirect: 'https://github.com/GiorgioPeng'
@@ -40,7 +40,7 @@ function App() {
         <MachineLearnPage />
         <LearningResultPage />
       </Paper>
-      {element}
+      {/* {element} */}
     </GlobalStateProvider>
   );
 }

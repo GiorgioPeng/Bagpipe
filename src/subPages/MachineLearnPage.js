@@ -110,7 +110,6 @@ function MachineLearnPage() {
     const startTraining = async () => {
         setModelTraining(true)
         const column = state.labelColumn
-        const data = state.data4Analyse.map(value => parseFloat(value[column]))
         // if (state.model !== '') // exit if the model is trainied
         //     return
         if (state.inputColumn.length !== 0) {
@@ -128,6 +127,7 @@ function MachineLearnPage() {
             updateState('modelResult', modelResult)
         }
         else {
+            const data = state.data4Analyse.map(value => parseFloat(value[column]))
             const { model, modelResult } = await trainSimpleModel(
                 data,
                 state.windowSize,

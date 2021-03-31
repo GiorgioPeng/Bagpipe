@@ -18,7 +18,8 @@ const initState = {
     finishSet: false, // whether the user finish the setting of training neural network
     model: '', // the trained model
     modelResult: '', // the result of the model
-    anomalyDataPercentage:0 // the percentage of the anomaly data
+    anomalyDataPercentage: 0, // the percentage of the anomaly data
+    dropout: 0 // the dropout percentage
     /**
      * [columns...]
      * [row data]

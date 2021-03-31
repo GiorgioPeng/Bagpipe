@@ -31,7 +31,7 @@ function computeInputAndOutput(data, windowSize) {
  * @param {Number} trainingDataSize training data size
  * @returns {Object} the model of the network
  */
-export const trainSimpleModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize) => {
+export const trainSimpleModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize, dropout) => {
     console.log('trainSimpleModel')
     let data2 = computeInputAndOutput(data, windowSize)
     const x = data2.map(e => e.x)
@@ -78,7 +78,7 @@ export const trainSimpleModel = async (data, windowSize, epochs, learningRate, l
             returnSequences: false
         }))
     }
-
+    model.add(tf.layers.dropout({rate:dropout}))
     model.add(tf.layers.dense({ units: outputLayerNeurons, inputShape: [outputLayerShape] }))
 
     model.compile({
@@ -114,7 +114,7 @@ export const trainSimpleModel = async (data, windowSize, epochs, learningRate, l
  * @param {String} labelColumn output column name
  * @returns {Object} the model of the network
  */
-export const trainComplexModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize, inputColumn, labelColumn) => {
+export const trainComplexModel = async (data, windowSize, epochs, learningRate, layers, trainingDataSize, inputColumn, labelColumn, dropout) => {
     console.log('trainComplexModel')
     let data1 = []
     for (const column of inputColumn) {
@@ -177,7 +177,8 @@ export const trainComplexModel = async (data, windowSize, epochs, learningRate, 
             returnSequences: false
         }))
     }
-
+    model.add(tf.layers.dropout({rate:dropout}))
+    
     model.add(tf.layers.dense({ units: outputLayerNeurons, inputShape: [outputLayerShape] }))
 
     model.compile({

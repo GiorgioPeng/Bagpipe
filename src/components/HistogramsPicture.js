@@ -47,12 +47,16 @@ function HistogramsPicture() {
     return (
         <div ref={histogramsPictureRef} className={classes.graphContainer}>
             {innerGraph?.map(e => e)}
-            <Tooltip
-                TransitionComponent={Fade}
-                TransitionProps={{ timeout: 600 }}
-                title={'From this graph, you can know the distribution of the data set clearer!'}>
-                <HelpIcon fontSize='small' />
-            </Tooltip>
+            {innerGraph ?
+                <Tooltip
+                    TransitionComponent={Fade}
+                    TransitionProps={{ timeout: 600 }}
+                    title={'From this graph, you can know the distribution of the data set clearer!'}>
+                    <HelpIcon fontSize='small' />
+                </Tooltip>
+                :
+                ''
+            }
         </div>
     )
 }

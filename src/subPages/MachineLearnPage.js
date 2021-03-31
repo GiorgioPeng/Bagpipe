@@ -30,11 +30,11 @@ const useStyles = makeStyles({
         justifyContent: 'space-around',
         alignItems: 'center'
     },
-    buttons:{
+    buttons: {
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',
-        width:'600px'
+        width: '800px'
     }
 
 });
@@ -105,6 +105,7 @@ function MachineLearnPage() {
         { type: 'Epochs', min: 5, max: 500, defaultNum: 20, step: 1 },
         { type: 'Learning Rate', min: 0.01, max: 10, defaultNum: 0.05, step: 0.01 },
         { type: 'Training Dataset Size (%)', min: 1, max: 100, defaultNum: 80, step: 1 },
+        { type: 'Dropout', min: 0, max: 1, defaultNum: 0, step: 0.1 }
 
     ]
     const startTraining = async () => {
@@ -121,7 +122,8 @@ function MachineLearnPage() {
                 state.hiddenLayers,
                 state.trainingDataSize,
                 state.inputColumn,
-                column
+                column,
+                state.dropout
             )
             updateState('model', model)
             updateState('modelResult', modelResult)
@@ -134,7 +136,8 @@ function MachineLearnPage() {
                 state.epochs,
                 state.learningRate,
                 state.hiddenLayers,
-                state.trainingDataSize
+                state.trainingDataSize,
+                state.dropout
             )
             updateState('model', model)
             updateState('modelResult', modelResult)
@@ -144,6 +147,9 @@ function MachineLearnPage() {
     const clearModel = () => {
         updateState('model', '')
         updateState('modelResult', '')
+    }
+    const downloadModel = async () => {
+        await state.model.save('downloads://model')
     }
     return (
         <div className={classes.root}>
@@ -185,6 +191,7 @@ function MachineLearnPage() {
                     <div className={classes.buttons}>
                         <Button variant="contained" color="primary" disabled={state.finishSet && state.model === '' && !modelTraining ? false : true} onClick={startTraining}>Start Training</Button>
                         <Button variant="contained" color="secondary" disabled={state.model === '' ? true : false} onClick={clearModel}>Clear exist model</Button>
+                        <Button variant="contained" disabled={state.model === '' ? true : false} onClick={downloadModel}>Model Download</Button>
                     </div>
                 </Paper>
                 :

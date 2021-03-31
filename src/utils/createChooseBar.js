@@ -6,10 +6,11 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import CropLandscapeIcon from '@material-ui/icons/CropLandscape';
-import FilterNoneIcon from '@material-ui/icons/FilterNone'; 
-import SpeedIcon from '@material-ui/icons/Speed'; 
+import FilterNoneIcon from '@material-ui/icons/FilterNone';
+import SpeedIcon from '@material-ui/icons/Speed';
 import RepeatIcon from '@material-ui/icons/Repeat';
-import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall'; 
+import PhotoSizeSelectSmallIcon from '@material-ui/icons/PhotoSizeSelectSmall';
+import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 
 const useStyles = makeStyles({
     root: {
@@ -48,6 +49,9 @@ const CreateChooseBar = (props) => {
             case 'Training Dataset Size (%)':
                 updateState('trainingDataSize', newValue)
                 break;
+            case 'Dropout':
+                updateState('dropout', newValue)
+                break
             default:
                 break
         }
@@ -95,6 +99,9 @@ const CreateChooseBar = (props) => {
                                     :
                                     type === 'Learning Rate' ?
                                         <SpeedIcon />
+                                        :
+                                        type === 'Dropout'?
+                                        <DeleteForeverIcon/>
                                         :
                                         <PhotoSizeSelectSmallIcon />
 

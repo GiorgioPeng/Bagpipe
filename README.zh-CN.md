@@ -1,8 +1,9 @@
 English | [简体中文](./README.zh-CN.md)
-# Bagpipe
-一个纯前端的数据挖掘平台. 通过用户可控来保证数据安全和用户隐私.
+# 怎么运行
+```
+yarn
+yarn start
+```
 
-# 特点
-- 用户完全可控
-- 高自由度
-
+# 示例
+https://giorgiopeng.github.io/FYP/

@@ -160,7 +160,7 @@ function MachineLearnPage() {
                         <Tooltip
                             TransitionComponent={Fade}
                             TransitionProps={{ timeout: 600 }}
-                            title={'In general, a precise model needs bigger window size, more hidden layers, more epochs, less learning rate and more data! But please consider these options according the requirements and machine performance!'}>
+                            title={'In general, a precise model needs bigger window size, more hidden layers, more epochs, less learning rate, and more data! But please consider these options according the requirements and machine performance! If the model is overfitting, please consider to increase dropout percentage!'}>
                             <HelpIcon fontSize='small' />
                         </Tooltip>
                         , Please use the default values!!

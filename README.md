@@ -47,3 +47,9 @@ yarn start
 
 # Demo
 https://giorgiopeng.github.io/FYP/
+
+# About the Name
+The name of the platform is from a character, Bagpipe, in the mobile game 「Arknights」.  
+![Bagpipe](./Figure/Bagpipe.jpg)  
+Because the girl creates a new start game mode.  
+Hope the platform can create new style of machine learning.

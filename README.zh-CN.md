@@ -48,3 +48,9 @@ yarn start
 
 # 地址
 https://giorgiopeng.github.io/FYP/
+
+# 名称来源
+该平台名称取自手游「明日方舟」干员「风笛」 
+![风笛](./Figure/Bagpipe.jpg)   
+希望该平台能像她开创新的游戏开局体系一样  
+**创建出新的机器学习方式打开方式**

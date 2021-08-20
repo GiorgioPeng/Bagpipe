@@ -57,13 +57,13 @@ function DataOverviewTable() {
                                                 TransitionProps={{ timeout: 600 }}
                                                 title={
                                                     (`
-                                            max:       ${max(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
-                                            min:       ${min(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
-                                            sum:       ${sum(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
-                                            mean:      ${mean(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
-                                            median:    ${median(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
-                                            variance:  ${variance(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}\t
-                                            deviation: ${deviation(state.data4Analyse, (d) => parseFloat(d[e])).toFixed(2)}
+                                            max:       ${max(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}\t
+                                            min:       ${min(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}\t
+                                            sum:       ${sum(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}\t
+                                            mean:      ${mean(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}\t
+                                            median:    ${median(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}\t
+                                            variance:  ${variance(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}\t
+                                            deviation: ${deviation(state.data4Analyse, (d) => parseFloat(d[e]))?.toFixed(2)}
                                             `)
                                                 }>
                                                 <HelpIcon fontSize='small' />

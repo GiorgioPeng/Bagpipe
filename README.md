@@ -3,7 +3,7 @@
 ![](https://img.shields.io/badge/CNSCC.300-FinalYearProject-blue) ![](https://img.shields.io/badge/version-1.0.0-yellow) ![](https://img.shields.io/badge/tfjs-2.0.1-green) ![](https://img.shields.io/badge/react-16.13.1-green)
 
 # Introduction
-Bagpipe is an offline timing series data mining platform based on pure front end. After loading, the whole process runs completely locally, without interaction with a third party. Data need not be transmitted through the network for analysis, which greatly ensures the security of users' privacy data.
+Bagpipe is an offline timing series data mining platform based on pure front end. After loading, the **whole process** (include data prepocessing, data visualization, and deep learning) runs completely **locally**, without interaction with a third party. Benefiting from the **low dependence on network transmission** (only page code, not specific data, needs to be transmitted), the security of users' private data can be greatly protected.
 
 # Functionalities
 - data prepocessing
@@ -51,5 +51,5 @@ https://giorgiopeng.github.io/FYP/
 # About the Name
 The name of the platform is from a character, Bagpipe, in the mobile game 「Arknights」.  
 ![Bagpipe](./Figure/Bagpipe.jpg)  
-Because a new model of the game start was created by the character.
-Hope the platform can create new style of machine learning.
+Because a new model of the game start was created by the character.  
+Hope the platform can create new style of deep learning.
